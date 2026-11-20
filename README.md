@@ -42,6 +42,12 @@ For other agents, copy the folder into wherever they read skills from.
 
 Download this repo as a ZIP (**Code → Download ZIP**) and upload it as a custom skill in the Skills section of Claude's settings.
 
+If your setup can only hold a single `SKILL.md` (for example, a skill saved from a chat), use **`dist/unrushed-single-file.md`** as its content. It is the same skill with the essential references embedded: principles, AI tells, the 38 techniques condensed, and the ChatCut guide. Rebuild it after changing any reference with `python scripts/build_single.py`.
+
+### Inside ChatCut
+
+ChatCut's agent runs on Claude Code and loads the skills in your Claude account. Install Unrushed there (above), then ask ChatCut's AI composer directly: *"use unrushed to…"*. No export or copy and paste is needed. To drive ChatCut from Claude Code instead, install ChatCut's agent plugin (chatcut.io/claude) next to Unrushed.
+
 ### Optional: the video detector
 
 `scripts/detect.py` checks an exported video for dips to black, frozen stretches and cut rhythm. It needs Python 3 and ffmpeg:

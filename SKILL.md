@@ -119,6 +119,8 @@ Extract values and intent; never copy a reference's code or assets into the pers
 
 Read `references/targets/<target>.md` (`chatcut`, `remotion` or `generic`; use `generic` for any other tool and adapt it). Compile `VIDEO.md`, `STYLE.md` and `STORYBOARD.md` into what the tool needs. The target file only translates: it never changes the creative decisions made in the project files.
 
+If you are running inside the target tool itself, as with ChatCut's agent, or have its tools available, build directly instead of handing the person something to paste. The target file says how.
+
 Every export:
 
 - states motion as numbers (ms, curve values, px, counts) next to the intent behind them, because tools follow numbers more reliably than adjectives, and generalise better when they know why;
@@ -151,6 +153,12 @@ Then list the AI tells you found, and the three fixes with the most impact. Writ
 ## References
 
 Read only what the current command needs.
+
+The reference files live in a `references/` folder next to this file. Some hosts install a skill as this single file: Claude accounts, and agents that load those skills, such as ChatCut's. If the folder is missing, read the same files from the public repository, replacing the path below:
+
+`https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>`
+
+If you cannot reach them either, work from the embedded essentials in the single-file edition, if this is that edition, and say that the full references were not available.
 
 | File | Read for |
 |---|---|

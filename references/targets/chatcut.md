@@ -4,9 +4,17 @@ ChatCut is a video editor driven by an AI agent. Its motion graphics are generat
 
 What follows was learned in practice (November 2026). Tools change, so confirm anything that matters with a small test.
 
+## Three ways to work with ChatCut
+
+Choose by where Unrushed is running.
+
+1. **Unrushed inside ChatCut.** ChatCut's agent runs on Claude Code and loads the skills in the person's Claude account, so Unrushed can run directly in ChatCut's AI composer. The person writes "use unrushed to…", and the agent runs `brief`, `style` and `storyboard`, creates the Design Style and builds the piece in the project. No export or copy and paste is needed. When you run inside ChatCut, skip the "What to deliver" section below: apply its contents directly by creating the Design Style and building the scenes, still piloting first. In this host the skill may be installed as a single file, so read "References" in `SKILL.md`.
+2. **Unrushed in Claude Code, with the ChatCut plugin.** ChatCut publishes an agent plugin that connects Claude Code (and other agents) to ChatCut projects through an MCP server (setup instructions at chatcut.io/claude). With both installed, plan with Unrushed and build through the ChatCut tools.
+3. **Unrushed elsewhere, ChatCut by hand.** When Unrushed runs in a host without access to ChatCut, `export chatcut` produces the two-part deliverable below for the person to paste.
+
 ## What to deliver
 
-An export for ChatCut has two parts.
+For route 3, an export for ChatCut has two parts. In routes 1 and 2, the same two parts are what you create directly.
 
 ### 1. Design Style block
 
@@ -40,6 +48,7 @@ Paste this into the AI composer, with the Design Style selected. Structure it li
 - **Read its report sceptically.** The agent checks individual frames, not continuous playback. Smoothness, rhythm and monotony across scenes have to be judged by watching the export.
 - **Name the clip and the change when revising**: "in the 1974 scene, the particles should stop mid-fall and stay suspended, not pile up". Vague notes produce vague changes.
 - **Editable fields.** Generated graphics expose some parameters, such as text, in a panel. Small text fixes do not need a new generation.
+- **Earlier projects leak in.** The agent may reuse motion graphics from the person's earlier projects that look similar. That is efficient, but say so in the report, and check that the new piece still follows its own `STYLE.md`.
 
 ## Saving what worked
 
