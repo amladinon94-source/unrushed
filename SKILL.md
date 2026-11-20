@@ -84,15 +84,16 @@ Read `references/principles.md` and `references/ai-tells.md` first.
 2. **Palette.** A ground, an ink and at most one accent with a stated job ("the accent marks the present day"). Give hex values and roles.
 3. **Type.** Two families at most, each with a role and sizes for the target resolution. Avoid the defaults listed in `ai-tells.md` unless the person asks for them.
 4. **Dials.** Set `energy`, `density` and `variance`, and say why.
-5. **Signature move.** One recurring motion that identifies the piece, such as particles that reassemble or a mask that always opens from the bottom.
+5. **Signature move.** One recurring motion that identifies the piece, such as particles that reassemble or a mask that always opens from the bottom. Look in `references/techniques.md` for techniques whose meaning matches the through-line and whose behaviour matches the material, and say which entry you started from.
 6. **Forbidden list.** The generic choices this piece in particular is tempted by.
 
 Write `STYLE.md`. Include a ready-to-paste style block for the likely target (for ChatCut, the Design Style fields; see `references/targets/`).
 
 ### `storyboard`
 
-Build a table with one row per scene: start time, duration, exact on-screen text, the figure or visual, what moves (with curve, duration and distance), and the transition into the next scene.
+Build a table with one row per scene: start time, duration, exact on-screen text, the figure or visual, the technique, what moves (with curve, duration and distance), and the transition into the next scene.
 
+- Choose each scene's technique from the line's meaning. Read the index by meaning in `references/techniques.md`, pick the entry whose image enacts the line, and adapt its key parameters to `STYLE.md`. Name the entry in the table so `export` can carry its build notes. Keep the signature move as the thread; techniques serve it, not the other way round.
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
 - Check reading time for every line of text with the rule in `principles.md`. For silent pieces, flag any line held for less than its reading time.
 - Use only facts from `VIDEO.md`. Anything not there is marked `[verify]`.
@@ -110,6 +111,8 @@ Turn a reference into values someone can reuse. Read `references/principles.md`.
 5. **Map it to targets.** How to reproduce it in each tool, from "paste these values into ChatCut" to "needs Blender".
 6. **Critical note.** Cliché risk, licence, and anything you could not verify.
 
+Write the result in the same format as the entries in `references/techniques.md`, with a slug, source and credit, what it is, what it communicates, key parameters, build routes, difficulty and critical note, so it can join the library. If the skill folder is editable, offer to add the entry and to list it in the index by meaning.
+
 Extract values and intent; never copy a reference's code or assets into the person's project.
 
 ### `export <target>`
@@ -119,6 +122,7 @@ Read `references/targets/<target>.md` (`chatcut`, `remotion` or `generic`; use `
 Every export:
 
 - states motion as numbers (ms, curve values, px, counts) next to the intent behind them, because tools follow numbers more reliably than adjectives, and generalise better when they know why;
+- for each technique named in the storyboard, carries its key parameters and build notes from `references/techniques.md`, so the tool knows how to build it and not only what it should look like;
 - includes the forbidden list from `STYLE.md`;
 - asks the tool to pilot the first scene and the closing before building the rest, and to report what it could not do;
 - ends with the review checklist from `critique`, so the tool checks its own frames.
@@ -142,7 +146,7 @@ Score each criterion from 1 to 5 with one line of evidence:
 | Distinctiveness | How many AI tells are present? |
 | Consistency | Does it follow `STYLE.md`? |
 
-Then list the AI tells you found, and the three fixes with the most impact. Write each fix as an instruction ready to paste into the tool. Be specific about what stills cannot show: motion, fluidity and rhythm need the video.
+Then list the AI tells you found, and the three fixes with the most impact. Write each fix as an instruction ready to paste into the tool. When a scene looks generic because of its technique, suggest an alternative from `references/techniques.md` that says the same thing better. Be specific about what stills cannot show: motion, fluidity and rhythm need the video.
 
 ## References
 
@@ -152,6 +156,7 @@ Read only what the current command needs.
 |---|---|
 | `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour. `style`, `storyboard`, `recipe`, `export`, `critique` |
 | `references/ai-tells.md` | What makes motion and video read as AI-generated, and what to do instead. `style`, `export`, `critique` |
+| `references/techniques.md` | 38 techniques from real reference pieces, indexed by meaning and by family, with key parameters and build routes. `style`, `storyboard`, `recipe`, `export`, `critique` |
 | `references/targets/chatcut.md` | Exporting to ChatCut |
 | `references/targets/remotion.md` | Exporting to Remotion, through Claude Code or any coding agent |
 | `references/targets/generic.md` | Any other tool, or a spec for a human animator |

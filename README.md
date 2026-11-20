@@ -83,6 +83,10 @@ brief  →  style  →  storyboard  →  export  →  (make it in your tool)  �
 - **`recipe <reference>`**: turns a site, clip or screenshot whose motion you like into reusable values (durations, curves, parameters) and says how to reproduce it in each tool.
   > *"unrushed recipe https://example.com"*
 
+### The techniques library
+
+`references/techniques.md` holds 38 techniques studied from real pieces (particles, fluids, glass, cloth, metaballs, ASCII, transitions and more), each with what it communicates, its key parameters, how to build it in each tool, and a critical note. It is indexed **by meaning**, so the agent picks a technique because the scene needs to *reveal*, *dissolve*, *transform* or *connect*, not because it looks cool. `storyboard` uses it to choose techniques per scene, `export` carries their build notes to your tool, and every `recipe` you run can add a new entry.
+
 ### Dials
 
 Change them at any point, in plain words:
@@ -112,6 +116,7 @@ unrushed/
 ├── references/
 │   ├── principles.md         Timing, curves, distance, choreography, type, materials
 │   ├── ai-tells.md           What makes video read as AI-generated, and what to do instead
+│   ├── techniques.md         38 techniques from real reference pieces, indexed by meaning
 │   └── targets/              chatcut.md, remotion.md, generic.md
 ├── assets/                   Templates for VIDEO.md, STYLE.md, STORYBOARD.md
 └── scripts/detect.py         Automatic checks on an exported video
