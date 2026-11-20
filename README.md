@@ -4,24 +4,118 @@ Motion direction for AI agents. Unrushed helps an agent brief, style, storyboard
 
 It works with any tool. The project files (`VIDEO.md`, `STYLE.md`, `STORYBOARD.md`) describe the piece independently of the software, and adapters in `references/targets/` translate it for ChatCut, Remotion, or anything else.
 
-## Commands
-
-| Command | What it does |
-|---|---|
-| `brief` | Captures the piece and its through-line → `VIDEO.md` |
-| `style` | Defines material, palette, type, dials and motion tokens → `STYLE.md` |
-| `storyboard` | Timed scenes with exact text and motion → `STORYBOARD.md` |
-| `recipe <reference>` | Turns a site or clip into reusable motion values |
-| `export <target>` | Compiles a prompt or spec for `chatcut`, `remotion` or `generic` |
-| `critique` | Scores frames or a video, lists AI tells and the top fixes |
-
-Dials: `energy`, `density`, `variance` (1–10) and `material`.
-
 ## Install
 
-Copy the `unrushed/` folder into your agent's skills folder, for example `~/.claude/skills/` for Claude Code.
+### Any agent that supports skills (recommended)
 
-`scripts/detect.py` needs `ffmpeg` and `ffprobe`.
+```bash
+npx skills add amladinon94-source/unrushed
+```
+
+The installer detects your agents (Claude Code, Cursor, Codex and others) and asks where to install. Useful flags:
+
+```bash
+# Install for every project on your machine, not just this one
+npx skills add amladinon94-source/unrushed -g
+
+# Install for one agent only, without prompts
+npx skills add amladinon94-source/unrushed --agent claude-code -y
+```
+
+Requires Node.js.
+
+### Manual install
+
+Clone the repo into your agent's skills folder. For Claude Code:
+
+```bash
+# For all your projects
+git clone https://github.com/amladinon94-source/unrushed ~/.claude/skills/unrushed
+
+# For one project only (run from the project root)
+git clone https://github.com/amladinon94-source/unrushed .claude/skills/unrushed
+```
+
+For other agents, copy the folder into wherever they read skills from.
+
+### Claude apps (web and desktop)
+
+Download this repo as a ZIP (**Code → Download ZIP**) and upload it as a custom skill in the Skills section of Claude's settings.
+
+### Optional: the video detector
+
+`scripts/detect.py` checks an exported video for dips to black, frozen stretches and cut rhythm. It needs Python 3 and ffmpeg:
+
+```bash
+brew install ffmpeg        # macOS
+sudo apt install ffmpeg    # Debian / Ubuntu
+```
+
+## Use
+
+You can talk to your agent normally; it loads Unrushed when the request is about motion or video. You can also name a command. In Claude Code, `/unrushed` followed by the command works too.
+
+### The workflow
+
+```
+brief  →  style  →  storyboard  →  export  →  (make it in your tool)  →  critique  →  repeat
+```
+
+1. **`brief`**: say what the video is about. The agent asks only what it cannot infer, proposes a through-line (the one visual idea that carries the piece) and writes `VIDEO.md`.
+   > *"Use unrushed to brief a 60-second silent video about the history of the bicycle, for Instagram."*
+
+2. **`style`**: the agent proposes material, palette, type, dials and a signature move, and writes `STYLE.md`.
+   > *"unrushed style. I want it to feel like ink on paper, calm."*
+
+3. **`storyboard`**: timed scenes with exact text, what moves and how, and checks that every line can be read in time. Writes `STORYBOARD.md`.
+   > *"unrushed storyboard, 8 scenes."*
+
+4. **`export <target>`**: compiles everything into what your tool needs: `chatcut`, `remotion` or `generic` (After Effects, Cavalry, another AI tool, or a human animator).
+   > *"unrushed export chatcut"*
+
+5. Make the video in your tool. Start with the pilot scene the export asks for.
+
+6. **`critique`**: share screenshots or the exported video. You get scores, the AI tells it found, and the three fixes with the most impact, ready to paste back into your tool.
+   > *"unrushed critique" + screenshots or video*
+
+### Other commands
+
+- **`recipe <reference>`**: turns a site, clip or screenshot whose motion you like into reusable values (durations, curves, parameters) and says how to reproduce it in each tool.
+  > *"unrushed recipe https://example.com"*
+
+### Dials
+
+Change them at any point, in plain words:
+
+| Dial | Range | Default | Controls |
+|---|---|---|---|
+| `energy` | 1–10 | 4 | Speed, distance, overshoot, how many things move at once |
+| `density` | 1–10 | 3 | Elements and words per frame, empty space |
+| `variance` | 1–10 | 5 | How much scenes differ from one another |
+| `material` | a word | set in `style` | ink, paper, glass, cloth, fluid, particles, metal, light… |
+
+> *"energy 7, variance 8"*
+
+### Running the detector yourself
+
+```bash
+python scripts/detect.py my-video.mp4
+python scripts/detect.py my-video.mp4 --white   # also check flat light frames
+python scripts/detect.py my-video.mp4 --json    # machine-readable output
+```
+
+## What's inside
+
+```
+unrushed/
+├── SKILL.md                  Commands, dials and workflow
+├── references/
+│   ├── principles.md         Timing, curves, distance, choreography, type, materials
+│   ├── ai-tells.md           What makes video read as AI-generated, and what to do instead
+│   └── targets/              chatcut.md, remotion.md, generic.md
+├── assets/                   Templates for VIDEO.md, STYLE.md, STORYBOARD.md
+└── scripts/detect.py         Automatic checks on an exported video
+```
 
 ## Credits and influences
 
