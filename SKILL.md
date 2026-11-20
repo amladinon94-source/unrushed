@@ -15,6 +15,8 @@ Unrushed is a set of commands around one loop: **context → create → review �
 
 Reply in the person's language. Command names stay in English.
 
+**Where the files are.** Commands read files in `references/`. If that folder is not next to this file, read "References" at the end of this file before opening anything: it says where else to find them.
+
 ### Project files
 
 Commands share three files in the project folder. Read whichever exist before any command.

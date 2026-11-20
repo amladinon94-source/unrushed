@@ -47,8 +47,19 @@ def condensed_techniques():
     )
 
 
+BANNER = (
+    "> **Single-file edition.** The reference files are embedded at the end of this file, each under a heading "
+    "\"Embedded: <path>\". Whenever an instruction says to read a file in `references/`, read that section instead "
+    "of looking for the file on disk. Files not embedded (`targets/remotion.md`, `targets/generic.md`, the templates, "
+    "`scripts/detect.py`) can be read from https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>."
+)
+
+
 def main():
     skill = read("SKILL.md")
+    # Put the banner right under the H1, so agents see it before any instruction to open a file.
+    skill = skill.replace("\n# Unrushed\n", "\n# Unrushed\n\n" + BANNER + "\n", 1)
+    assert BANNER in skill, "banner not inserted" 
     parts = [
         skill,
         "\n---\n\n# Embedded references (single-file edition)\n\n"
