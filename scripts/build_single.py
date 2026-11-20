@@ -34,8 +34,10 @@ def condensed_techniques():
         slug = block.splitlines()[0].strip()
         fields = dict(re.findall(r"^- \*\*(\w[\w ]*)\*\*: (.+)$", block, flags=re.M))
         source = re.sub(r"\s*https?://\S+", "", fields.get("Source", "")).rstrip(". ")
+        what = fields.get('What', '')
+        what = what[:1].upper() + what[1:]
         entries.append(
-            f"- **{slug}** ({source}). {fields.get('What', '')} "
+            f"- **{slug}** ({source}). {what} "
             f"*Params:* {fields.get('Key parameters', '')} *Build:* {fields.get('Build', '')} "
             f"*Note:* {fields.get('Critical note', '')}"
         )
