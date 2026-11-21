@@ -768,8 +768,9 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 `scripts/detect.py` finds some tells in an exported video without any judgment involved:
 
 - **Fades and dips to black**: stretches where the frame goes almost completely dark.
-- **Frozen stretches**: long holds with no change at all, which are sometimes intended and sometimes a render that stalled.
+- **Frozen stretches**: long holds where nothing changes anywhere in the frame, which are sometimes intended and sometimes a render that stalled.
 - **Cut rhythm**: hard cuts and the average shot length. Many hard cuts in a piece meant to flow are a sign that transitions were not designed.
+- **The planned rhythm**, with `--storyboard STORYBOARD.md`: scene lengths that are all alike, and the same transition type back to back.
 
 Everything else needs eyes: use the tables above.
 
