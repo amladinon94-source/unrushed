@@ -119,8 +119,15 @@ Build the storyboard from the spine and beat map in `VIDEO.md`; if they are miss
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
 - Check reading time for every line of text with the rule in `principles.md`. For silent pieces, flag any line held for less than its reading time.
 - Use only facts from `VIDEO.md`. Anything not there is marked `[verify]`.
-- Read the storyboard as a whole before finishing: if every scene has the same structure, apply `variance` and say what you changed.
 - Make sure the image and the text say the same thing. If the line says "funding freezes", the figure should freeze, not pile up.
+
+Before finishing, review the storyboard as a whole and fix what fails, saying what you changed:
+
+- **Spine.** Each beat is tagged hook, promise, proof, payoff or ask, and the payoff is the strongest image at roughly 70–85% of the piece.
+- **Rhythm.** At least three different beat lengths; the beat map in `VIDEO.md` is followed. With Python available, `python scripts/detect.py --storyboard STORYBOARD.md` checks scene lengths and repeated transitions.
+- **Transitions.** No type twice in a row, at least four kinds over 60 s, the biggest one into the payoff.
+- **Slide test.** No scene reads as a slide when paused; neighbouring beats use different devices.
+- **Variance.** If scenes share the same structure, apply `variance`.
 
 ### `recipe <reference>`
 
@@ -153,24 +160,28 @@ Every export:
 
 ### `critique`
 
-Read `references/ai-tells.md`, and `STYLE.md` if it exists.
+Read `references/ai-tells.md`, `references/narrative.md`, `references/transitions.md`, and `STYLE.md` if it exists. `critique` works on a finished video, on frames, or on a plan (`STORYBOARD.md`) before anything is built; critiquing the plan is the cheapest moment to fix rhythm and transitions.
 
-If you have a video file and `ffmpeg`, run `python scripts/detect.py <video>` first: it reports fades to black, frozen stretches and cut rhythm, which are hard to judge from stills. Then look at frames.
+If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --storyboard STORYBOARD.md` first: it reports dips to black, stretches where nothing moves anywhere in the frame, hard cuts, and the planned rhythm and repeated transitions. Then look at frames, sampled densely around every transition.
 
 Score each criterion from 1 to 5 with one line of evidence:
 
 | Criterion | Question |
 |---|---|
+| Story | Does the hook work in the first second? Is the promise kept by a payoff that is the strongest image? Is the ask clear? |
+| Rhythm | Do beat lengths vary with purpose: building, then holding after a reveal? Or does it tick along evenly? |
+| Explanation | Is each idea shown happening, with a device, rather than written beside a demo? Does any paused frame read as a slide? |
+| Transitions | Does each transition say the relation between beats? How many kinds, and are any repeated back to back? |
 | Concept | Is the figure understood without reading the text? |
 | Hierarchy | Does the eye know where to go first, second, third? |
 | Legibility | Can every line be read in the time it is on screen? |
 | Choreography | One protagonist at a time, overlap instead of dead frames? |
 | Timing | Do entrances decelerate, exits run faster, holds feel intended? |
-| Material and light | Does the piece have texture, depth, a physical feel? |
+| Material and light | Does the piece have texture, depth, a physical feel? Does each style have its own world? |
 | Distinctiveness | How many AI tells are present? |
 | Consistency | Does it follow `STYLE.md`? |
 
-Then list the AI tells you found, and the three fixes with the most impact. Write each fix as an instruction ready to paste into the tool. When a scene looks generic because of its technique, suggest an alternative from `references/techniques.md` that says the same thing better. Be specific about what stills cannot show: motion, fluidity and rhythm need the video.
+Then list the AI tells you found, and the three fixes with the most impact. Write each fix as an instruction ready to paste into the tool. When a scene looks generic because of its technique, device or transition, suggest an alternative from `references/techniques.md`, `references/visual-explanation.md` or `references/transitions.md` that says the same thing better. Be specific about what stills cannot show: motion, fluidity and rhythm need the video.
 
 ## References
 
@@ -193,4 +204,4 @@ If you cannot reach them either, work from the embedded essentials in the single
 | `references/targets/chatcut.md` | Exporting to ChatCut |
 | `references/targets/remotion.md` | Exporting to Remotion, through Claude Code or any coding agent |
 | `references/targets/generic.md` | Any other tool, or a spec for a human animator |
-| `scripts/detect.py` | Automatic checks on an exported video |
+| `scripts/detect.py` | Automatic checks on an exported video, and on the rhythm and transitions of a `STORYBOARD.md` |

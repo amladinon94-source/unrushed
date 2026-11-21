@@ -3,15 +3,19 @@
 
 Finds the AI tells that do not need judgment:
   - dips to black (and, with --white, dips to white)
-  - frozen stretches (no visible change for a while)
+  - frozen stretches: nothing changes anywhere in the frame for a while
+    (a small moving cursor or a single word entering counts as change)
   - hard cuts, and the average shot length
+  - with --storyboard: the planned rhythm, read from STORYBOARD.md (scene
+    lengths that are all alike, and transitions repeated back to back)
 
 Requires ffmpeg and ffprobe on PATH. Prints a readable summary, or JSON with --json.
 
 Usage:
   python detect.py video.mp4
   python detect.py video.mp4 --json
-  python detect.py video.mp4 --white --cut-threshold 0.35 --freeze-seconds 2
+  python detect.py --storyboard STORYBOARD.md        (check the plan before building)
+  python detect.py video.mp4 --white --cut-threshold 0.35 --freeze-seconds 2 --still-level 1.5
 """
 
 import argparse
@@ -20,6 +24,11 @@ import re
 import shutil
 import subprocess
 import sys
+
+try:
+    import numpy as np  # optional: makes the motion analysis about ten times faster
+except ImportError:
+    np = None
 
 
 def run_ffmpeg_filter(path, vf):
@@ -58,17 +67,96 @@ def dips(path, min_seconds, pixel_threshold, white=False):
     return found
 
 
-def freezes(path, min_seconds, noise):
-    log = run_ffmpeg_filter(path, f"freezedetect=n={noise}:d={min_seconds}")
-    starts = [float(x) for x in re.findall(r"freeze_start:\s*([\d.]+)", log)]
-    ends = [float(x) for x in re.findall(r"freeze_end:\s*([\d.]+)", log)]
-    found = []
-    for i, start in enumerate(starts):
-        end = ends[i] if i < len(ends) else None
-        item = {"start": round(start, 2), "end": round(end, 2) if end is not None else None}
-        if end is not None:
-            item["duration"] = round(end - start, 2)
-        found.append(item)
+SAMPLE_W, SAMPLE_H, BLOCK = 320, 180, 10  # analysis grid: 32 x 18 blocks of 10 x 10 px
+
+
+def sample_frames(path, fps):
+    """Grey frames at low resolution and `fps`, as a list of bytes objects."""
+    cmd = ["ffmpeg", "-hide_banner", "-nostats", "-loglevel", "error", "-i", path,
+           "-vf", f"fps={fps},scale={SAMPLE_W}:{SAMPLE_H},format=gray", "-f", "rawvideo", "-"]
+    data = subprocess.run(cmd, capture_output=True).stdout
+    size = SAMPLE_W * SAMPLE_H
+    return [data[i:i + size] for i in range(0, len(data) - size + 1, size)]
+
+
+def block_means(frame):
+    """Mean brightness of each 10 x 10 block. Averaging hides moving grain but keeps real motion."""
+    if np is not None:
+        a = np.frombuffer(frame, dtype=np.uint8).reshape(SAMPLE_H // BLOCK, BLOCK, SAMPLE_W // BLOCK, BLOCK)
+        return a.mean(axis=(1, 3)).ravel()
+    cols, rows = SAMPLE_W // BLOCK, SAMPLE_H // BLOCK
+    out = []
+    for by in range(rows):
+        for bx in range(cols):
+            total = 0
+            for y in range(by * BLOCK, (by + 1) * BLOCK):
+                row = y * SAMPLE_W + bx * BLOCK
+                total += sum(frame[row:row + BLOCK])
+            out.append(total / (BLOCK * BLOCK))
+    return out
+
+
+def changed_fraction(a, b, level):
+    """Share of blocks whose mean brightness moved by more than `level` (0-255)."""
+    if np is not None:
+        return float((np.abs(a - b) > level).mean())
+    return sum(1 for x, y in zip(a, b) if abs(x - y) > level) / len(a)
+
+
+def activity(path, fps=10, level=1.0):
+    """Per sample: share of blocks changed since the previous sample."""
+    means = [block_means(f) for f in sample_frames(path, fps)]
+    return [0.0] + [changed_fraction(means[i - 1], means[i], level) for i in range(1, len(means))]
+
+
+def storyboard_rhythm(path):
+    """Scene lengths and transitions from the table in STORYBOARD.md."""
+    rows, header = [], None
+    for line in open(path, encoding="utf-8"):
+        if not line.strip().startswith("|"):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if header is None:
+            header = [c.lower() for c in cells]
+            continue
+        if set("".join(cells)) <= set("-: "):
+            continue
+        rows.append(dict(zip(header, cells)))
+    dur_key = next((h for h in header or [] if h.startswith("dur")), None)
+    tr_key = next((h for h in header or [] if h.startswith("transition")), None)
+    lengths = []
+    for r in rows:
+        m = re.search(r"([\d.]+)\s*s", r.get(dur_key, "") if dur_key else "")
+        if m:
+            lengths.append(float(m.group(1)))
+    out = {"scene_lengths": lengths, "repeated_transitions": []}
+    if len(lengths) >= 4:
+        mean = sum(lengths) / len(lengths)
+        sd = (sum((x - mean) ** 2 for x in lengths) / len(lengths)) ** 0.5
+        out["variation"] = round(sd / mean, 2)
+        out["distinct_lengths"] = len({round(x) for x in lengths})
+    if tr_key:
+        kinds = [r.get(tr_key, "").split("→")[-1].strip().lower() for r in rows]
+        out["transition_kinds"] = len({k for k in kinds if k})
+        out["repeated_transitions"] = [i + 1 for i in range(1, len(kinds)) if kinds[i] and kinds[i] == kinds[i - 1]]
+    return out
+
+
+def still_stretches(step, fps, min_seconds):
+    """Runs of samples where not a single block changed."""
+    found, start = [], None
+    for i, v in enumerate(step + [1.0]):
+        if v == 0 and i > 0:
+            start = i if start is None else start
+        elif start is not None:
+            dur = (i - start) / fps
+            if dur >= min_seconds:
+                end = i / fps if i < len(step) else None
+                item = {"start": round((start - 1) / fps, 2), "end": round(end, 2) if end is not None else None}
+                if end is not None:
+                    item["duration"] = round(end - (start - 1) / fps, 2)
+                found.append(item)
+            start = None
     return found
 
 
@@ -88,30 +176,45 @@ def position_label(t, total, edge=1.0):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("video")
+    p.add_argument("video", nargs="?", help="the exported video; optional when only --storyboard is checked")
     p.add_argument("--json", action="store_true", help="print JSON instead of a summary")
     p.add_argument("--white", action="store_true", help="also look for dips to white")
     p.add_argument("--dip-seconds", type=float, default=0.1, help="shortest dip to report (default 0.1)")
     p.add_argument("--dip-threshold", type=float, default=0.10,
                    help="how dark a pixel must be to count as black, 0-1 (default 0.10)")
     p.add_argument("--freeze-seconds", type=float, default=2.0, help="shortest freeze to report (default 2)")
-    p.add_argument("--freeze-noise", type=float, default=0.003, help="change tolerated in a freeze (default 0.003)")
+    p.add_argument("--storyboard", help="STORYBOARD.md to check the planned rhythm and transitions")
+    p.add_argument("--still-level", type=float, default=1.0,
+                   help="brightness change (0-255) a 10x10 block needs to count as motion (default 1.0)")
     p.add_argument("--cut-threshold", type=float, default=0.35,
                    help="scene-change score that counts as a hard cut, 0-1 (default 0.35)")
     args = p.parse_args()
 
-    for tool in ("ffmpeg", "ffprobe"):
+    for tool in ("ffmpeg", "ffprobe") if args.video else ():
         if not shutil.which(tool):
             sys.exit(f"{tool} is not installed or not on PATH.")
+
+    if not args.video:
+        if not args.storyboard:
+            p.error("give a video, a --storyboard, or both")
+        sb = storyboard_rhythm(args.storyboard)
+        print(json.dumps(sb, indent=2) if args.json else
+              f"Storyboard: {len(sb['scene_lengths'])} scenes, lengths {sb['scene_lengths']}\n"
+              + (f"  variation {sb['variation']} (under 0.25 reads as monotonous), distinct lengths {sb['distinct_lengths']}\n" if "variation" in sb else "")
+              + (f"  transition kinds {sb['transition_kinds']}; repeated back to back at scenes {sb['repeated_transitions'] or 'none'}" if "transition_kinds" in sb else ""))
+        return
 
     total = duration_of(args.video)
     report = {
         "video": args.video,
         "duration": round(total, 2),
         "dips_to_black": dips(args.video, args.dip_seconds, args.dip_threshold),
-        "freezes": freezes(args.video, args.freeze_seconds, args.freeze_noise),
         "cuts": cuts(args.video, args.cut_threshold),
     }
+    fps = 10
+    report["freezes"] = still_stretches(activity(args.video, fps, args.still_level), fps, args.freeze_seconds)
+    if args.storyboard:
+        report["storyboard"] = storyboard_rhythm(args.storyboard)
     if args.white:
         report["dips_to_white"] = dips(args.video, args.dip_seconds, args.dip_threshold, white=True)
     shots = len(report["cuts"]) + 1
@@ -131,6 +234,13 @@ def main():
     for f in report["freezes"]:
         if f.get("duration") and f["duration"] >= 4:
             flags.append(f"Frozen for {f['duration']}s from {f['start']}s: intended hold, or a stalled render?")
+    sb = report.get("storyboard")
+    if sb:
+        if sb.get("variation") is not None and (sb["variation"] < 0.25 or sb["distinct_lengths"] < 3):
+            flags.append(f"Storyboard rhythm: {len(sb['scene_lengths'])} scenes with nearly the same length "
+                         f"(variation {sb['variation']}, {sb['distinct_lengths']} distinct lengths). See narrative.md.")
+        for n in sb["repeated_transitions"]:
+            flags.append(f"Storyboard: scene {n} repeats the previous transition type. See transitions.md.")
     report["flags"] = flags
 
     if args.json:
@@ -151,6 +261,11 @@ def main():
     print(f"Freezes of {args.freeze_seconds}s or more: {len(report['freezes'])}")
     for f in report["freezes"]:
         print(f"  from {f['start']}s" + (f" for {f['duration']}s" if f.get('duration') else " to the end"))
+    sb = report.get("storyboard")
+    if sb:
+        print(f"Storyboard: {len(sb['scene_lengths'])} scenes"
+              + (f"  ·  variation of lengths {sb['variation']}  ·  distinct lengths {sb['distinct_lengths']}" if "variation" in sb else "")
+              + (f"  ·  transition kinds {sb['transition_kinds']}" if "transition_kinds" in sb else ""))
     print()
     if flags:
         print("Flags:")
