@@ -35,6 +35,8 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Centred title and subtitle in every scene | Same layout, no composition | A stable text zone plus a composition that changes with the figure |
 | Icons in rounded squares, emojis | Template components | Drawn marks consistent with the material |
 | Perfectly clean digital rendering | Nothing physical to hold onto | Grain, motion blur, self-shadowing, refraction: light and material carry quality |
+| A static grain overlay | Reads as a filter laid on top, not as film or paper | Grain renewed every two frames, with its intensity tied to the ground |
+| A showcase where every style shares the same ground and palette | The viewer sees one style with different shapes | Give each style its own world: ground, palette and light |
 
 ## Structure
 

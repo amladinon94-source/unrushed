@@ -84,15 +84,27 @@ Write `VIDEO.md` from the template.
 
 ### `style`
 
-Read `references/principles.md` and `references/ai-tells.md` first.
+Read `references/principles.md`, `references/ai-tells.md` and the index of `references/techniques.md` first.
+
+**Propose before deciding.** Offer two or three directions and let the person choose; never pick a look silently. Directions must differ in material and ground, not only in colour: three palettes of the same idea are one direction. Do not reuse the look of earlier projects (earlier `STYLE.md` files, earlier pieces in the conversation) unless the person asks for it. For each direction give:
+
+- a name and one sentence on how it feels;
+- material, ground, palette, type, and light and finish;
+- the signature move and the library techniques it draws on;
+- a styleframe, one key frame rendered as a still, whenever you can render one, because people choose looks by seeing them.
+
+Recommend one and say why it serves the through-line. Once the person chooses, complete it:
 
 1. **Material.** Choose it before colour. It sets the motion personality: ink settles, glass is precise, fluid overlaps, cloth lags behind its driver.
 2. **Palette.** A ground, an ink and at most one accent with a stated job ("the accent marks the present day"). Give hex values and roles.
 3. **Type.** Two families at most, each with a role and sizes for the target resolution. Avoid the defaults listed in `ai-tells.md` unless the person asks for them.
-4. **Dials.** Set `energy`, `density` and `variance`, and say why.
-5. **Signature move.** One recurring motion that identifies the piece, such as particles that reassemble or a mask that always opens from the bottom. Look in `references/techniques.md` for techniques whose meaning matches the through-line and whose behaviour matches the material, and say which entry you started from.
-6. **Forbidden list.** The generic choices this piece in particular is tempted by.
-7. **Interface system**, when the piece shows a product or a tool: which components, icons and fonts the interface uses, and their licences. See `references/visual-explanation.md`.
+4. **Light and finish.** What makes it physical: grain that moves (renewed every two frames, never a static overlay), motion blur on fast moves, shadow and depth, refraction or bloom only when the material has them.
+5. **Dials.** Set `energy`, `density` and `variance`, and say why.
+6. **Signature move.** One recurring motion that identifies the piece, such as particles that reassemble or a mask that always opens from the bottom. Name the entry in `references/techniques.md` it starts from.
+7. **Forbidden list.** The generic choices this piece in particular is tempted by.
+8. **Interface system**, when the piece shows a product or a tool: which components, icons and fonts the interface uses, and their licences. See `references/visual-explanation.md`.
+
+**Pieces that show several styles or techniques**, such as a showcase or a demo of what a tool can do: define a frame system that stays constant (type, text zone, the through-line element), and give each style its own world, with its own ground, palette and light. If every style shares the same paper and ink, the viewer sees one style with different shapes.
 
 Write `STYLE.md`. Include a ready-to-paste style block for the likely target (for ChatCut, the Design Style fields; see `references/targets/`).
 

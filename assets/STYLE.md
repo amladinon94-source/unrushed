@@ -1,9 +1,16 @@
 # STYLE
 
+## Directions considered
+Two or three, differing in material and ground. Record why the chosen one won.
+
+| Direction | Feels like | Material and ground | Chosen? |
+|---|---|---|---|
+| | | | |
+
 ## Material
 - **Material**: (ink and paper, glass, cloth, fluid, particles, metal, light…)
 - **What it means for motion**: (how things arrive, settle and overlap)
-- **Texture and light**: (grain, blur, shadow, refraction)
+- **Light and finish**: (moving grain renewed every two frames, motion blur on fast moves, shadow and depth, refraction or bloom only if the material has them)
 
 ## Palette
 | Role | Hex | Used for |
@@ -41,11 +48,18 @@
 - Scenes overlap; no dips to black.
 
 ## Signature move
-One recurring motion that identifies the piece:
+One recurring motion that identifies the piece, and the technique it starts from:
 
 ## Forbidden
 Generic choices this piece in particular is tempted by:
 - 
+
+## Style worlds
+Only for pieces that show several styles or techniques. The frame system (type, text zone, through-line element) stays constant; each style gets its own world.
+
+| Style | Ground | Palette | Light | Technique |
+|---|---|---|---|---|
+| | | | | |
 
 ## Interface system
 Only when the piece shows a product or a tool. See `references/visual-explanation.md`.
