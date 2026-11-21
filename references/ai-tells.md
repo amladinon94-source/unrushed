@@ -11,6 +11,7 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Everything fades in and slides up 20–40 px with the same duration | The default entrance of every template | Vary the entrance by role; use small distances, blur-to-focus or masks; keep timing asymmetric |
 | The same stagger on every group | Rhythm with no hierarchy | Tight stagger for words, looser for objects; let the order carry meaning |
 | Dip or fade to black between scenes | Hides the lack of a transition idea | Overlap scenes; transform one figure into the next; use a mask or a cut on movement |
+| One transition type for the whole piece, usually a wipe or a crossfade | A template, not an edit | Choose each transition by the relation between beats (`transitions.md`); never the same type twice in a row |
 | Ease-in-out on everything, or linear entrances | No distinction between arriving, leaving and moving | Entrances decelerate, exits accelerate, linear only for continuous motion |
 | Bouncy overshoot on headlines | Playfulness applied to the wrong element | Overshoot only on small accents, and only when `energy` allows |
 | Slow zoom on every shot | Movement used to hide a static idea | Move the camera only when the move reveals something |

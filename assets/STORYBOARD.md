@@ -2,7 +2,7 @@
 
 **Total duration**:  · **Format**:  · **Sound**: 
 
-| # | In | Duration | Beat (spine part) | Text (exact) | Visual / figure | Device (from visual-explanation.md) | Technique (from techniques.md) | What moves (token, duration, curve, distance) | Transition to next | Reading time OK? |
+| # | In | Duration | Beat (spine part) | Text (exact) | Visual / figure | Device (from visual-explanation.md) | Technique (from techniques.md) | What moves (token, duration, curve, distance) | Transition to next (relation → type) | Reading time OK? |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 1 | 0:00 | | Hook | | | | | | | |
 
@@ -12,6 +12,7 @@ Per scene, the order of events with offsets, e.g. "transform starts at 0; year e
 ## Whole-piece check
 - [ ] Neighbouring scenes differ in composition, rhythm or entrance (variance)
 - [ ] Neighbouring beats use different devices; no paused frame reads as a slide
+- [ ] No transition type repeats back to back; at least four kinds over 60 s; the biggest leads into the payoff
 - [ ] Any interface uses real components (the product's or its design system), with a human cursor
 - [ ] Every figure enacts its line of text
 - [ ] Each technique was chosen for its meaning, not as decoration
