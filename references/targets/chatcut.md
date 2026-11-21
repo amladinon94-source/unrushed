@@ -36,11 +36,12 @@ Paste this into the AI composer, with the Design Style selected. Structure it li
 
 1. **Deliverable**: duration, resolution, frame rate, sound or none.
 2. **Concept**: the through-line in two sentences.
-3. **Storyboard**: the table from `STORYBOARD.md`, with exact text.
+3. **Storyboard**: the table from `STORYBOARD.md`, with exact text, the beat each scene serves, its device and its transition written as relation and type ("B is a detail of A → zoom-through, 900 ms, expo"). Durations come from the beat map; do not even them out.
 4. **Motion fundamentals**: repeat the key numbers even if they are in the Design Style. The agent follows what is in front of it.
-5. **Continuity**: if one element carries through the piece, such as particles or a line, say that every transformation starts from the exact end state of the previous scene, with no cuts between clips, and that it may build the whole sequence as a single motion graphic if needed.
-6. **Process**: pilot the first scene and the closing first, report, then build the rest.
-7. **Report**: ask it to list what it could not do, which frames it checked, and the real timings.
+5. **Interfaces**: when a scene simulates a product or a tool, name the design system and components ("shadcn/ui Slider and Card, dark theme, Lucide icons", or the product's own), with radius, colours and font, and the cursor behaviour from `visual-explanation.md`.
+6. **Continuity**: if one element carries through the piece, such as particles or a line, say that every transformation starts from the exact end state of the previous scene, with no cuts between clips, and that it may build the whole sequence as a single motion graphic if needed.
+7. **Process**: pilot the hook and the payoff first, report, then build the rest.
+8. **Report**: ask it to list what it could not do, which frames it checked, and the real timings.
 
 ## Working with the agent
 

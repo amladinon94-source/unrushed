@@ -68,41 +68,68 @@ How `energy` maps to numbers, as a starting point:
 
 ### `brief`
 
-Ask only what you cannot infer from the conversation or files, and at most five questions at once:
+Read `references/narrative.md` first. Ask only what you cannot infer from the conversation or files, and at most five questions at once:
 
-1. Topic and the one sentence the viewer should leave with.
-2. Audience, platform, aspect ratio and duration.
-3. Sound: silent, music only, or voice. A silent piece carries its whole narrative in on-screen text, which changes the timing rules.
-4. Facts the piece states (dates, names, figures). List them; each needs a source or is marked `[verify]`.
-5. The through-line.
+1. Topic, the goal (explain, sell, launch, teach, celebrate) and the one sentence the viewer should leave with.
+2. Audience: who they are, what they already know or believe, and what they should feel or do afterwards.
+3. Platform, aspect ratio, duration and sound. A silent piece carries its whole narrative in on-screen text and motion beats, which changes the timing rules.
+4. Facts the piece states (dates, names, figures, product claims). List them; each needs a source or is marked `[verify]`. For a product, ask whether you can see the product itself, its code or its interface.
+5. Anything already decided: brand, references, things to avoid.
 
-The through-line is the single visual idea that carries the whole piece, and it is the most important decision in the brief. Propose two or three options and recommend one. A piece about the history of AI made of nine unrelated effects reads as a demo reel; the same piece where one set of particles travels from a neuron to a human profile reads as a story. A good through-line is a transformation that means something.
+Then propose, and let the person choose or correct:
+
+- **The spine.** Hook, promise, proof, payoff and ask, one line each, and the structure that fits the type of piece. The hook must work visually in the first second.
+- **The through-line.** The single visual idea that carries the whole piece, and the most important decision in the brief. Propose two or three options and recommend one. A piece about the history of AI made of nine unrelated effects reads as a demo reel; the same piece where one set of particles travels from a neuron to a human profile reads as a story. A good through-line is a transformation that means something.
+- **The beat map.** Sections with their tempo and beat lengths, and where the payoff lands on the tension curve.
 
 Write `VIDEO.md` from the template.
 
 ### `style`
 
-Read `references/principles.md` and `references/ai-tells.md` first.
+Read `references/principles.md`, `references/ai-tells.md` and the index of `references/techniques.md` first.
+
+**Propose before deciding.** Offer two or three directions and let the person choose; never pick a look silently. Directions must differ in material and ground, not only in colour: three palettes of the same idea are one direction. Do not reuse the look of earlier projects (earlier `STYLE.md` files, earlier pieces in the conversation) unless the person asks for it. For each direction give:
+
+- a name and one sentence on how it feels;
+- material, ground, palette, type, and light and finish;
+- the signature move and the library techniques it draws on;
+- a styleframe, one key frame rendered as a still, whenever you can render one, because people choose looks by seeing them.
+
+Recommend one and say why it serves the through-line. Once the person chooses, complete it:
 
 1. **Material.** Choose it before colour. It sets the motion personality: ink settles, glass is precise, fluid overlaps, cloth lags behind its driver.
 2. **Palette.** A ground, an ink and at most one accent with a stated job ("the accent marks the present day"). Give hex values and roles.
 3. **Type.** Two families at most, each with a role and sizes for the target resolution. Avoid the defaults listed in `ai-tells.md` unless the person asks for them.
-4. **Dials.** Set `energy`, `density` and `variance`, and say why.
-5. **Signature move.** One recurring motion that identifies the piece, such as particles that reassemble or a mask that always opens from the bottom. Look in `references/techniques.md` for techniques whose meaning matches the through-line and whose behaviour matches the material, and say which entry you started from.
-6. **Forbidden list.** The generic choices this piece in particular is tempted by.
+4. **Light and finish.** What makes it physical: grain that moves (renewed every two frames, never a static overlay), motion blur on fast moves, shadow and depth, refraction or bloom only when the material has them.
+5. **Dials.** Set `energy`, `density` and `variance`, and say why.
+6. **Signature move.** One recurring motion that identifies the piece, such as particles that reassemble or a mask that always opens from the bottom. Name the entry in `references/techniques.md` it starts from.
+7. **Forbidden list.** The generic choices this piece in particular is tempted by.
+8. **Interface system**, when the piece shows a product or a tool: which components, icons and fonts the interface uses, and their licences. See `references/visual-explanation.md`.
+
+**Pieces that show several styles or techniques**, such as a showcase or a demo of what a tool can do: define a frame system that stays constant (type, text zone, the through-line element), and give each style its own world, with its own ground, palette and light. If every style shares the same paper and ink, the viewer sees one style with different shapes.
 
 Write `STYLE.md`. Include a ready-to-paste style block for the likely target (for ChatCut, the Design Style fields; see `references/targets/`).
 
 ### `storyboard`
 
-Build a table with one row per scene: start time, duration, exact on-screen text, the figure or visual, the technique, what moves (with curve, duration and distance), and the transition into the next scene.
+Build the storyboard from the spine and beat map in `VIDEO.md`; if they are missing, offer to run `brief` first. Build a table with one row per scene: start time, duration, exact on-screen text, the figure or visual, the technique, what moves (with curve, duration and distance), and the transition into the next scene.
 
 - Choose each scene's technique from the line's meaning. Read the index by meaning in `references/techniques.md`, pick the entry whose image enacts the line, and adapt its key parameters to `STYLE.md`. Name the entry in the table so `export` can carry its build notes. Keep the signature move as the thread; techniques serve it, not the other way round.
+- Give each beat a device from `references/visual-explanation.md`: the way the idea becomes visible (interface simulation, ghosts, same space with two behaviours, a camera push, one canvas…). Neighbouring beats use different devices or compositions. Run the slide test on every scene: if a paused frame reads as a slide, rework it.
+- Choose each transition from `references/transitions.md` by the relation between the two beats, and write the relation next to it. Never the same type twice in a row; at least four kinds in a piece over 60 s; the biggest one leads into the payoff.
+- When the piece shows a product or a tool, simulate its interface with real components: the product's own when you can see it, otherwise the design system it is built on. Never invent controls.
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
 - Check reading time for every line of text with the rule in `principles.md`. For silent pieces, flag any line held for less than its reading time.
 - Use only facts from `VIDEO.md`. Anything not there is marked `[verify]`.
-- Read the storyboard as a whole before finishing: if every scene has the same structure, apply `variance` and say what you changed.
 - Make sure the image and the text say the same thing. If the line says "funding freezes", the figure should freeze, not pile up.
+
+Before finishing, review the storyboard as a whole and fix what fails, saying what you changed:
+
+- **Spine.** Each beat is tagged hook, promise, proof, payoff or ask, and the payoff is the strongest image at roughly 70–85% of the piece.
+- **Rhythm.** At least three different beat lengths; the beat map in `VIDEO.md` is followed. With Python available, `python scripts/detect.py --storyboard STORYBOARD.md` checks scene lengths and repeated transitions.
+- **Transitions.** No type twice in a row, at least four kinds over 60 s, the biggest one into the payoff.
+- **Slide test.** No scene reads as a slide when paused; neighbouring beats use different devices.
+- **Variance.** If scenes share the same structure, apply `variance`.
 
 ### `recipe <reference>`
 
@@ -135,24 +162,28 @@ Every export:
 
 ### `critique`
 
-Read `references/ai-tells.md`, and `STYLE.md` if it exists.
+Read `references/ai-tells.md`, `references/narrative.md`, `references/transitions.md`, and `STYLE.md` if it exists. `critique` works on a finished video, on frames, or on a plan (`STORYBOARD.md`) before anything is built; critiquing the plan is the cheapest moment to fix rhythm and transitions.
 
-If you have a video file and `ffmpeg`, run `python scripts/detect.py <video>` first: it reports fades to black, frozen stretches and cut rhythm, which are hard to judge from stills. Then look at frames.
+If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --storyboard STORYBOARD.md` first: it reports dips to black, stretches where nothing moves anywhere in the frame, hard cuts, and the planned rhythm and repeated transitions. Then look at frames, sampled densely around every transition.
 
 Score each criterion from 1 to 5 with one line of evidence:
 
 | Criterion | Question |
 |---|---|
+| Story | Does the hook work in the first second? Is the promise kept by a payoff that is the strongest image? Is the ask clear? |
+| Rhythm | Do beat lengths vary with purpose: building, then holding after a reveal? Or does it tick along evenly? |
+| Explanation | Is each idea shown happening, with a device, rather than written beside a demo? Does any paused frame read as a slide? |
+| Transitions | Does each transition say the relation between beats? How many kinds, and are any repeated back to back? |
 | Concept | Is the figure understood without reading the text? |
 | Hierarchy | Does the eye know where to go first, second, third? |
 | Legibility | Can every line be read in the time it is on screen? |
 | Choreography | One protagonist at a time, overlap instead of dead frames? |
 | Timing | Do entrances decelerate, exits run faster, holds feel intended? |
-| Material and light | Does the piece have texture, depth, a physical feel? |
+| Material and light | Does the piece have texture, depth, a physical feel? Does each style have its own world? |
 | Distinctiveness | How many AI tells are present? |
 | Consistency | Does it follow `STYLE.md`? |
 
-Then list the AI tells you found, and the three fixes with the most impact. Write each fix as an instruction ready to paste into the tool. When a scene looks generic because of its technique, suggest an alternative from `references/techniques.md` that says the same thing better. Be specific about what stills cannot show: motion, fluidity and rhythm need the video.
+Then list the AI tells you found, and the three fixes with the most impact. Write each fix as an instruction ready to paste into the tool. When a scene looks generic because of its technique, device or transition, suggest an alternative from `references/techniques.md`, `references/visual-explanation.md` or `references/transitions.md` that says the same thing better. Be specific about what stills cannot show: motion, fluidity and rhythm need the video.
 
 ## References
 
@@ -166,13 +197,16 @@ If you cannot reach them either, work from the embedded essentials in the single
 
 | File | Read for |
 |---|---|
+| `references/narrative.md` | Hook, promise, proof, payoff and ask; structures by type of piece; beats, rhythm and the beat map. `brief`, `storyboard`, `critique` |
+| `references/visual-explanation.md` | Devices that make an idea visible, the slide test, interface simulation with real design systems, cursor choreography. `style`, `storyboard`, `export`, `critique` |
+| `references/transitions.md` | Transitions chosen by the relation between beats, a catalogue with durations and related techniques, eye trace and other ways to hide the seam. `storyboard`, `export`, `critique` |
 | `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour. `style`, `storyboard`, `recipe`, `export`, `critique` |
 | `references/ai-tells.md` | What makes motion and video read as AI-generated, and what to do instead. `style`, `export`, `critique` |
 | `references/techniques.md` | 38 techniques from real reference pieces, indexed by meaning and by family, with key parameters and build routes. `style`, `storyboard`, `recipe`, `export`, `critique` |
 | `references/targets/chatcut.md` | Exporting to ChatCut |
 | `references/targets/remotion.md` | Exporting to Remotion, through Claude Code or any coding agent |
 | `references/targets/generic.md` | Any other tool, or a spec for a human animator |
-| `scripts/detect.py` | Automatic checks on an exported video |
+| `scripts/detect.py` | Automatic checks on an exported video, and on the rhythm and transitions of a `STORYBOARD.md` |
 
 
 ---
@@ -180,6 +214,129 @@ If you cannot reach them either, work from the embedded essentials in the single
 # Embedded references (single-file edition)
 
 This edition embeds the essentials so the skill works where only one file is installed. The full files, with every source link, are in the repository: https://github.com/amladinon94-source/unrushed. `targets/remotion.md`, `targets/generic.md`, the templates and `scripts/detect.py` are only there.
+
+## Embedded: references/narrative.md
+
+### Narrative and rhythm
+
+A motion piece is a story before it is an animation. The story decides the rhythm, and the rhythm decides the motion. A video where every scene runs the same length with the same layout reads as a slideshow, even if each movement is well crafted. Read this file for `brief`, `storyboard` and `critique`.
+
+#### Contents
+
+1. The spine: hook, promise, proof, payoff, ask
+2. Hooks
+3. Structures by type of piece
+4. Beats, not scenes
+5. Rhythm and the beat map
+6. Tension and release
+7. Pieces that sell a product
+8. Checklist
+
+#### 1. The spine
+
+Every piece answers five questions in order. Write each in one line in `VIDEO.md` before any visual decision.
+
+| Part | Question it answers | Typical share of a 60–120 s piece |
+|---|---|---|
+| **Hook** | Why should I keep watching? | the first 1–3 s |
+| **Promise** | What will I get if I stay? | 5–10% |
+| **Proof** | Show me. | 50–65%, in at most three beats of rising strength |
+| **Payoff** | The moment the promise is kept. The strongest image of the piece. | 10–15% |
+| **Ask** | What do I do now, or what do I keep? | the last 5–10%, held long enough to act on |
+
+Shares are starting points. A teaser may be almost all hook and payoff; a tutorial may be almost all proof.
+
+The spine stays the same whether the piece explains, sells or celebrates. What changes is what counts as proof: a demonstration, a result, a transformation, a number, a person.
+
+#### 2. Hooks
+
+The hook is visual first. In the first second something is already moving, or something is already wrong, unfinished or surprising.
+
+Hooks that work:
+
+- **Start mid-action.** The first frame is part of a movement already happening, not an entrance onto an empty screen.
+- **A visual question.** Something incomplete, impossible or out of place that the viewer wants resolved.
+- **Contrast.** Before and after, generic and crafted, problem and solution, side by side or one turning into the other.
+- **The result first.** Show the finished outcome, then rewind to how it was made.
+- **A concrete claim** with a figure the piece will prove. Only with a sourced figure.
+
+Hooks that fail: a logo first, a title card first, a slow fade from an empty frame, an abstract background waiting for text.
+
+#### 3. Structures by type of piece
+
+**Explainer (60–120 s).** Hook → problem the viewer recognises → the turn ("there is another way") → how it works, in at most three ideas → proof → close. Each idea gets its own composition and its own visual device (see `visual-explanation.md`), never the same template three times.
+
+**Product promo (15–45 s).** Hook with the product already in use → one benefit per beat, two or three beats, each shown in the real interface → payoff, the moment that matters to the user → logo and ask. Benefits, not a feature list.
+
+**Launch or teaser (10–30 s).** Tension builds while the subject is withheld or partly seen → the reveal → a hold on the reveal → date or ask.
+
+**Showcase or sizzle (30–90 s).** Cold open on the strongest piece → montage with cuts that accelerate → a breath → one hero piece held longer → end card. Montage is how a showcase shows breadth: twelve techniques at 1.5–3 s each say more than five at 8 s.
+
+**Tutorial or walkthrough.** The end result first → steps, each with one visible action → the result again, now understood.
+
+**Vertical social (6–30 s).** Hook in the first second, text inside safe areas and readable on a phone, a loopable ending.
+
+#### 4. Beats, not scenes
+
+A beat is one idea shown once. A scene can hold several beats; one beat can cross a transition. Plan the piece as beats, then group them into scenes.
+
+- One beat, one protagonist, one thing to understand.
+- Each beat needs a different visual device or composition from its neighbours. If three beats in a row share the same layout, the viewer stops looking and starts waiting.
+- Text supports the beat; it does not carry it. If the beat cannot be understood with the sound off and the text hidden, the image is not doing its job.
+
+#### 5. Rhythm and the beat map
+
+Rhythm is the pattern of durations. Monotony, every beat the same length, is the most common sign of a generated piece after the visual clichés.
+
+Draw a beat map in `VIDEO.md`: each section with its tempo and its beat lengths.
+
+| Section | Tempo | Beat lengths |
+|---|---|---|
+| Hook | fast | 1–2 s |
+| Promise | settle | 3–4 s hold |
+| Proof 1–3 | builds | 6 s, 5 s, 4 s |
+| Montage | fast, accelerating | 2.5 → 1.2 s |
+| Payoff | slow | 6–8 s with a long hold |
+| Ask | still | 4–5 s |
+
+Rules:
+
+- **At least three different beat lengths** in any piece longer than 30 s.
+- **Accelerate into a turn, hold after a reveal.** Shorter beats build tension; a long hold lets it land.
+- **Three, then break.** A pattern repeated three times creates an expectation; break it on the fourth.
+- **Contrast density.** A dense, busy beat makes the next sparse one feel calm, and the other way round.
+- **Silent pieces** keep rhythm through motion beats: impacts, stops, holds and cuts on movement. With music, cut on the beat, place hits on downbeats and transitions on bar changes.
+- **Reading time still rules** (see `principles.md`). A fast section uses fewer words, not shorter reading time.
+
+#### 6. Tension and release
+
+Plot the piece as a curve of intensity over time. A flat line is boring; a line that only rises is exhausting.
+
+- The highest point, the payoff, usually lands at 70–85% of the duration.
+- Place the quietest moment just before the biggest reveal.
+- After the payoff, release: slower motion, more space, a hold.
+- The ending breathes. The last frame stays long enough to read and remember.
+
+#### 7. Pieces that sell a product
+
+When the piece sells or explains a real product:
+
+- **Know what the viewer must believe** at each beat: "this is for me", "this solves it", "it is easy", "I can trust it", "I will try it".
+- **Show the real product.** Use its real interface when available, or the design system it is built on (see `visual-explanation.md`). Invented interfaces read as fake.
+- **One benefit per beat.** Show the user's outcome, not the button.
+- **The "aha" is the payoff.** The moment the product does something the viewer did not expect, held long enough to land.
+- **The ask is concrete.** A URL, a command, a date, a single action, held at least 4 s.
+- **Claims are sourced.** Figures, customers and results come from the brief, or they are marked `[verify]`.
+
+#### 8. Checklist
+
+- Can you state the hook, promise, proof, payoff and ask in one line each?
+- Is something already moving or unresolved in the first second?
+- Is the strongest image the payoff, at roughly 70–85% of the piece?
+- Does the piece use at least three different beat lengths?
+- Do neighbouring beats use different compositions or devices?
+- Could a viewer follow the story with the sound off and the text hidden?
+- Is the ask held long enough to act on?
 
 ## Embedded: references/principles.md
 
@@ -338,6 +495,216 @@ From the animation canon (Disney's twelve principles) and its adaptation to inte
 - **Parallax and dimensionality.** Depth through different speeds and through folding or flipping.
 - **Dolly and zoom.** Moving the camera through the scene rather than moving the scene past the camera.
 
+## Embedded: references/visual-explanation.md
+
+### Explaining visually
+
+How to make a viewer understand something by watching it happen, instead of reading about it beside a decorative animation. Read this file for `storyboard`, `export` and `critique`, and for `style` when the piece shows a product.
+
+#### Contents
+
+1. The slide test
+2. Devices
+3. Which device for which idea
+4. Interface simulation
+5. Design systems: real components, not invented ones
+6. Cursor choreography
+7. Building notes
+
+#### 1. The slide test
+
+Pause any frame. If it reads as a slide (a label, a title and a paragraph beside a box with a small demo), the scene is presenting, not explaining. Motion professionals explain inside the scene: the camera moves to the idea, objects carry over from one beat to the next, and the explanation happens on the thing itself.
+
+Signs of a slide:
+
+- The same template every scene: label, title, support line, demo area.
+- Demos in fixed boxes or split panels that never change shape.
+- Text carries the idea and the image decorates it.
+- Each scene starts from an empty frame and ends in an empty frame.
+- The camera never moves.
+
+Text can stay. Short titles anchor a silent piece. But the text should name what the viewer is already seeing, not describe what they cannot see.
+
+#### 2. Devices
+
+Each device below is a way of making an idea visible. Use a different one for neighbouring beats.
+
+**Interface simulation.** A cursor operates a real-looking interface (a graph editor, a timeline, a slider, a property panel, a code field) and the result changes live beside it or behind it. Best for "how it works", "you control this", and any product. See sections 4–6.
+
+**Ghosts and onion skin.** The moving object leaves 6–12 copies of itself at fixed time intervals, fading out. The spacing between ghosts shows the easing: even spacing is linear, bunched-up spacing at the end is ease-out. This is the animator's own tool, and the clearest way to show curves, speed and timing. A spacing chart, ticks along the path at equal time steps, is the minimal version.
+
+**Same space, two behaviours.** Instead of two panels side by side, the generic version plays, rewinds, and the crafted version plays on the same spot, or both run superimposed with the generic one as a translucent ghost. The difference is read directly, without the eye jumping between halves.
+
+**Curve and motion in sync.** A value graph draws while the object moves, with a playhead linking the two. The viewer sees the shape of the curve become the feel of the motion.
+
+**Time remap.** Slow motion or a freeze frame in the middle of a movement, with an annotation on the frozen state, then release back to speed. It works best on a moment that is too fast to notice at full speed: an overshoot, a squash, a stagger.
+
+**Camera push to detail.** The camera dives into one part of the frame (a pixel, a keyframe, a word) to show what matters, then pulls back to context.
+
+**One canvas.** All beats live on one large plane, and the camera travels between them. Transitions become camera moves, and the piece feels like one continuous world rather than a deck. See `transitions.md`.
+
+**Building diagram.** A diagram or chart assembles in the order of the explanation: the parts first, then the connections, then the result. The data-graph technique in `techniques.md` is one form.
+
+**Physical analogy.** The idea is enacted by a material with known behaviour, such as ink that settles, a spring that overshoots or cloth that lags. It uses `material` from `STYLE.md`.
+
+**Type as actor.** Words move as the idea: "slow down" decelerates, "overlap" overlaps. Use it for a single key phrase, not for every line.
+
+**Product footage with overlays.** A real screen recording with focus masks, zooms and callouts. It is the most honest proof for a product.
+
+#### 3. Which device for which idea
+
+| To explain… | Strongest devices |
+|---|---|
+| A curve, easing, speed | ghosts and onion skin, curve and motion in sync, interface simulation (graph editor) |
+| Timing, order, stagger | timeline in interface simulation, time remap |
+| Before and after, generic and crafted | same space with two behaviours, a ghost superimposed, rewind |
+| How a product works | interface simulation with the real design system, product footage |
+| A parameter and its effect | interface simulation (slider or field) with the result changing live |
+| A process with steps | one canvas with the camera travelling between steps, building diagram |
+| Quality, material, feel | physical analogy, camera push to detail, time remap |
+| A number or a trend | building diagram, data graph with a following camera |
+| A single key phrase | type as actor |
+
+#### 4. Interface simulation
+
+The interface is a stage, not a screenshot. Treat it as a set built for camera:
+
+- **Scale it up.** Interfaces at 1:1 are unreadable in video. Show them at 1.5–2× and crop to the region that matters.
+- **Simplify.** Keep the panels the beat needs and remove the rest. A focused interface reads better than a complete one.
+- **Direct the eye.** Dim or blur what does not matter, push the camera toward the control being used, and keep one active control at a time (one protagonist).
+- **Use real content.** Real labels, real values, real data that the brief supports. Never lorem ipsum or "Button".
+- **Show cause and effect.** Every interaction produces a visible result within 100–300 ms, as real software would.
+- **Hold the result.** After the change, give the viewer time to see what happened before the cursor moves on.
+
+#### 5. Design systems: real components, not invented ones
+
+Invented interfaces read as fake: wrong proportions, made-up controls, inconsistent icons. Use the components and icons of a real, recognisable system, chosen by context:
+
+| Context | Use |
+|---|---|
+| You can see the product (code, Storybook, Figma, screenshots) | Its own components, tokens, fonts and icons. The highest fidelity, and the only right choice for a product video. |
+| A web SaaS, dashboard or developer tool, with no access | shadcn/ui components (MIT) with Lucide icons (ISC). The current de facto look of web apps. |
+| A Google product or an Android app | Material Design 3 with Material Symbols (Apache 2.0). |
+| A Microsoft or enterprise product | Fluent 2 with Fluent System Icons (MIT). |
+| An app for Apple platforms | Apple's Human Interface Guidelines. Apple's design resources and SF Symbols are licensed only for mock-ups of software that runs on Apple platforms, so check the licence before using them in any other piece. |
+| A creative tool (video editor, motion tool, design tool) | The conventions those tools share: a dark interface, a timeline with keyframes, a layers list, an inspector, a graph editor. Build them from shadcn/ui primitives on a dark theme and Lucide icons. |
+
+Rules:
+
+- **Use the real anatomy.** Sizes, radii, spacing, states (hover, active, focus) and type scale from the system's documentation or code. Do not approximate a button; use the button.
+- **One system per piece.** Do not mix Material controls with shadcn/ui cards.
+- **Generic over branded unless it is theirs.** Show a real company's interface, logo or name only when the piece is for that company or the person has the right to show it. Otherwise build the generic version of the kind of tool, with no real product names or logos.
+- **Keep licences.** Note the licence of every component and icon set in `STYLE.md`.
+
+#### 6. Cursor choreography
+
+A cursor that teleports or moves in straight lines at constant speed is an AI tell. A human hand:
+
+- **Travels on a slight arc** with ease-in-out, at roughly 600–1,200 px per second at 1080p.
+- **Decelerates onto the target** and may overshoot by a few pixels, then settles.
+- **Pauses 150–300 ms** before clicking: the hand aims.
+- **Gives feedback on click:** the control shows its pressed state, and a small press scale or ring on the cursor (90–95%, about 100 ms) is optional.
+- **Drags with weight:** the dragged value lags the cursor slightly and settles when released.
+- **Rests while the result plays.** The cursor is still, or moves aside, so it does not compete with the result.
+- **Uses the system's cursor:** an arrow for pointing, a hand for links, resize or grab cursors for handles.
+
+#### 7. Building notes
+
+- **Remotion and other React targets** can render the design system directly: shadcn/ui components, Tailwind tokens and `lucide-react` icons work inside compositions. Drive every state (hover, pressed, the value of a slider) from the frame number, never from real events.
+- **ChatCut** builds motion graphics with code. Name the system and the components in the prompt ("a shadcn/ui Slider and Card in dark theme, Lucide icons"), and give the token values (radius, colours, font) so it does not approximate.
+- **After Effects and similar tools:** import the real components from Figma community kits of the chosen system, or vector exports of the product, rather than drawing controls by hand.
+- **Ghosts and onion skin:** render the object at earlier times (frame − k × step) with decreasing opacity; in code it is the same component drawn several times.
+
+## Embedded: references/transitions.md
+
+### Transitions
+
+A transition is a connector between two ideas, like "and then", "because", "but" or "zoom in on this". Choosing it by the relation between beats, not by habit, is what separates an edited piece from a slideshow. Read this file for `storyboard`, `export` and `critique`.
+
+#### Contents
+
+1. Choose by relation
+2. The catalogue
+3. Rules
+4. Hiding the seam
+5. Building notes
+
+#### 1. Choose by relation
+
+First name how the two beats relate, then pick the transition that says that.
+
+| Relation between beat A and beat B | Transitions that say it |
+|---|---|
+| B continues A (same subject, next step) | match on action, carry-over element, camera travel on one canvas |
+| A becomes B (cause and effect, transformation) | morph, dissolve into material |
+| B is a detail of A | zoom-through, camera push |
+| A is part of B (context, the bigger picture) | pull-out reveal |
+| B looks like A but means something else | graphic match cut |
+| B contrasts with A | hard cut on the beat, smash cut |
+| B opens a new chapter | object-led mask, fold or page turn |
+| Time passes between A and B | dissolve into material, a slow camera travel |
+| B answers a question A raised | object-led mask from the questioned element, zoom-through |
+
+#### 2. The catalogue
+
+Durations are at `energy` 4–6; scale with the dial.
+
+**Hard cut on the beat.** Instant. The most used transition in professional editing, and a legitimate one. Cut on a beat, on an impact, or when a movement peaks. A cut is not a dip to black: the rule against dips does not forbid cuts. *Risk:* cutting between two static frames feels like a slide change.
+
+**Match on action.** A movement that starts in A finishes in B: an object thrown in one scene lands in the next. Cut at the moment of highest speed. *Says:* continuation.
+
+**Graphic match cut.** A shape, colour or position in A matches one in B: a circle becomes a planet, a cursor becomes a star. Align the two shapes exactly in position and size. *Says:* these two things are related. *Risk:* a forced match reads as a pun.
+
+**Morph.** The object in A transforms into the object in B, over 1,200–2,000 ms with cubic in-out. *Techniques:* `particle-morph`, `metaballs`, `fluid-text`. *Says:* A becomes B. Keep identity: the same particles, the same line, the same shape.
+
+**Dissolve into material.** A breaks into particles, threads, pixels or ink, and that material assembles B. 1,000–1,800 ms. *Techniques:* `particle-morph`, `unwoven`, `pixel-voxel-drop`, `fluid-text`, `gpu-io-ink-fluid`. *Says:* transformation, time passing, memory.
+
+**Zoom-through.** The camera pushes into an element of A (a letter, a dot, a window, a pixel) until it fills the frame and becomes the ground of B. 700–1,200 ms, accelerating in and decelerating out, with motion blur at peak speed. *Techniques:* `canvas-grid-zoom`, `scroll-graph`. *Says:* look closer, this contains that.
+
+**Pull-out reveal.** The reverse: the camera pulls back from a detail to show it is part of something bigger. 900–1,500 ms with expo-out. *Says:* context, the bigger picture.
+
+**Camera travel on one canvas.** All beats live on one plane; the camera pans, dollies or arcs from one to the next. 700–1,500 ms with cubic in-out. *Says:* this is one continuous world. It is the strongest cure for the slideshow feel.
+
+**Whip pan.** A camera move so fast it becomes a blur, 250–400 ms, cut at peak blur into B moving in the same direction. *Says:* energy, a jump to elsewhere. Use it sparingly, once or twice per piece.
+
+**Carry-over element.** One element (a line, a cursor, a word, a particle cloud) stays in place or keeps moving while the world around it changes. *Says:* this thread connects everything. It is often the through-line itself.
+
+**Object-led mask.** An element of A grows, slides or opens to become a window onto B: a circle that expands, a card that becomes full frame, a shape that wipes. 500–900 ms with expo-out. *Techniques:* `editorial-reveal-system` (circular reveal), `page-transitions` (inset and polygon masks, blurred covering shapes), `liquid-lens`. *Says:* a new chapter, an answer. The mask should come from something in A, not appear from nowhere.
+
+**Fold, flip or page turn.** A folds, flips or turns like paper or a card in 3D to reveal B. 700–1,100 ms. *Techniques:* `fold`, `duo-lenticular`. *Says:* the other side, a new chapter. *Risk:* dated if the fold is flat and shadowless; give it light.
+
+**Smash cut.** An abrupt cut from intensity to calm, or the reverse, often from sound to silence. *Says:* contrast, a punchline. Once per piece.
+
+**Text bridge.** A line of text from A stays while the image changes beneath it, or the next line arrives before the image changes. *Says:* the thought continues. Useful in silent pieces to keep reading continuous.
+
+**Line or object wipe.** A line or object crosses the frame and leaves B behind it. 600–900 ms with cubic in-out. *Says:* a clean change. It works once or twice; as the only transition of a piece, it is a template.
+
+**Light transition.** A bloom, flare or exposure flash covers the cut. *Says:* revelation, light itself. Only when the content is about light; otherwise it is a tell (see `ai-tells.md`).
+
+#### 3. Rules
+
+- **Never use the same transition type twice in a row.** In any piece over 60 s, use at least four kinds.
+- **The transition carries the relation.** Write the relation in the storyboard next to the transition ("B is a detail of A → zoom-through").
+- **Overlap, never gap.** The next beat starts before the last one has fully left (`principles.md`). No empty frames, no dips to black.
+- **Cut more than you think.** Not every change needs a crafted transition. Crafted transitions mark the important turns; clean cuts keep the rhythm between them.
+- **Save the biggest transition for the payoff.** The most elaborate transition should lead into the strongest image, not be spent in the first ten seconds.
+- **Respect reading time.** Never transition while a line is still being read.
+
+#### 4. Hiding the seam
+
+- **Eye trace.** Put the focal point of B where the eye already is at the end of A. If the viewer was looking at the top right, B's protagonist starts at the top right. This is the most important rule of invisible editing.
+- **Cut on motion.** Cuts hide best at the peak of a movement, when the eye is following speed instead of detail.
+- **Continue the direction.** Movement leaving A to the right enters B from the left, at the same speed.
+- **Motion blur at peak speed.** Fast camera moves and whips need blur, equivalent to a 180° shutter (blur over half the frame interval). Without it they strobe.
+- **Match the light.** A sudden change of exposure or colour temperature makes the seam visible unless the contrast is the point.
+
+#### 5. Building notes
+
+- **One canvas in code.** Lay every beat out on one large container and animate a camera transform (translate and scale) on it. Beats keep their own local time; the camera has its own timeline.
+- **Remotion.** `@remotion/motion-blur` provides camera-style blur for fast moves. Masks are CSS `clip-path` driven by the frame number. Morphs and dissolves are canvas or WebGL scenes like the techniques they borrow from.
+- **ChatCut.** Name the transition, its relation, the duration and the curve in the prompt, and ask it to keep the two scenes in a single motion graphic when the transition needs both on screen at once (morphs, carry-overs, camera travel).
+- **After Effects and similar tools.** A camera layer over 3D layers for one canvas and zoom-through; track mattes for object-led masks; pixel motion blur for whips.
+
 ## Embedded: references/ai-tells.md
 
 ### AI tells in motion and video
@@ -353,6 +720,7 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Everything fades in and slides up 20–40 px with the same duration | The default entrance of every template | Vary the entrance by role; use small distances, blur-to-focus or masks; keep timing asymmetric |
 | The same stagger on every group | Rhythm with no hierarchy | Tight stagger for words, looser for objects; let the order carry meaning |
 | Dip or fade to black between scenes | Hides the lack of a transition idea | Overlap scenes; transform one figure into the next; use a mask or a cut on movement |
+| One transition type for the whole piece, usually a wipe or a crossfade | A template, not an edit | Choose each transition by the relation between beats (`transitions.md`); never the same type twice in a row |
 | Ease-in-out on everything, or linear entrances | No distinction between arriving, leaving and moving | Entrances decelerate, exits accelerate, linear only for continuous motion |
 | Bouncy overshoot on headlines | Playfulness applied to the wrong element | Overshoot only on small accents, and only when `energy` allows |
 | Slow zoom on every shot | Movement used to hide a static idea | Move the camera only when the move reveals something |
@@ -376,6 +744,8 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Centred title and subtitle in every scene | Same layout, no composition | A stable text zone plus a composition that changes with the figure |
 | Icons in rounded squares, emojis | Template components | Drawn marks consistent with the material |
 | Perfectly clean digital rendering | Nothing physical to hold onto | Grain, motion blur, self-shadowing, refraction: light and material carry quality |
+| A static grain overlay | Reads as a filter laid on top, not as film or paper | Grain renewed every two frames, with its intensity tied to the ground |
+| A showcase where every style shares the same ground and palette | The viewer sees one style with different shapes | Give each style its own world: ground, palette and light |
 
 #### Structure
 
@@ -387,6 +757,11 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Dates, statistics or names that nobody checked | Confident and wrong | Every fact sourced or marked `[verify]` |
 | Even pacing from start to end | No climax, no rest | Build tension, release it, and give the ending a hold |
 | A logo sting with sparkles at the end | Ending by habit | End on the idea; let the last frame breathe |
+| Every scene is a slide: label, title, support line and a demo box | Presenting instead of explaining; a deck with motion | Explain inside the scene with a device from `visual-explanation.md`; pass the slide test |
+| Side-by-side panels that never change shape | A comparison layout used as a crutch | Same space with two behaviours, a ghost overlay, or a rewind |
+| Every beat the same length | No rhythm; a template ticking along | A beat map with at least three beat lengths (`narrative.md`) |
+| Invented interface: made-up controls, "Button", lorem ipsum | Reads as fake immediately | Real components from the product or a recognised design system (`visual-explanation.md`) |
+| A cursor that teleports or glides in straight lines at constant speed | No hand behind it | Arcs, deceleration onto the target, a pause before clicking |
 
 #### What can be detected automatically
 
@@ -433,44 +808,44 @@ Everything else needs eyes: use the tables above.
 
 ### Entries (condensed; sources and links in the full file)
 
-- **particle-morph** (built in the first Unrushed test, a silent video on the history of AI, made in both ChatCut and Remotion). One set of thousands of particles travels through the whole piece, reorganising into a new figure for each scene: a neuron, a question mark, words, a network, falling snow, a board, an eye, a human profile. *Params:* 6,000–12,000 particles of 1.5–3 px; 1.2–1.8 s per transformation with cubic in-out; per-particle delay of 0–35% of the transition; mid-transition noise with amplitude sin(π·progress); ordered pairing by angle from the centre; low-amplitude simplex drift at rest; text enters at 60% of the morph. *Build:* ChatCut (proven: 8,000 particles rendered with delays and noise) · Code (proven in Remotion) · Blender (possible, harder). *Note:* the figures carry the meaning. Hard figures (an eye, a face) need clean source shapes. Sample them from SVG paths or images, not by hand. Avoid making every scene the same structure.
-- **the-spirit** (Edan Kwan, *The Spirit*). A smoke-like cloud of particles flowing in curls and following the cursor. Each particle is born, lives and dies. *Params:* 4k to 4M particles; speed; dieSpeed (lifespan); radius; curlSize (size of the swirls); attraction to a target. Post: motion blur, bloom, shadows. *Build:* Code (GPU particles) · Blender (particles plus a turbulence field) · Record (attraction follows the cursor; animate the target instead). *Note:* the volume comes from motion blur and shadow. Without a form or a reason it becomes abstract smoke.
-- **touch** (Edan Kwan, *Touch*). A stream of up to millions of particles pours like sand or water and collides with a 3D hand. *Params:* count; gravity; drop height; drop radius; bounce off the hand; hand force. Post: motion blur, bloom, vignette. *Build:* Blender (particles with collision; the strongest route) · Code. *Note:* the solid object is the idea; without it, it is just falling sand.
-- **volumetric-flow** (David Li, *Volumetric Particle Flow*). A ribbon of particles flowing with turbulence and casting shadow on itself. *Params:* 66k to 2M particles; speed; turbulence; colour. *Build:* Code · Blender. *Note:* the self-shadowing makes it, not the flow. Without it, it looks flat.
-- **particles-cursor** (Kevin Levron, *Particles Cursor*). A trail of coloured particles following the cursor; when idle, the trail orbits on its own. *Params:* ~262k particles; colours; noise intensity; point size; point decay (how long the trail lasts); an idle orbit radius and speed. *Build:* Record (has a built-in idle orbit) · Code. *Note:* a library component that looks the same everywhere. Check the licence.
-- **connected-vertices** (Louis Hoebregts, *Connected Vertices – How to*). A step-by-step teaching piece for the network of dots joined by lines when they are closer than 250 px, with line opacity falling with distance. *Params:* count; speed; radius; link distance (250 px); opacity by distance. *Build:* ChatCut · Code · any tool. *Note:* this is the classic "tech startup" background and is listed in `ai-tells.md`. Use it to learn distance-based rules, or only when something essential changes: the form, the rhythm, the meaning.
-- **fold** (Mr.doob, *Codevember 2026 / 01 / Fold*). A translucent plastic sheet falls and folds like cloth, and can be dragged. *Params:* stiffness 0.5; material transmission 1, index of refraction 1.46, thickness 0.35, roughness 0; ambient occlusion and colour grading. *Build:* Blender (cloth plus glass material; the natural route) · Code. *Note:* half of the effect is the material, refraction and light, not the physics.
-- **holocloth** (*Holocloth*). A holographic cloth with rainbow bands and sparkles that can be pulled and pressed. *Params:* material holo intensity ~3.8, iridescence ~0.8, roughness ~0.6, metalness 1, bump; physics viscosity 0.6, stiffness 1, 14 solver iterations. *Build:* Blender (cloth plus iridescent material) · Record (exports stills only). *Note:* very eye-catching and tiring; use it in short doses.
-- **cloth-wireframe** (nemutas, *Cloth Simulation*). A curtain made of points and lines that hangs, moves in the wind, falls to the floor and can be dragged. *Params:* distance constraints between points; gravity; wind. *Build:* Blender (cloth with wireframe render) · Code. *Note:* the lines are the cloth. A natural partner for particle-morph when a wireframe should feel physical.
-- **sphere-packing** (Kevin Levron, *Sphere Packing*). Hundreds of coloured spheres push against each other, fall with gravity and move away from the cursor. *Params:* 300 spheres; size 0.3–1; gravity 0.5, which can be switched off. *Build:* Blender (rigid bodies, native) · Code. *Note:* licensed CC BY-NC-SA, so it cannot be used commercially as is. Rebuild the idea instead.
-- **bubbles** (oimo.io, *Bubbles*). Soap bubbles drawn in thin iridescent lines: blown from a wand, deforming, splitting and popping. *Params:* surface tension, splitting and popping; exact values not visible. *Build:* Record · Code (surface tension is hard). *Note:* a minimal aesthetic, fine line on white, the opposite of neon. Only partly inspected.
-- **cursor-line-wobble** (GreenSock, *Cursor Line Wobble*). A line that can be grabbed and stretched like a string, and springs back when released. *Params:* a quadratic curve whose middle control point follows the pointer; release over 0.9 s on an elastic curve (amplitude 1, period 0.3). *Build:* ChatCut · Code · After Effects · any tool. *Note:* a well-tuned elastic ease gives the feeling of physics without simulating anything.
-- **gpu-fluid-particles** (haxiomic, *WebGL Fluid Experiment*). An invisible fluid carries about 262k glowing particles; dragging creates jets and swirls of light. *Params:* particle count; simulation quality; solver iterations. *Build:* Code · Blender (smoke or fluid plus particles). *Note:* a classic of creative coding. Neon on black is recognisable and can look dated.
-- **gpu-io-ink-fluid** (Amanda Ghassaei, *gpu-io fluid example*). On a paper-coloured ground, dark particles leave trails as a fluid carries them, like ink. *Params:* trail length; render modes for the fluid, its pressure or its velocity. *Build:* Record (saves images; can be captured) · Code. *Note:* proof that a fluid does not have to be neon. The colour and ground change its whole character.
-- **fluid-pixel** (nestorrig, *Fluid Pixel Cursor*). An invisible fluid follows the cursor and is drawn as large coloured pixels, optionally as ASCII characters. *Params:* simulation resolution 150; pixel size 16; velocity dissipation 0.77; density dissipation 0.95; 10 pressure iterations; splat force 18, radius 2.1; colour by speed; an ASCII ramp. *Build:* Code · Record (animate the pointer). *Note:* its identity comes from mixing two families, fluid physics and pixel aesthetics.
-- **fluid-text** (Ksenia Kondrashova, *WebGL Fluid Simulation With Your Text*). The text itself is the fluid's ink; moving through it deforms, mixes and dissolves the words. *Params:* font, weight, size (80), text, pointer size, colour, plus the shared fluid controls. *Build:* Code · Record. *Note:* message and effect become one. Use it with words that mean something when they dissolve.
-- **liquid-lens** (Angelo Libero, *Liquid Lens*). Seven soft bodies chase the pointer and merge into one shape that reveals a blurred image behind; a click makes it ripple. *Params:* body size 0.455; corners 3.4; merge level 0.35; coast wander and coast grain (how irregular the edge is); blurred depth and blur strength; ripple strength, speed, width and life; size wander, drift reach, overall speed; a "moves on its own" mode. *Build:* Record (has an autonomous mode) · Blender (metaballs) · Code. *Note:* its controls are named in design language, not code. It is a model for how to describe motion.
-- **glass-icon** (Nikita Filippov, *Glass*). A tool that turns a logo into a glass icon with prism-like colour dispersion, optionally reacting to sound. *Params:* presets Studio, Melt, Prism, Lens, Night; refraction; blend; logo size; light, dark or transparent ground. *Build:* Record (exports 1080p, 4-second video and PNG directly; the fastest route in the library). *Note:* very much in fashion; as a default it will look generic.
-- **liquid-glass** (jeantimex, *Glass Effect WebGPU*). A study of liquid glass in the style of current operating-system interfaces: shapes that refract, magnify and blur what is behind, with bright edges and a springy deformation when touched. *Params:* bezel width 60; glass thickness 50; refractive index 1.5; refraction level; magnifying scale; blur and progressive blur; chromatic dispersion; specular rims; spring deformation. The shape is a distance field (SDF). *Build:* Record (accepts video as background) · Blender. *Note:* excellent to learn from; copied as is, it is the most fashionable look of the moment.
-- **fluid-glass** (chiuhans111, *Fluid Glass*). Large dark glass circles with rims of light; dragging lets a fluid deform the surface, and refraction draws highlights. *Params:* fluid velocity and pressure; surface normal; refraction. No visible controls. *Build:* Record · Blender (glass plus rim light). *Note:* almost all you see is rim light, a very restrained device. Only partly inspected.
-- **glass-xylophone** (Codrops, *Interactive Glass Xylophone with Three.js*). Iridescent glass bars in a spiral that play notes when touched. *Params:* material transmission, thickness, index of refraction, iridescence, dispersion; sound through Web Audio. *Build:* Blender or Code, timed to music. *Note:* the sound is half the effect. In video, time every hit to the soundtrack.
-- **metaballs** (Jaume Sánchez, *Bumpy metaballs 2026*). 3D drops that move, merge and separate like mercury or jelly, with a bumpy surface and dozens of materials (ice, opal, gummy, nacre). *Params:* 20 blobs; isolation 80 (the surface threshold); speed; drift; smoothing; twist on three axes; ~50 material presets. *Build:* Blender (native metaballs; the material is the real work) · Code. *Note:* the form is simple and the material gives the character. Some materials (flesh, gills) can disturb, depending on the message.
-- **pixel-voxel-drop** (Junichi Kasahara, *Pixel-Voxel-Drop*). An image or video pixelates, the pixels become 3D cubes with colour separation, then they fall and pile up with physics. *Params:* grid columns and spacing; cube or random box shape; count; duration; organic variation; pixelation; RGB shift; spread; depth; drop delay. *Build:* Record (load your own image) · Blender (rigid bodies) · Code. *Note:* three effects chained (pixel, voxel, fall) make a small choreography. A model of a transition with structure.
-- **doom-fire** (Niklas Knaack, *Pixel Flame Canvas – Doom Fire*). Pixel fire. Each pixel takes heat from the one below, loses a little at random and rises. *Params:* pixel size 2; a fire palette from white to black; wind strength and direction; random decay. *Build:* ChatCut · Code · any tool. *Note:* the classic fire algorithm from the game *Doom*. A very simple rule that produces something organic.
-- **ascii-logo** (Edoardo Lunardi, *ASCII Logo*). A 3D shape drawn with text characters, rotatable, with light and dark themes. *Params:* a character ramp by brightness; cell size; colour; theme. *Build:* Code · Record (animate the rotation). *Note:* ASCII is a trend. It works when the shape means something, not as a filter.
-- **ascii-noise-field** (Codrops, *ASCII Shader with OGL*). An animated noise field drawn with coloured characters, like a landscape that breathes. *Params:* frequency (noise scale); speed; lightness; Perlin noise underneath. *Build:* Code · Record · ChatCut (likely). *Note:* a good ground behind titles. The same noise gives particles their life.
-- **canvas-grid-zoom** (Tom Miller, *Canvas Grid Mouse Effect*). A photo divided into a grid of squares with dots at the corners; near the pointer, each square zooms into its own piece of the image. *Params:* square size 85; optional fade; dots and dot colour; pointer follows on a 1 s expo curve; scale by distance. *Build:* Code · Record (animate the pointer) · ChatCut (likely). *Note:* a simple idea with a big effect. It works best with highly textured photos.
-- **truchet-tiles** (Rafa, *Truchet Tiles*). A grid of tiles with quarter-circle arcs that turn 90°, at random or on hover, forming curved paths that keep changing, on a plane tilted in perspective. *Params:* 64 px tiles; 90° turns over 0.6 s with ease-in-out; random intervals of 1–42 s; tilted 28° with 1000 px perspective. *Build:* ChatCut · After Effects · Code. *Note:* a classic pattern. The perspective and the slow random rhythm make it.
-- **wave-grid** (Franky, *3D Wave Grid*). A grid of pale 3D columns that ripple gently behind text. *Params:* grid size; wave height and speed (a sine of position and time). *Build:* Blender · Code · ChatCut (likely). *Note:* a model of restraint, where 3D supports the text without stealing focus.
-- **data-tunnel** (sabosugi, *Data Tunnel*). About 80 fine lines fan out from a point like a tunnel and ripple, while signals of light with trails travel along them. *Params:* 80 lines; spread; curve length and power; wave speed and height; line opacity; 94 signals; global speed; trail length 3; bloom strength 3; up to three signal colours. *Build:* Record · Code. *Note:* lines of light on black are very common in tech. Change the ground, the colour or the meaning.
-- **duo-lenticular** (ycw, *duo*). A zigzag folded surface, like an accordion, with one photo on each face, so each side of the view shows a different image. *Params:* a finely subdivided grid; zigzag depth 0.5; two side lights; a camera that orbits. *Build:* Blender (straightforward) · Code. *Note:* the idea of lenticular postcards. Very strong for any message about duality.
-- **sine-cosine** (schwiiiii, *[Pure CSS] Sine & Cosine Visualized*). A dot moving in a circle, with its horizontal and vertical components shown as two waves at its sides. *Params:* 4 s per cycle; a sine curve, cubic-bezier(0.37, 0, 0.63, 1); two motions offset by half a cycle; alternating, infinite. *Build:* any tool. *Note:* the mathematics in one image: circular motion is two waves out of phase.
-- **editorial-reveal-system** (Prolibu website). A coherent motion system for a dark editorial site, combining smooth inertial scrolling, short and precise entrances, blur-to-focus, a circular mask reveal and asymmetric exits. *Params:* entrances of 8–32 px over 0.6–1.2 s on quint-out (0.22, 1, 0.36, 1), with opacity shorter than movement (0.5 s against 0.8 s); blur-to-focus from 8 px blur and 0.8 scale on expo-out (0.16, 1, 0.3, 1); exits of 0.32 s on (0.7, 0, 0.84, 0); overshoot (0.34, 1.56, 0.64, 1) only on small elements; stagger of 80–180 ms; a circle that grows from the centre as a mask between big ideas. *Build:* ChatCut · After Effects · Code. *Note:* the value is the system, not any single effect. Small distances, fast exits, overshoot kept for small things.
-- **unwoven** (Clément Grellier, *Unwoven*). An endless carousel of photos where, near the edges, each image unravels into fluttering threads, like fabric coming undone. *Params:* 26 threads per image; 20 segments for the flutter; 95 px/s drift; unravelling begins 26% in from the edge; corner radius 20; aspect 0.75. *Build:* Record (moves on its own; load your images) · Code. *Note:* the fabric metaphor makes it a transition with meaning, not decoration.
-- **scroll-graph** (Tom Miller, *Scroll-Driven SVG Graph Animation with GSAP*). A line chart draws itself while the camera follows its tip and zooms out, and the data points pop in one after another. *Params:* the line draws along its length; the camera follows the line's tip; scale from 2 to 0.4 on expo in-out; points appear with a 0.1 stagger. For video, drive it by time instead of scroll. *Build:* ChatCut · After Effects · Code. *Note:* a camera that follows the data turns a chart into a narrative. Ideal for explainers.
-- **page-transitions** (Iqbal, *Page Transitions in Astro with Barba.js & GSAP*, design credited to cielrose.tv). On each page change, soft blurred shapes cover the screen and the new content is revealed through masks. *Params:* inset masks from the bottom up and polygon masks; durations of 0.5–1.4 s; power and expo curves plus custom curves. *Build:* ChatCut · After Effects · Code. *Note:* the value is the system: every transition has a considered duration and curve.
-- **line-hover-styles** (Codrops, *Underline Hover Styles for Links*). Fifteen animated underlines: lines that grow, slide, glitch or draw themselves. *Params:* 0.3–0.4 s; curves (0.7, 0, 0.2, 1), (0.2, 1, 0.8, 1) and (0.4, 1, 0.8, 1). *Build:* ChatCut · After Effects · any tool. *Note:* a catalogue of micro-motion with exact values. Use one style per piece, consistently.
-- **inertia-slider** (ReGGae, *Infinite draggable WebGL slider*). An endless image carousel dragged with inertia; images rescale through a shader as they move. *Params:* speed 2; drag threshold 50; easing 0.075 per frame (the inertia); image scale from 0.65 to 1. *Build:* Code · Record. *Note:* inertia, easing toward a target a little every frame, is the same idea as a spring with friction.
+- **particle-morph** (built in the first Unrushed test, a silent video on the history of AI, made in both ChatCut and Remotion). One set of thousands of particles travels through the whole piece, reorganising into a new figure for each scene: a neuron, a question mark, words, a network, falling snow, a board, an eye, a human profile. *Params:* 6,000–12,000 particles of 1.5–3 px; 1.2–1.8 s per transformation with cubic in-out; per-particle delay of 0–35% of the transition; mid-transition noise with amplitude sin(π·progress); ordered pairing by angle from the centre; low-amplitude simplex drift at rest; text enters at 60% of the morph. *Build:* ChatCut (proven: 8,000 particles rendered with delays and noise) · Code (proven in Remotion) · Blender (possible, harder). *In video:* time drives everything; each transformation is a beat of 1.2–1.8 s. Works as the through-line or as a morph transition between scenes. *Note:* the figures carry the meaning. Hard figures (an eye, a face) need clean source shapes. Sample them from SVG paths or images, not by hand. Avoid making every scene the same structure.
+- **the-spirit** (Edan Kwan, *The Spirit*). A smoke-like cloud of particles flowing in curls and following the cursor. Each particle is born, lives and dies. *Params:* 4k to 4M particles; speed; dieSpeed (lifespan); radius; curlSize (size of the swirls); attraction to a target. Post: motion blur, bloom, shadows. *Build:* Code (GPU particles) · Blender (particles plus a turbulence field) · Record (attraction follows the cursor; animate the target instead). *In video:* replace the cursor with an animated attractor that travels a path, or with the simulated cursor of an interface scene; the cloud follows it. Hero shot of 4–8 s, or a living ground behind text. *Note:* the volume comes from motion blur and shadow. Without a form or a reason it becomes abstract smoke.
+- **touch** (Edan Kwan, *Touch*). A stream of up to millions of particles pours like sand or water and collides with a 3D hand. *Params:* count; gravity; drop height; drop radius; bounce off the hand; hand force. Post: motion blur, bloom, vignette. *Build:* Blender (particles with collision; the strongest route) · Code. *In video:* the hand pose and the pour are keyframed; the stream starts mid-pour (hook) and ends on the hand at rest. Hero shot of 4–6 s. *Note:* the solid object is the idea; without it, it is just falling sand.
+- **volumetric-flow** (David Li, *Volumetric Particle Flow*). A ribbon of particles flowing with turbulence and casting shadow on itself. *Params:* 66k to 2M particles; speed; turbulence; colour. *Build:* Code · Blender. *In video:* time only; slow camera orbit around the ribbon. Ground or bridge between sections, 3–6 s. *Note:* the self-shadowing makes it, not the flow. Without it, it looks flat.
+- **particles-cursor** (Kevin Levron, *Particles Cursor*). A trail of coloured particles following the cursor; when idle, the trail orbits on its own. *Params:* ~262k particles; colours; noise intensity; point size; point decay (how long the trail lasts); an idle orbit radius and speed. *Build:* Record (has a built-in idle orbit) · Code. *In video:* a scripted path replaces the cursor, drawn as a gesture (a signature, an arrow to the next element), or the trail follows a simulated cursor. 2–4 s accent. *Note:* a library component that looks the same everywhere. Check the licence.
+- **connected-vertices** (Louis Hoebregts, *Connected Vertices – How to*). A step-by-step teaching piece for the network of dots joined by lines when they are closer than 250 px, with line opacity falling with distance. *Params:* count; speed; radius; link distance (250 px); opacity by distance. *Build:* ChatCut · Code · any tool. *In video:* time only; link distance or count animates to show a network forming. Short ground, 3–5 s; never the hero. *Note:* this is the classic "tech startup" background and is listed in `ai-tells.md`. Use it to learn distance-based rules, or only when something essential changes: the form, the rhythm, the meaning.
+- **fold** (Mr.doob, *Codevember 2026 / 01 / Fold*). A translucent plastic sheet falls and folds like cloth, and can be dragged. *Params:* stiffness 0.5; material transmission 1, index of refraction 1.46, thickness 0.35, roughness 0; ambient occlusion and colour grading. *Build:* Blender (cloth plus glass material; the natural route) · Code. *In video:* the drop and fold are simulated or keyframed; the grab is a simulated hand or cursor pulling a corner. Transition (fold away) or product reveal, 1–3 s. *Note:* half of the effect is the material, refraction and light, not the physics.
+- **holocloth** (*Holocloth*). A holographic cloth with rainbow bands and sparkles that can be pulled and pressed. *Params:* material holo intensity ~3.8, iridescence ~0.8, roughness ~0.6, metalness 1, bump; physics viscosity 0.6, stiffness 1, 14 solver iterations. *Build:* Blender (cloth plus iridescent material) · Record (exports stills only). *In video:* an invisible force or a simulated cursor presses and pulls the cloth; light moves across to show the bands. Accent of 2–4 s. *Note:* very eye-catching and tiring; use it in short doses.
+- **cloth-wireframe** (nemutas, *Cloth Simulation*). A curtain made of points and lines that hangs, moves in the wind, falls to the floor and can be dragged. *Params:* distance constraints between points; gravity; wind. *Build:* Blender (cloth with wireframe render) · Code. *In video:* wind and gravity over time; a sudden gust or the rod releasing makes the beat. Hero or transition (the curtain falls to reveal B), 3–5 s. *Note:* the lines are the cloth. A natural partner for particle-morph when a wireframe should feel physical.
+- **sphere-packing** (Kevin Levron, *Sphere Packing*). Hundreds of coloured spheres push against each other, fall with gravity and move away from the cursor. *Params:* 300 spheres; size 0.3–1; gravity 0.5, which can be switched off. *Build:* Blender (rigid bodies, native) · Code. *In video:* time and gravity; spheres pour in or a container tilts. Accent or ground, 3–5 s. *Note:* licensed CC BY-NC-SA, so it cannot be used commercially as is. Rebuild the idea instead.
+- **bubbles** (oimo.io, *Bubbles*). Soap bubbles drawn in thin iridescent lines: blown from a wand, deforming, splitting and popping. *Params:* surface tension, splitting and popping; exact values not visible. *Build:* Record · Code (surface tension is hard). *In video:* time; bubbles split and pop on beats, or a simulated pointer pops them. Light accent, 2–4 s. *Note:* a minimal aesthetic, fine line on white, the opposite of neon. Only partly inspected.
+- **cursor-line-wobble** (GreenSock, *Cursor Line Wobble*). A line that can be grabbed and stretched like a string, and springs back when released. *Params:* a quadratic curve whose middle control point follows the pointer; release over 0.9 s on an elastic curve (amplitude 1, period 0.3). *Build:* ChatCut · Code · After Effects · any tool. *In video:* a simulated cursor or an object plucks the line; the elastic release is the beat. Underline or divider accent, under 1.5 s. *Note:* a well-tuned elastic ease gives the feeling of physics without simulating anything.
+- **gpu-fluid-particles** (haxiomic, *WebGL Fluid Experiment*). An invisible fluid carries about 262k glowing particles; dragging creates jets and swirls of light. *Params:* particle count; simulation quality; solver iterations. *Build:* Code · Blender (smoke or fluid plus particles). *In video:* splats from a scripted path or a simulated cursor; let the flow continue after the force stops. Ground or energetic bridge, 3–6 s. *Note:* a classic of creative coding. Neon on black is recognisable and can look dated.
+- **gpu-io-ink-fluid** (Amanda Ghassaei, *gpu-io fluid example*). On a paper-coloured ground, dark particles leave trails as a fluid carries them, like ink. *Params:* trail length; render modes for the fluid, its pressure or its velocity. *Build:* Record (saves images; can be captured) · Code. *In video:* time plus a few scripted splats on beats; ink trails settle on paper. Ground for calm sections or a dissolve-into-material transition, 4–8 s. *Note:* proof that a fluid does not have to be neon. The colour and ground change its whole character.
+- **fluid-pixel** (nestorrig, *Fluid Pixel Cursor*). An invisible fluid follows the cursor and is drawn as large coloured pixels, optionally as ASCII characters. *Params:* simulation resolution 150; pixel size 16; velocity dissipation 0.77; density dissipation 0.95; 10 pressure iterations; splat force 18, radius 2.1; colour by speed; an ASCII ramp. *Build:* Code · Record (animate the pointer). *In video:* scripted splats at large pixel size; the pixels make the motion read at video resolution. Transition or retro accent, 2–4 s. *Note:* its identity comes from mixing two families, fluid physics and pixel aesthetics.
+- **fluid-text** (Ksenia Kondrashova, *WebGL Fluid Simulation With Your Text*). The text itself is the fluid's ink; moving through it deforms, mixes and dissolves the words. *Params:* font, weight, size (80), text, pointer size, colour, plus the shared fluid controls. *Build:* Code · Record. *In video:* a scripted force sweeps across the word at the beat when its meaning changes. Transition (the word dissolves into the next scene), 1.5–3 s. *Note:* message and effect become one. Use it with words that mean something when they dissolve.
+- **liquid-lens** (Angelo Libero, *Liquid Lens*). Seven soft bodies chase the pointer and merge into one shape that reveals a blurred image behind; a click makes it ripple. *Params:* body size 0.455; corners 3.4; merge level 0.35; coast wander and coast grain (how irregular the edge is); blurred depth and blur strength; ripple strength, speed, width and life; size wander, drift reach, overall speed; a "moves on its own" mode. *Build:* Record (has an autonomous mode) · Blender (metaballs) · Code. *In video:* autonomous mode or a scripted path moves the soft bodies; let the lens merge over the key part of the image. Reveal or object-led mask, 2–4 s. *Note:* its controls are named in design language, not code. It is a model for how to describe motion.
+- **glass-icon** (Nikita Filippov, *Glass*). A tool that turns a logo into a glass icon with prism-like colour dispersion, optionally reacting to sound. *Params:* presets Studio, Melt, Prism, Lens, Night; refraction; blend; logo size; light, dark or transparent ground. *Build:* Record (exports 1080p, 4-second video and PNG directly; the fastest route in the library). *In video:* export the glass logo and rotate it slowly with a moving light. Product or logo hero, 2–4 s. *Note:* very much in fashion; as a default it will look generic.
+- **liquid-glass** (jeantimex, *Glass Effect WebGPU*). A study of liquid glass in the style of current operating-system interfaces: shapes that refract, magnify and blur what is behind, with bright edges and a springy deformation when touched. *Params:* bezel width 60; glass thickness 50; refractive index 1.5; refraction level; magnifying scale; blur and progressive blur; chromatic dispersion; specular rims; spring deformation. The shape is a distance field (SDF). *Build:* Record (accepts video as background) · Blender. *In video:* a simulated drag moves the glass element over content; refraction shows on what passes beneath. Interface accent inside an interface simulation, 2–4 s. *Note:* excellent to learn from; copied as is, it is the most fashionable look of the moment.
+- **fluid-glass** (chiuhans111, *Fluid Glass*). Large dark glass circles with rims of light; dragging lets a fluid deform the surface, and refraction draws highlights. *Params:* fluid velocity and pressure; surface normal; refraction. No visible controls. *Build:* Record · Blender (glass plus rim light). *In video:* time plus a moving light; rims catch the light as shapes deform. Premium ground, 3–6 s. *Note:* almost all you see is rim light, a very restrained device. Only partly inspected.
+- **glass-xylophone** (Codrops, *Interactive Glass Xylophone with Three.js*). Iridescent glass bars in a spiral that play notes when touched. *Params:* material transmission, thickness, index of refraction, iridescence, dispersion; sound through Web Audio. *Build:* Blender or Code, timed to music. *In video:* hits on the beats of the soundtrack; in a silent piece, hits on motion beats with visible vibration. Rhythm sequence, 3–6 s. *Note:* the sound is half the effect. In video, time every hit to the soundtrack.
+- **metaballs** (Jaume Sánchez, *Bumpy metaballs 2026*). 3D drops that move, merge and separate like mercury or jelly, with a bumpy surface and dozens of materials (ice, opal, gummy, nacre). *Params:* 20 blobs; isolation 80 (the surface threshold); speed; drift; smoothing; twist on three axes; ~50 material presets. *Build:* Blender (native metaballs; the material is the real work) · Code. *In video:* time; blobs merge on the beat when two ideas combine. Morph transition or organic hero, 2–5 s. *Note:* the form is simple and the material gives the character. Some materials (flesh, gills) can disturb, depending on the message.
+- **pixel-voxel-drop** (Junichi Kasahara, *Pixel-Voxel-Drop*). An image or video pixelates, the pixels become 3D cubes with colour separation, then they fall and pile up with physics. *Params:* grid columns and spacing; cube or random box shape; count; duration; organic variation; pixelation; RGB shift; spread; depth; drop delay. *Build:* Record (load your own image) · Blender (rigid bodies) · Code. *In video:* the image pixelates on a beat, then cubes fall with gravity; the camera tilts to show depth. Transition (the digital becomes physical), 2–3 s. *Note:* three effects chained (pixel, voxel, fall) make a small choreography. A model of a transition with structure.
+- **doom-fire** (Niklas Knaack, *Pixel Flame Canvas – Doom Fire*). Pixel fire. Each pixel takes heat from the one below, loses a little at random and rises. *Params:* pixel size 2; a fire palette from white to black; wind strength and direction; random decay. *Build:* ChatCut · Code · any tool. *In video:* time; wind or intensity animate with the energy of the section. Ground or accent, 2–4 s. *Note:* the classic fire algorithm from the game *Doom*. A very simple rule that produces something organic.
+- **ascii-logo** (Edoardo Lunardi, *ASCII Logo*). A 3D shape drawn with text characters, rotatable, with light and dark themes. *Params:* a character ramp by brightness; cell size; colour; theme. *Build:* Code · Record (animate the rotation). *In video:* time; slow rotation of the 3D form, or a reveal from noise to shape. Logo or object hero, 3–5 s. *Note:* ASCII is a trend. It works when the shape means something, not as a filter.
+- **ascii-noise-field** (Codrops, *ASCII Shader with OGL*). An animated noise field drawn with coloured characters, like a landscape that breathes. *Params:* frequency (noise scale); speed; lightness; Perlin noise underneath. *Build:* Code · Record · ChatCut (likely). *In video:* time; field speed rises with tension. Ground behind titles, any length. *Note:* a good ground behind titles. The same noise gives particles their life.
+- **canvas-grid-zoom** (Tom Miller, *Canvas Grid Mouse Effect*). A photo divided into a grid of squares with dots at the corners; near the pointer, each square zooms into its own piece of the image. *Params:* square size 85; optional fade; dots and dot colour; pointer follows on a 1 s expo curve; scale by distance. *Build:* Code · Record (animate the pointer) · ChatCut (likely). *In video:* a camera move replaces the pointer: the camera travels across the grid and squares zoom as it passes, ending in a zoom-through into one image. Gallery or transition, 2–4 s. *Note:* a simple idea with a big effect. It works best with highly textured photos.
+- **truchet-tiles** (Rafa, *Truchet Tiles*). A grid of tiles with quarter-circle arcs that turn 90°, at random or on hover, forming curved paths that keep changing, on a plane tilted in perspective. *Params:* 64 px tiles; 90° turns over 0.6 s with ease-in-out; random intervals of 1–42 s; tilted 28° with 1000 px perspective. *Build:* ChatCut · After Effects · Code. *In video:* time; tiles turn on a slow random rhythm, or a wave of turns crosses the grid on a beat. Ground, any length. *Note:* a classic pattern. The perspective and the slow random rhythm make it.
+- **wave-grid** (Franky, *3D Wave Grid*). A grid of pale 3D columns that ripple gently behind text. *Params:* grid size; wave height and speed (a sine of position and time). *Build:* Blender · Code · ChatCut (likely). *In video:* time; a ripple crosses on beats or follows the text entering. Ground behind text, any length. *Note:* a model of restraint, where 3D supports the text without stealing focus.
+- **data-tunnel** (sabosugi, *Data Tunnel*). About 80 fine lines fan out from a point like a tunnel and ripple, while signals of light with trails travel along them. *Params:* 80 lines; spread; curve length and power; wave speed and height; line opacity; 94 signals; global speed; trail length 3; bloom strength 3; up to three signal colours. *Build:* Record · Code. *In video:* time; signals travel on the beats; the camera flies through the tunnel for a transition. Bridge or zoom-through, 2–4 s. *Note:* lines of light on black are very common in tech. Change the ground, the colour or the meaning.
+- **duo-lenticular** (ycw, *duo*). A zigzag folded surface, like an accordion, with one photo on each face, so each side of the view shows a different image. *Params:* a finely subdivided grid; zigzag depth 0.5; two side lights; a camera that orbits. *Build:* Blender (straightforward) · Code. *In video:* a camera orbit replaces the viewer moving: as the camera passes, the surface flips from A to B. Before-and-after transition, 1.5–3 s. *Note:* the idea of lenticular postcards. Very strong for any message about duality.
+- **sine-cosine** (schwiiiii, *[Pure CSS] Sine & Cosine Visualized*). A dot moving in a circle, with its horizontal and vertical components shown as two waves at its sides. *Params:* 4 s per cycle; a sine curve, cubic-bezier(0.37, 0, 0.63, 1); two motions offset by half a cycle; alternating, infinite. *Build:* any tool. *In video:* time; one full cycle per idea, with the waves drawing as the dot turns. Teaching beat, 4–6 s. *Note:* the mathematics in one image: circular motion is two waves out of phase.
+- **editorial-reveal-system** (Prolibu website). A coherent motion system for a dark editorial site, combining smooth inertial scrolling, short and precise entrances, blur-to-focus, a circular mask reveal and asymmetric exits. *Params:* entrances of 8–32 px over 0.6–1.2 s on quint-out (0.22, 1, 0.36, 1), with opacity shorter than movement (0.5 s against 0.8 s); blur-to-focus from 8 px blur and 0.8 scale on expo-out (0.16, 1, 0.3, 1); exits of 0.32 s on (0.7, 0, 0.84, 0); overshoot (0.34, 1.56, 0.64, 1) only on small elements; stagger of 80–180 ms; a circle that grows from the centre as a mask between big ideas. *Build:* ChatCut · After Effects · Code. *In video:* time on scroll-equivalent beats: each element reveals as if scrolled into view, with the camera or the page moving up. A whole system for text-led sections, and the circular mask as a transition. *Note:* the value is the system, not any single effect. Small distances, fast exits, overshoot kept for small things.
+- **unwoven** (Clément Grellier, *Unwoven*). An endless carousel of photos where, near the edges, each image unravels into fluttering threads, like fabric coming undone. *Params:* 26 threads per image; 20 segments for the flutter; 95 px/s drift; unravelling begins 26% in from the edge; corner radius 20; aspect 0.75. *Build:* Record (moves on its own; load your images) · Code. *In video:* time drives the unravelling; the camera pans across the images as if scrolling. Gallery or dissolve-into-material transition, 3–5 s. *Note:* the fabric metaphor makes it a transition with meaning, not decoration.
+- **scroll-graph** (Tom Miller, *Scroll-Driven SVG Graph Animation with GSAP*). A line chart draws itself while the camera follows its tip and zooms out, and the data points pop in one after another. *Params:* the line draws along its length; the camera follows the line's tip; scale from 2 to 0.4 on expo in-out; points appear with a 0.1 stagger. For video, drive it by time instead of scroll. *Build:* ChatCut · After Effects · Code. *In video:* scroll becomes time: the line draws while the camera follows its tip and pulls back. Data beat or pull-out reveal, 4–8 s. *Note:* a camera that follows the data turns a chart into a narrative. Ideal for explainers.
+- **page-transitions** (Iqbal, *Page Transitions in Astro with Barba.js & GSAP*, design credited to cielrose.tv). On each page change, soft blurred shapes cover the screen and the new content is revealed through masks. *Params:* inset masks from the bottom up and polygon masks; durations of 0.5–1.4 s; power and expo curves plus custom curves. *Build:* ChatCut · After Effects · Code. *In video:* time; the covering shapes and masks run between two beats. Object-led mask transition, 0.5–1.4 s. *Note:* the value is the system: every transition has a considered duration and curve.
+- **line-hover-styles** (Codrops, *Underline Hover Styles for Links*). Fifteen animated underlines: lines that grow, slide, glitch or draw themselves. *Params:* 0.3–0.4 s; curves (0.7, 0, 0.2, 1), (0.2, 1, 0.8, 1) and (0.4, 1, 0.8, 1). *Build:* ChatCut · After Effects · any tool. *In video:* a simulated cursor hovers the word, or the underline plays on the beat of emphasis. Emphasis accent, under 0.5 s. *Note:* a catalogue of micro-motion with exact values. Use one style per piece, consistently.
+- **inertia-slider** (ReGGae, *Infinite draggable WebGL slider*). An endless image carousel dragged with inertia; images rescale through a shader as they move. *Params:* speed 2; drag threshold 50; easing 0.075 per frame (the inertia); image scale from 0.65 to 1. *Build:* Code · Record. *In video:* a simulated drag throws the slider and inertia carries it; or the camera moves with the same inertia. Gallery or portfolio sequence, 3–5 s. *Note:* inertia, easing toward a target a little every frame, is the same idea as a spring with friction.
 
 ## Embedded: references/targets/chatcut.md
 
@@ -512,11 +887,12 @@ Paste this into the AI composer, with the Design Style selected. Structure it li
 
 1. **Deliverable**: duration, resolution, frame rate, sound or none.
 2. **Concept**: the through-line in two sentences.
-3. **Storyboard**: the table from `STORYBOARD.md`, with exact text.
+3. **Storyboard**: the table from `STORYBOARD.md`, with exact text, the beat each scene serves, its device and its transition written as relation and type ("B is a detail of A → zoom-through, 900 ms, expo"). Durations come from the beat map; do not even them out.
 4. **Motion fundamentals**: repeat the key numbers even if they are in the Design Style. The agent follows what is in front of it.
-5. **Continuity**: if one element carries through the piece, such as particles or a line, say that every transformation starts from the exact end state of the previous scene, with no cuts between clips, and that it may build the whole sequence as a single motion graphic if needed.
-6. **Process**: pilot the first scene and the closing first, report, then build the rest.
-7. **Report**: ask it to list what it could not do, which frames it checked, and the real timings.
+5. **Interfaces**: when a scene simulates a product or a tool, name the design system and components ("shadcn/ui Slider and Card, dark theme, Lucide icons", or the product's own), with radius, colours and font, and the cursor behaviour from `visual-explanation.md`.
+6. **Continuity**: if one element carries through the piece, such as particles or a line, say that every transformation starts from the exact end state of the previous scene, with no cuts between clips, and that it may build the whole sequence as a single motion graphic if needed.
+7. **Process**: pilot the hook and the payoff first, report, then build the rest.
+8. **Report**: ask it to list what it could not do, which frames it checked, and the real timings.
 
 #### Working with the agent
 

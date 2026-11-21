@@ -39,6 +39,7 @@ def condensed_techniques():
         entries.append(
             f"- **{slug}** ({source}). {what} "
             f"*Params:* {fields.get('Key parameters', '')} *Build:* {fields.get('Build', '')} "
+            f"*In video:* {fields.get('In video', '')} "
             f"*Note:* {fields.get('Critical note', '')}"
         )
     return (
@@ -67,7 +68,10 @@ def main():
         "The full files, with every source link, are in the repository: "
         "https://github.com/amladinon94-source/unrushed. "
         "`targets/remotion.md`, `targets/generic.md`, the templates and `scripts/detect.py` are only there.",
+        "## Embedded: references/narrative.md\n\n" + demote(read("references/narrative.md")),
         "## Embedded: references/principles.md\n\n" + demote(read("references/principles.md")),
+        "## Embedded: references/visual-explanation.md\n\n" + demote(read("references/visual-explanation.md")),
+        "## Embedded: references/transitions.md\n\n" + demote(read("references/transitions.md")),
         "## Embedded: references/ai-tells.md\n\n" + demote(read("references/ai-tells.md")),
         "## Embedded: references/techniques.md (condensed)\n\n" + condensed_techniques(),
         "## Embedded: references/targets/chatcut.md\n\n" + demote(read("references/targets/chatcut.md")),

@@ -1,6 +1,8 @@
 # Unrushed
 
-Motion direction for AI agents. Unrushed helps an agent brief, style, storyboard, export and critique motion graphics and videos so they do not look AI-generated: every movement gets a purpose, a duration, a curve, a distance and a place in the order of things.
+Motion direction for AI agents. Unrushed helps an agent brief, style, storyboard, export and critique motion graphics and videos so they do not look AI-generated: every movement gets a purpose, a duration, a curve, a distance and a place in the order of things, and every piece gets a story, a rhythm and transitions chosen for what they say.
+
+Current version: **0.2** (see [CHANGELOG](CHANGELOG.md)).
 
 It works with any tool. The project files (`VIDEO.md`, `STYLE.md`, `STORYBOARD.md`) describe the piece independently of the software, and adapters in `references/targets/` translate it for ChatCut, Remotion, or anything else.
 
@@ -42,7 +44,7 @@ For other agents, copy the folder into wherever they read skills from.
 
 Download this repo as a ZIP (**Code → Download ZIP**) and upload it as a custom skill in the Skills section of Claude's settings.
 
-If your setup can only hold a single `SKILL.md` (for example, a skill saved from a chat), use **`dist/unrushed-single-file.md`** as its content. It is the same skill with the essential references embedded: principles, AI tells, the 38 techniques condensed, and the ChatCut guide. Rebuild it after changing any reference with `python scripts/build_single.py`.
+If your setup can only hold a single `SKILL.md` (for example, a skill saved from a chat), use **`dist/unrushed-single-file.md`** as its content. It is the same skill with the essential references embedded: narrative, principles, visual explanation, transitions, AI tells, the 38 techniques condensed, and the ChatCut guide. Rebuild it after changing any reference with `python scripts/build_single.py`.
 
 ### Inside ChatCut
 
@@ -50,7 +52,7 @@ ChatCut's agent runs on Claude Code and loads the skills in your Claude account.
 
 ### Optional: the video detector
 
-`scripts/detect.py` checks an exported video for dips to black, frozen stretches and cut rhythm. It needs Python 3 and ffmpeg:
+`scripts/detect.py` checks an exported video for dips to black, stretches where nothing moves, and hard cuts, and checks a `STORYBOARD.md` for even scene lengths and repeated transitions. It needs Python 3, and ffmpeg for videos (numpy makes it faster if installed):
 
 ```bash
 brew install ffmpeg        # macOS
@@ -67,13 +69,13 @@ You can talk to your agent normally; it loads Unrushed when the request is about
 brief  →  style  →  storyboard  →  export  →  (make it in your tool)  →  critique  →  repeat
 ```
 
-1. **`brief`**: say what the video is about. The agent asks only what it cannot infer, proposes a through-line (the one visual idea that carries the piece) and writes `VIDEO.md`.
+1. **`brief`**: say what the video is about and what it is for. The agent asks only what it cannot infer, then proposes the spine (hook, promise, proof, payoff, ask), a through-line (the one visual idea that carries the piece) and a beat map for the rhythm, and writes `VIDEO.md`.
    > *"Use unrushed to brief a 60-second silent video about the history of the bicycle, for Instagram."*
 
-2. **`style`**: the agent proposes material, palette, type, dials and a signature move, and writes `STYLE.md`.
+2. **`style`**: the agent proposes two or three directions that differ in material and ground, with a styleframe when it can render one. You choose; it completes material, palette, type, light and finish, dials, a signature move and, for product videos, the real design system to show, and writes `STYLE.md`.
    > *"unrushed style. I want it to feel like ink on paper, calm."*
 
-3. **`storyboard`**: timed scenes with exact text, what moves and how, and checks that every line can be read in time. Writes `STORYBOARD.md`.
+3. **`storyboard`**: timed beats with exact text, the device that makes each idea visible (an interface with a cursor, ghosts, a camera push…), the technique, what moves and how, and a transition chosen by the relation between beats. It checks the spine, rhythm, transitions, reading time and the slide test before finishing. Writes `STORYBOARD.md`.
    > *"unrushed storyboard, 8 scenes."*
 
 4. **`export <target>`**: compiles everything into what your tool needs: `chatcut`, `remotion` or `generic` (After Effects, Cavalry, another AI tool, or a human animator).
@@ -81,7 +83,7 @@ brief  →  style  →  storyboard  →  export  →  (make it in your tool)  �
 
 5. Make the video in your tool. Start with the pilot scene the export asks for.
 
-6. **`critique`**: share screenshots or the exported video. You get scores, the AI tells it found, and the three fixes with the most impact, ready to paste back into your tool.
+6. **`critique`**: share the storyboard before building, or screenshots or the exported video after. You get scores on story, rhythm, explanation, transitions and craft, the AI tells it found, and the three fixes with the most impact, ready to paste back into your tool.
    > *"unrushed critique" + screenshots or video*
 
 ### Other commands
@@ -91,7 +93,13 @@ brief  →  style  →  storyboard  →  export  →  (make it in your tool)  �
 
 ### The techniques library
 
-`references/techniques.md` holds 38 techniques studied from real pieces (particles, fluids, glass, cloth, metaballs, ASCII, transitions and more), each with what it communicates, its key parameters, how to build it in each tool, and a critical note. It is indexed **by meaning**, so the agent picks a technique because the scene needs to *reveal*, *dissolve*, *transform* or *connect*, not because it looks cool. `storyboard` uses it to choose techniques per scene, `export` carries their build notes to your tool, and every `recipe` you run can add a new entry.
+`references/techniques.md` holds 38 techniques studied from real pieces (particles, fluids, glass, cloth, metaballs, ASCII, transitions and more), each with what it communicates, its key parameters, how to build it in each tool, and a critical note. It is indexed **by meaning**, so the agent picks a technique because the scene needs to *reveal*, *dissolve*, *transform* or *connect*, not because it looks cool. `storyboard` uses it to choose techniques per scene, `export` carries their build notes to your tool, and every `recipe` you run can add a new entry. Each entry also says what drives it in video, where there is no mouse or scroll: time, a scripted path, a camera move or a simulated cursor.
+
+### Story, explanation and transitions
+
+- `references/narrative.md`: hooks, the spine, structures for explainers, product promos, launches, showcases and tutorials, and the beat map.
+- `references/visual-explanation.md`: devices that show an idea happening instead of writing it beside a demo, the slide test, and interface simulation with real components (the product's own, or shadcn/ui, Material 3, Fluent 2, Apple's HIG) and a human cursor.
+- `references/transitions.md`: transitions chosen by the relation between beats, with durations, the techniques that build them, and how to hide the seam.
 
 ### Dials
 
@@ -112,6 +120,8 @@ Change them at any point, in plain words:
 python scripts/detect.py my-video.mp4
 python scripts/detect.py my-video.mp4 --white   # also check flat light frames
 python scripts/detect.py my-video.mp4 --json    # machine-readable output
+python scripts/detect.py --storyboard STORYBOARD.md                  # check the plan before building
+python scripts/detect.py my-video.mp4 --storyboard STORYBOARD.md     # both
 ```
 
 ## What's inside
@@ -120,12 +130,17 @@ python scripts/detect.py my-video.mp4 --json    # machine-readable output
 unrushed/
 ├── SKILL.md                  Commands, dials and workflow
 ├── references/
+│   ├── narrative.md          Hook, promise, proof, payoff, ask; structures; rhythm and the beat map
 │   ├── principles.md         Timing, curves, distance, choreography, type, materials
+│   ├── visual-explanation.md Devices, the slide test, interfaces with real design systems, cursors
+│   ├── transitions.md        Transitions by relation, catalogue, hiding the seam
 │   ├── ai-tells.md           What makes video read as AI-generated, and what to do instead
 │   ├── techniques.md         38 techniques from real reference pieces, indexed by meaning
 │   └── targets/              chatcut.md, remotion.md, generic.md
 ├── assets/                   Templates for VIDEO.md, STYLE.md, STORYBOARD.md
-└── scripts/detect.py         Automatic checks on an exported video
+├── scripts/detect.py         Automatic checks on an exported video and on a storyboard
+├── scripts/build_single.py   Builds dist/unrushed-single-file.md
+└── dist/                     The single-file edition
 ```
 
 ## Credits and influences
