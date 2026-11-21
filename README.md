@@ -2,9 +2,9 @@
 
 Motion direction for AI agents. Unrushed helps an agent brief, style, storyboard, export and critique motion graphics and videos so they do not look AI-generated: every movement gets a purpose, a duration, a curve, a distance and a place in the order of things, and every piece gets a story, a rhythm and transitions chosen for what they say.
 
-Current version: **0.2** (see [CHANGELOG](CHANGELOG.md)).
+Current version: **0.3** (see [CHANGELOG](CHANGELOG.md)).
 
-It works with any tool. The project files (`VIDEO.md`, `STYLE.md`, `STORYBOARD.md`) describe the piece independently of the software, and adapters in `references/targets/` translate it for ChatCut, Remotion, or anything else.
+It works with any tool. The project files (`BRAND.md`, `VIDEO.md`, `STYLE.md`, `STORYBOARD.md`) describe the piece independently of the software, and adapters in `references/targets/` translate it for ChatCut, Remotion, or anything else.
 
 ## Install
 
@@ -44,7 +44,7 @@ For other agents, copy the folder into wherever they read skills from.
 
 Download this repo as a ZIP (**Code → Download ZIP**) and upload it as a custom skill in the Skills section of Claude's settings.
 
-If your setup can only hold a single `SKILL.md` (for example, a skill saved from a chat), use **`dist/unrushed-single-file.md`** as its content. It is the same skill with the essential references embedded: narrative, principles, visual explanation, transitions, AI tells, the 38 techniques condensed, and the ChatCut guide. Rebuild it after changing any reference with `python scripts/build_single.py`.
+If your setup can only hold a single `SKILL.md` (for example, a skill saved from a chat), use **`dist/unrushed-single-file.md`** as its content. It is the same skill with the essential references embedded: narrative, principles, visual explanation, transitions, effects, AI tells, the 38 techniques condensed, and the ChatCut guide. Rebuild it after changing any reference with `python scripts/build_single.py`.
 
 ### Inside ChatCut
 
@@ -52,7 +52,7 @@ ChatCut's agent runs on Claude Code and loads the skills in your Claude account.
 
 ### Optional: the video detector
 
-`scripts/detect.py` checks an exported video for dips to black, stretches where nothing moves, and hard cuts, and checks a `STORYBOARD.md` for even scene lengths and repeated transitions. It needs Python 3, and ffmpeg for videos (numpy makes it faster if installed):
+`scripts/detect.py` checks an exported video for dips to black, stretches where nothing moves, and hard cuts. It also checks a `STORYBOARD.md` for even scene lengths and repeated transitions, and checks its cue sheet against the effect budgets. It needs Python 3, and ffmpeg for videos (numpy makes it faster if installed):
 
 ```bash
 brew install ffmpeg        # macOS
@@ -69,17 +69,19 @@ You can talk to your agent normally; it loads Unrushed when the request is about
 brief  →  style  →  storyboard  →  export  →  (make it in your tool)  →  critique  →  repeat
 ```
 
-1. **`brief`**: say what the video is about and what it is for. The agent asks only what it cannot infer, then proposes the spine (hook, promise, proof, payoff, ask), a through-line (the one visual idea that carries the piece) and a beat map for the rhythm, and writes `VIDEO.md`.
+1. **`brief`**: say what the video is about and what it is for. The agent asks for your brandbook or style sheet and writes it to `BRAND.md`, with the video rules it lacks marked as proposals. If you have none, it builds a short one with you in the conversation. It asks only what it cannot infer, then proposes the spine (hook, promise, proof, payoff, ask), a through-line (the one visual idea that carries the piece) and a beat map for the rhythm, and writes `VIDEO.md`.
    > *"Use unrushed to brief a 60-second silent video about the history of the bicycle, for Instagram."*
 
 2. **`style`**: the agent proposes two or three directions that differ in material and ground, with a styleframe when it can render one. You choose; it completes material, palette, type, light and finish, dials, a signature move and, for product videos, the real design system to show, and writes `STYLE.md`.
    > *"unrushed style. I want it to feel like ink on paper, calm."*
 
-3. **`storyboard`**: timed beats with exact text, the device that makes each idea visible (an interface with a cursor, ghosts, a camera push…), the technique, what moves and how, and a transition chosen by the relation between beats. It checks the spine, rhythm, transitions, reading time and the slide test before finishing. Writes `STORYBOARD.md`.
+3. **`storyboard`**: timed beats with exact text, the device that makes each idea visible (an interface with a cursor, ghosts, a camera push…), the technique, what moves and how, and a transition chosen by the relation between beats. When your editor has an effects library, as ChatCut does, it also writes a cue sheet. The default is none; each effect, zoom, library transition and sound accent is listed with its frames, its parameters, the word it is tied to and the reason. It checks the spine, rhythm, transitions, reading time, the slide test and the effect budgets before finishing. Writes `STORYBOARD.md`.
    > *"unrushed storyboard, 8 scenes."*
 
 4. **`export <target>`**: compiles everything into what your tool needs: `chatcut`, `remotion` or `generic` (After Effects, Cavalry, another AI tool, or a human animator).
    > *"unrushed export chatcut"*
+
+   With ChatCut's agent plugin installed, the cues are applied directly through ChatCut's tools and checked in the viewer. Without it, the agent writes one precise sentence per cue for ChatCut's chat.
 
 5. Make the video in your tool. Start with the pilot scene the export asks for.
 
@@ -100,6 +102,19 @@ brief  →  style  →  storyboard  →  export  →  (make it in your tool)  �
 - `references/narrative.md`: hooks, the spine, structures for explainers, product promos, launches, showcases and tutorials, and the beat map.
 - `references/visual-explanation.md`: devices that show an idea happening instead of writing it beside a demo, the slide test, and interface simulation with real components (the product's own, or shadcn/ui, Material 3, Fluent 2, Apple's HIG) and a human cursor.
 - `references/transitions.md`: transitions chosen by the relation between beats, with durations, the techniques that build them, and how to hide the seam.
+
+### Effects, zooms and sound from your editor's library
+
+`references/effects.md` covers every effect, zoom preset, transition and sound accent in ChatCut's library (blur, masks, distortions, 26 stylize effects, 6 zooms, 12 transitions). For each one it gives:
+
+- the intent it serves;
+- when to use it and when never to;
+- a tier: workhorse, situational, or gimmick (gimmicks need a written reason);
+- the equivalent in Remotion and in After Effects.
+
+It also sets budgets, such as one gimmick per piece, two stylize looks, and roughly one zoom per 8–12 s in a talking head, and explains how to apply each cue through ChatCut's tools or by prompt.
+
+`examples/unrushed-launch/` shows the whole set for a 45-second launch: `BRAND.md` from the Unrushed brandbook, `VIDEO.md`, and a `STORYBOARD.md` with a cue sheet that passes the detector.
 
 ### Dials
 
@@ -134,10 +149,12 @@ unrushed/
 │   ├── principles.md         Timing, curves, distance, choreography, type, materials
 │   ├── visual-explanation.md Devices, the slide test, interfaces with real design systems, cursors
 │   ├── transitions.md        Transitions by relation, catalogue, hiding the seam
+│   ├── effects.md            Library effects, zooms, transitions and sound: intent, tiers, budgets, ChatCut, Remotion, AE
 │   ├── ai-tells.md           What makes video read as AI-generated, and what to do instead
 │   ├── techniques.md         38 techniques from real reference pieces, indexed by meaning
 │   └── targets/              chatcut.md, remotion.md, generic.md
-├── assets/                   Templates for VIDEO.md, STYLE.md, STORYBOARD.md
+├── assets/                   Templates for BRAND.md, VIDEO.md, STYLE.md, STORYBOARD.md
+├── examples/unrushed-launch/ A worked example with a brand and a cue sheet
 ├── scripts/detect.py         Automatic checks on an exported video and on a storyboard
 ├── scripts/build_single.py   Builds dist/unrushed-single-file.md
 └── dist/                     The single-file edition

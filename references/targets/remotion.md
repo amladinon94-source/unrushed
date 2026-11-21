@@ -11,9 +11,24 @@ A prompt for a coding agent, structured in these sections:
 3. **Concept and storyboard**: from the project files, with exact text and the instruction to add no facts.
 4. **Visual system and motion fundamentals**: from `STYLE.md`, as numbers.
 5. **Technique notes** for anything non-trivial, such as morphing (below).
-6. **Technical rules** (below).
-7. **Phases with checkpoints** (below).
-8. **Checklist**: the `critique` questions, applied to each still.
+6. **Cues**: the cue sheet from `STORYBOARD.md`, translated with the table below.
+7. **Technical rules** (below).
+8. **Phases with checkpoints** (below).
+9. **Checklist**: the `critique` questions, applied to each still.
+
+## Translating the cue sheet
+
+The cue sheet names effects as an editor's library does. Use the Remotion column of `references/effects.md` for each one. As a summary:
+
+| Cue kind | In Remotion |
+|---|---|
+| Effect on a clip or range | `@remotion/effects` through the `effects` prop of `<Video>`, `<Img>`, `<Solid>` or `<HtmlInCanvas>`, inside a `<Sequence>` for the range. Animate parameters with `interpolate()` on the frame. Custom looks use `createEffect()`. |
+| Zoom | Scale a wrapper with `transform-origin` at the focal point; interpolate the scale over the cue's frames with the brand's curve (for example `Easing.bezier(0.16, 1, 0.3, 1)`). `punch` ramps in and out; `hold` ramps in and stays; `slow-push` ramps across the whole range; `instant` jumps. |
+| Library transition | `<TransitionSeries>` with the presentation from the table (`fade`, `wipe`, `slide`, `iris`, `pushCut`, `zoomBlur`, `pageTurn`…), `linearTiming` with an `Easing`, or `springTiming`. Shader transitions are custom HTML-in-canvas presentations. |
+| Sound accent | `<Audio>` inside a `<Sequence>` that starts so the sound peaks on the cue's frame. |
+| Detection effects (person, face, hands, hair) | Only with precomputed masks or landmarks supplied with the project. Otherwise, report that the cue cannot be built. |
+
+Effects that use WebGL need `--gl=angle` (or `Config.setChromiumOpenGlRenderer('angle')`) when rendering.
 
 ## Technical rules to include
 

@@ -1,5 +1,11 @@
 # STYLE
 
+## Brand
+If `BRAND.md` exists, list the brand rules this style keeps (palette, type, logo, forbidden items) and what it decides within the room the brand leaves open.
+
+- **Kept from BRAND.md:**
+- **Decided here:**
+
 ## Directions considered
 Two or three, differing in material and ground. Record why the chosen one won.
 

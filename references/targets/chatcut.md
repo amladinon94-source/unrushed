@@ -22,10 +22,10 @@ Fill the Design Style fields once, and every later graphic in the project follow
 
 | Field | What to put |
 |---|---|
-| Design guide | Plain-language rules: layout and text zone, spacing, type hierarchy, the motion fundamentals as numbers (durations, curves, distances, stagger, exit timing), the material, the signature move, and the forbidden list |
-| Colors | Each hex value with its role: ground, ink, accent and what the accent is for |
+| Design guide | Start from `BRAND.md` when it exists: its rules go first, marked as brand rules. Then plain-language rules: layout and text zone, spacing, type hierarchy, the motion fundamentals as numbers (durations, curves, distances, stagger, exit timing), the material, the signature move, and the forbidden list |
+| Colors | Each hex value with its role, taken from `BRAND.md` when it exists: ground, ink, accent and what the accent is for |
 | Fonts | Each family with its role and sizes |
-| Logo | Only if the piece carries a brand |
+| Logo | Only if the piece carries a brand: the version, minimum size and clear space from `BRAND.md` |
 | Reference images | Stills that show material and texture; describe in the guide what each one is for |
 
 Reference images are static, so motion has to be described in the design guide, in words and numbers.
@@ -40,8 +40,36 @@ Paste this into the AI composer, with the Design Style selected. Structure it li
 4. **Motion fundamentals**: repeat the key numbers even if they are in the Design Style. The agent follows what is in front of it.
 5. **Interfaces**: when a scene simulates a product or a tool, name the design system and components ("shadcn/ui Slider and Card, dark theme, Lucide icons", or the product's own), with radius, colours and font, and the cursor behaviour from `visual-explanation.md`.
 6. **Continuity**: if one element carries through the piece, such as particles or a line, say that every transformation starts from the exact end state of the previous scene, with no cuts between clips, and that it may build the whole sequence as a single motion graphic if needed.
-7. **Process**: pilot the hook and the payoff first, report, then build the rest.
-8. **Report**: ask it to list what it could not do, which frames it checked, and the real timings.
+7. **Cues**: the cue sheet from `STORYBOARD.md`, one sentence per cue (see "Library effects, zooms and sound" below). State that these are the only effects, zooms and library transitions wanted, so the agent adds nothing else.
+8. **Process**: pilot the hook and the payoff first, report, then build the rest.
+9. **Report**: ask it to list what it could not do, which frames it checked, the real timings, and the real parameters of every cue it applied.
+
+## Library effects, zooms and sound
+
+ChatCut's library holds effects, zooms, transitions, LUTs and sound effects that attach to clips, ranges or cuts. Choose them in `storyboard` with `references/effects.md`, then apply the cue sheet. ChatCut's own agent does not add effects nobody asked for, so every cue must be requested explicitly.
+
+**Routes 1 and 2, with ChatCut's tools.** Apply the cue sheet cue by cue:
+
+1. `browse_library` finds the asset id by name or category. Do not hard-code ids other than `builtin:zoom`.
+2. `preview_timeline` gives the clip ids and frame ranges.
+3. `edit_item` applies the cue: an effect on a clip or a range, the zoom with its properties, or a transition between two adjacent clips with `durationInFrames`.
+4. `preview_timeline` with the viewer checks the composed frames.
+
+When the editor refuses a transition for lack of handles, use its suggested duration or keep the hard cut, and note it in the report. Generate a custom shader (`submit_shader`) only when nothing in the library fits, with the brief rules in `effects.md` §8.
+
+**Route 3, by prompt.** Write one sentence per cue, with five parts:
+
+1. the target;
+2. the library name;
+3. the time range;
+4. the intensity or parameters;
+5. what must stay unchanged.
+
+For example:
+
+> At 00:42–00:45 on the talking-head clip, add Quick Zoom In to 1.3× on the word "never", manual focus on the laptop screen, ease-in 5 frames; keep captions and the lower third unchanged.
+
+After the agent applies them, ask it to read back the real parameters, because the mapping of zoom presets to the zoom's internal `shape` values is not documented.
 
 ## Working with the agent
 

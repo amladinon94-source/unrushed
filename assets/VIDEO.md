@@ -44,4 +44,4 @@ Every date, name and figure the piece states. Each has a source, or is marked `[
 | | |
 
 ## Constraints
-Brand rules, deadlines, budget or credits, tools available, things to avoid. For a product: whether its interface, code or design system is available.
+Brand rules live in `BRAND.md`; note here only where they come from (brandbook, style sheet, built in conversation, or no brand). Also: deadlines, deadlines, budget or credits, tools available, things to avoid. For a product: whether its interface, code or design system is available.

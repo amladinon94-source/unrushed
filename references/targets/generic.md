@@ -36,7 +36,11 @@ One row per scene, with times in both seconds and frames:
 
 For each scene, the order of events with offsets: "figure transform starts at 0; year enters at 60% of the transform with `enter-text`; title at +150 ms; support line at +400 ms after the title; all text exits with `exit-text` 300 ms before the next transform."
 
-### 5. Checklist
+### 5. Cue sheet
+
+The cue sheet from `STORYBOARD.md`, with each library name translated to the tool's own effect from the After Effects column of `references/effects.md` (or the closest equivalent in the tool). Give ranges in seconds and frames, the parameters, and the reason for each cue. A human animator respects the reason more than the name.
+
+### 6. Checklist
 
 The `critique` criteria, so whoever builds it can check their own work.
 

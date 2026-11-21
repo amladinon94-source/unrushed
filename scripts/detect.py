@@ -7,7 +7,10 @@ Finds the AI tells that do not need judgment:
     (a small moving cursor or a single word entering counts as change)
   - hard cuts, and the average shot length
   - with --storyboard: the planned rhythm, read from STORYBOARD.md (scene
-    lengths that are all alike, and transitions repeated back to back)
+    lengths that are all alike, and transitions repeated back to back), and
+    the cue sheet's budgets (reasons, tier C, stylize looks, zooms per minute,
+    the same library transition three times, zooms colliding with
+    transitions, stacked distortions; see references/effects.md)
 
 Requires ffmpeg and ffprobe on PATH. Prints a readable summary, or JSON with --json.
 
@@ -109,11 +112,14 @@ def activity(path, fps=10, level=1.0):
     return [0.0] + [changed_fraction(means[i - 1], means[i], level) for i in range(1, len(means))]
 
 
-def storyboard_rhythm(path):
-    """Scene lengths and transitions from the table in STORYBOARD.md."""
-    rows, header = [], None
+def read_tables(path):
+    """Every markdown table in a file, as (header, rows) pairs."""
+    tables, header, rows = [], None, []
     for line in open(path, encoding="utf-8"):
         if not line.strip().startswith("|"):
+            if header is not None:
+                tables.append((header, rows))
+            header, rows = None, []
             continue
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
         if header is None:
@@ -122,24 +128,118 @@ def storyboard_rhythm(path):
         if set("".join(cells)) <= set("-: "):
             continue
         rows.append(dict(zip(header, cells)))
-    dur_key = next((h for h in header or [] if h.startswith("dur")), None)
-    tr_key = next((h for h in header or [] if h.startswith("transition")), None)
-    lengths = []
-    for r in rows:
-        m = re.search(r"([\d.]+)\s*s", r.get(dur_key, "") if dur_key else "")
-        if m:
-            lengths.append(float(m.group(1)))
-    out = {"scene_lengths": lengths, "repeated_transitions": []}
-    if len(lengths) >= 4:
-        mean = sum(lengths) / len(lengths)
-        sd = (sum((x - mean) ** 2 for x in lengths) / len(lengths)) ** 0.5
-        out["variation"] = round(sd / mean, 2)
-        out["distinct_lengths"] = len({round(x) for x in lengths})
-    if tr_key:
+    if header is not None:
+        tables.append((header, rows))
+    return tables
+
+
+# Library names by family, for the budget checks in references/effects.md.
+STYLIZE = {"ascii rain", "body landmarks", "cartoon", "color distance", "color halftone", "crt retro", "dither",
+           "edge glow", "emboss", "face laser eyes", "glow", "hair regions", "hand landmarks", "heat map",
+           "laser eyes", "ndvi false color", "person regions", "photocopy", "posterize", "primary colors",
+           "rgb split", "sobel edges", "soft glow", "three-level threshold", "threshold", "two-level threshold",
+           "tilt-shift", "mosaic blur", "analog tv sync"}
+# Looks that work as mattes or explanations do not count as a stylize look.
+NOT_A_LOOK = {"person regions", "hair regions", "color distance", "body landmarks", "hand landmarks", "sobel edges"}
+DISTORT = {"lens distortion", "dome magnifier", "magnifying glass", "corner pin", "elastic scale", "analog tv sync",
+           "camera shake", "lens correction"}
+
+
+def _num(text):
+    m = re.search(r"-?\d+(?:\.\d+)?", text or "")
+    return float(m.group(0)) if m else None
+
+
+def _col(header, *prefixes):
+    return next((h for h in header if any(h.startswith(p) for p in prefixes)), None)
+
+
+def storyboard_rhythm(path):
+    """Scene lengths and transitions from STORYBOARD.md, and checks on its cue sheet."""
+    tables = read_tables(path)
+    scene = next(((h, r) for h, r in tables if _col(h, "dur") and _col(h, "transition")), None)
+    cue = next(((h, r) for h, r in tables if _col(h, "kind") and _col(h, "library")), None)
+    out = {"scene_lengths": [], "repeated_transitions": []}
+    if scene:
+        header, rows = scene
+        dur_key, tr_key = _col(header, "dur"), _col(header, "transition")
+        lengths = []
+        for r in rows:
+            m = re.search(r"([\d.]+)\s*s", r.get(dur_key, ""))
+            if m:
+                lengths.append(float(m.group(1)))
+        out["scene_lengths"] = lengths
+        if len(lengths) >= 4:
+            mean = sum(lengths) / len(lengths)
+            sd = (sum((x - mean) ** 2 for x in lengths) / len(lengths)) ** 0.5
+            out["variation"] = round(sd / mean, 2)
+            out["distinct_lengths"] = len({round(x) for x in lengths})
         kinds = [r.get(tr_key, "").split("→")[-1].strip().lower() for r in rows]
         out["transition_kinds"] = len({k for k in kinds if k})
         out["repeated_transitions"] = [i + 1 for i in range(1, len(kinds)) if kinds[i] and kinds[i] == kinds[i - 1]]
+    if cue:
+        out["cues"] = cue_checks(*cue, total_seconds=sum(out["scene_lengths"]) or None, fps=_fps(path))
     return out
+
+
+def _fps(path):
+    m = re.search(r"frame rate\*{0,2}\s*:?\s*\*{0,2}\s*(\d+(?:\.\d+)?)", open(path, encoding="utf-8").read(), re.I)
+    return float(m.group(1)) if m else None
+
+
+def cue_checks(header, rows, total_seconds=None, fps=None):
+    """Budgets and stacking rules from references/effects.md, applied to the cue sheet."""
+    k = {name: _col(header, *pre) for name, pre in {
+        "id": ("cue",), "kind": ("kind",), "name": ("library",), "from": ("from",), "frames": ("frames",),
+        "why": ("why",), "tier": ("tier",), "target": ("target",)}.items()}
+    cues = []
+    for r in rows:
+        name = r.get(k["name"], "").strip().lower()
+        kind = r.get(k["kind"], "").strip().lower()
+        if not name and not kind:
+            continue
+        cues.append({"id": r.get(k["id"], "") or f"row {len(cues) + 1}", "kind": kind, "name": name,
+                     "from": _num(r.get(k["from"], "")), "frames": _num(r.get(k["frames"], "")),
+                     "why": r.get(k["why"], "").strip(), "tier": r.get(k["tier"], "").strip().upper(),
+                     "target": r.get(k["target"], "").strip().lower()})
+    flags = []
+    for c in cues:
+        if not c["why"]:
+            flags.append(f"{c['id']} ({c['name'] or c['kind']}) has no reason. Every cue needs one.")
+        if not c["tier"]:
+            flags.append(f"{c['id']} ({c['name'] or c['kind']}) has no tier.")
+    tier_c = [c["id"] for c in cues if c["tier"].startswith("C")]
+    if len(tier_c) > 1:
+        flags.append(f"{len(tier_c)} tier C cues ({', '.join(tier_c)}); the budget is one.")
+    looks = sorted({c["name"] for c in cues if c["kind"] == "effect" and c["name"] in STYLIZE - NOT_A_LOOK})
+    if len(looks) > 2:
+        flags.append(f"{len(looks)} stylize looks ({', '.join(looks)}); the budget is two per piece.")
+    zooms = [c for c in cues if c["kind"] == "zoom"]
+    per_minute = None
+    if total_seconds and zooms:
+        per_minute = round(len(zooms) / total_seconds * 60, 1)
+        if per_minute > 7.5:
+            flags.append(f"{per_minute} zooms per minute. In a talking head aim for one every 8–12 s; "
+                         "screen recordings may use more.")
+    trans = sorted((c for c in cues if c["kind"] == "transition" and c["from"] is not None), key=lambda c: c["from"])
+    for i in range(2, len(trans)):
+        if trans[i]["name"] and trans[i]["name"] == trans[i - 1]["name"] == trans[i - 2]["name"]:
+            flags.append(f"{trans[i]['name'].title()} on three cuts in a row (ending at {trans[i]['id']}).")
+    timed = [c for c in cues if c["from"] is not None]
+    window = 10
+    for z in (c for c in timed if c["kind"] == "zoom"):
+        z_end = z["from"] + (z["frames"] or 0)
+        for t in (c for c in timed if c["kind"] == "transition"):
+            t_end = t["from"] + (t["frames"] or 0)
+            if t["from"] - window <= z_end and z["from"] <= t_end + window:
+                flags.append(f"{z['id']} (zoom) and {t['id']} ({t['name']}) fall within {window} frames of each other.")
+    dist = [c for c in timed if c["kind"] == "effect" and c["name"] in DISTORT and c["frames"]]
+    for i, a in enumerate(dist):
+        for b in dist[i + 1:]:
+            if a["from"] < b["from"] + b["frames"] and b["from"] < a["from"] + a["frames"]:
+                flags.append(f"{a['id']} ({a['name']}) and {b['id']} ({b['name']}) are stacked distortions.")
+    return {"count": len(cues), "zooms": len(zooms), "zooms_per_minute": per_minute, "tier_c": tier_c,
+            "stylize_looks": looks, "flags": flags}
 
 
 def still_stretches(step, fps, min_seconds):
@@ -174,6 +274,17 @@ def position_label(t, total, edge=1.0):
     return "mid-piece"
 
 
+def cue_summary(sb):
+    c = sb.get("cues")
+    if not c:
+        return ""
+    lines = [f"\nCue sheet: {c['count']} cues, {c['zooms']} zooms"
+             + (f" ({c['zooms_per_minute']} per minute)" if c["zooms_per_minute"] is not None else "")
+             + f", tier C: {len(c['tier_c'])}, stylize looks: {len(c['stylize_looks'])}"]
+    lines += [f"  - {fl}" for fl in c["flags"]] or ["  no cue flags"]
+    return "\n".join(lines)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("video", nargs="?", help="the exported video; optional when only --storyboard is checked")
@@ -201,7 +312,8 @@ def main():
         print(json.dumps(sb, indent=2) if args.json else
               f"Storyboard: {len(sb['scene_lengths'])} scenes, lengths {sb['scene_lengths']}\n"
               + (f"  variation {sb['variation']} (under 0.25 reads as monotonous), distinct lengths {sb['distinct_lengths']}\n" if "variation" in sb else "")
-              + (f"  transition kinds {sb['transition_kinds']}; repeated back to back at scenes {sb['repeated_transitions'] or 'none'}" if "transition_kinds" in sb else ""))
+              + (f"  transition kinds {sb['transition_kinds']}; repeated back to back at scenes {sb['repeated_transitions'] or 'none'}" if "transition_kinds" in sb else "")
+              + cue_summary(sb))
         return
 
     total = duration_of(args.video)
@@ -241,6 +353,8 @@ def main():
                          f"(variation {sb['variation']}, {sb['distinct_lengths']} distinct lengths). See narrative.md.")
         for n in sb["repeated_transitions"]:
             flags.append(f"Storyboard: scene {n} repeats the previous transition type. See transitions.md.")
+        for fl in sb.get("cues", {}).get("flags", []):
+            flags.append(f"Cue sheet: {fl} See effects.md.")
     report["flags"] = flags
 
     if args.json:

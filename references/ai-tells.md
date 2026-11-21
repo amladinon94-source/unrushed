@@ -20,6 +20,11 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Floating parallax layers that drift for no reason | Depth as decoration | Parallax only when depth is part of the story |
 | Glitch, RGB split or light-leak transitions as filler | Effects covering a weak cut | Use them once, where the content is about failure or noise |
 | Text moving while it must be read | Motion competing with reading | Animate in, rest, animate out |
+| A punch-in zoom on every sentence of a talking head | The auto-edit signature; emphasis everywhere means emphasis nowhere | One zoom per stressed word, roughly one per 8–12 s, with alternating scale (`effects.md`) |
+| Camera shake, impact shake or a white flash to add "energy" | Library effects covering a cut with no idea | A hard cut on the beat; shake only on a physical hit you can hear, for 4–8 frames |
+| Meme effects in a serious piece (laser eyes, ASCII rain, cartoon, heat map as a look) | Reaching for the library instead of the story | Leave them out, or use one, once, when the brief asks for that register |
+| Several stylize looks stacked or swapped shot to shot (CRT, then halftone, then dither) | A filter tour, not a style | One look per section, two per piece at most; looks never replace a through-line |
+| Page curl, organic light dissolve or anticipation zoom as the default transition | Template transitions from editors' libraries | Choose by relation (`transitions.md`); a dissolve or a hard cut is usually better |
 
 ## Visual
 
@@ -62,5 +67,12 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 - **Frozen stretches**: long holds where nothing changes anywhere in the frame, which are sometimes intended and sometimes a render that stalled.
 - **Cut rhythm**: hard cuts and the average shot length. Many hard cuts in a piece meant to flow are a sign that transitions were not designed.
 - **The planned rhythm**, with `--storyboard STORYBOARD.md`: scene lengths that are all alike, and the same transition type back to back.
+- **The cue sheet**, from the same file. The detector checks the budgets in `effects.md`:
+  - cues without a reason or tier;
+  - more than one tier C cue, or more than two stylize looks;
+  - zooms per minute;
+  - the same library transition on three cuts in a row;
+  - a zoom within 10 frames of a transition;
+  - stacked distortions.
 
 Everything else needs eyes: use the tables above.

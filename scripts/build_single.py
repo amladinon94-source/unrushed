@@ -51,7 +51,7 @@ def condensed_techniques():
 BANNER = (
     "> **Single-file edition.** The reference files are embedded at the end of this file, each under a heading "
     "\"Embedded: <path>\". Whenever an instruction says to read a file in `references/`, read that section instead "
-    "of looking for the file on disk. Files not embedded (`targets/remotion.md`, `targets/generic.md`, the templates, "
+    "of looking for the file on disk. Files not embedded (`targets/remotion.md`, `targets/generic.md`, the templates, the example, "
     "`scripts/detect.py`) can be read from https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>."
 )
 
@@ -72,6 +72,7 @@ def main():
         "## Embedded: references/principles.md\n\n" + demote(read("references/principles.md")),
         "## Embedded: references/visual-explanation.md\n\n" + demote(read("references/visual-explanation.md")),
         "## Embedded: references/transitions.md\n\n" + demote(read("references/transitions.md")),
+        "## Embedded: references/effects.md\n\n" + demote(read("references/effects.md")),
         "## Embedded: references/ai-tells.md\n\n" + demote(read("references/ai-tells.md")),
         "## Embedded: references/techniques.md (condensed)\n\n" + condensed_techniques(),
         "## Embedded: references/targets/chatcut.md\n\n" + demote(read("references/targets/chatcut.md")),

@@ -5,7 +5,7 @@ description: Motion direction for videos and animated pieces that must not look 
 
 # Unrushed
 
-> **Single-file edition.** The reference files are embedded at the end of this file, each under a heading "Embedded: <path>". Whenever an instruction says to read a file in `references/`, read that section instead of looking for the file on disk. Files not embedded (`targets/remotion.md`, `targets/generic.md`, the templates, `scripts/detect.py`) can be read from https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>.
+> **Single-file edition.** The reference files are embedded at the end of this file, each under a heading "Embedded: <path>". Whenever an instruction says to read a file in `references/`, read that section instead of looking for the file on disk. Files not embedded (`targets/remotion.md`, `targets/generic.md`, the templates, the example, `scripts/detect.py`) can be read from https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>.
 
 Generic motion comes from defaults: every element fades up the same 30 px in the same half second, scenes dip to black, the palette is neon on navy, and nothing moves for a reason. Unrushed replaces adjectives with decisions. Every movement gets a purpose, a duration, a curve, a distance and a place in the order of things. "Smooth and modern" is not a direction; "enters over 700 ms on an expo-out curve, 16 px, 150 ms after the year" is.
 
@@ -21,13 +21,14 @@ Reply in the person's language. Command names stay in English.
 
 ### Project files
 
-Commands share three files in the project folder. Read whichever exist before any command.
+Commands share up to four files in the project folder. Read whichever exist before any command.
 
 | File | Written by | Holds |
 |---|---|---|
+| `BRAND.md` | `brief`, from the person's brandbook or built in the conversation | The brand rules the piece must keep: logo use, colours with roles, type, graphic elements, imagery, motion, voice, video templates |
 | `VIDEO.md` | `brief` | What the piece is: topic, message, audience, format, sound, through-line, facts to verify |
 | `STYLE.md` | `style` | How it looks and moves: material, palette, type, dials, signature move, forbidden list |
-| `STORYBOARD.md` | `storyboard` | Scene by scene: exact text, figure, motion, timing, transition |
+| `STORYBOARD.md` | `storyboard` | Scene by scene: exact text, figure, motion, timing, transition, and the cue sheet of library effects, zooms and sound |
 
 Templates are in `assets/`. If a command needs a file that does not exist, say so and offer to run the command that creates it, rather than inventing its contents.
 
@@ -59,11 +60,11 @@ How `energy` maps to numbers, as a starting point:
 
 | Group | Command | Does | Reads | Writes |
 |---|---|---|---|---|
-| Context | `brief` | Captures what the piece is and its one visual idea | — | `VIDEO.md` |
-| Context | `style` | Defines the visual and motion system | `VIDEO.md` | `STYLE.md` |
-| Create | `storyboard` | Breaks the piece into timed scenes | `VIDEO.md`, `STYLE.md` | `STORYBOARD.md` |
+| Context | `brief` | Captures what the piece is, its one visual idea and the brand it must keep | a brandbook, if there is one | `VIDEO.md`, `BRAND.md` |
+| Context | `style` | Defines the visual and motion system | `VIDEO.md`, `BRAND.md` | `STYLE.md` |
+| Create | `storyboard` | Breaks the piece into timed scenes and cues | `VIDEO.md`, `STYLE.md`, `BRAND.md` | `STORYBOARD.md` |
 | Create | `recipe <reference>` | Turns a site, clip or screenshot into reusable motion values | — | a recipe in the reply |
-| Deliver | `export <target>` | Compiles everything into a prompt or spec for one tool | all three files | the deliverable |
+| Deliver | `export <target>` | Compiles everything into a prompt or spec for one tool | all project files | the deliverable |
 | Review | `critique` | Scores frames or a video and lists what to fix | `STYLE.md` if it exists | a report in the reply |
 
 ### `brief`
@@ -74,7 +75,22 @@ Read `references/narrative.md` first. Ask only what you cannot infer from the co
 2. Audience: who they are, what they already know or believe, and what they should feel or do afterwards.
 3. Platform, aspect ratio, duration and sound. A silent piece carries its whole narrative in on-screen text and motion beats, which changes the timing rules.
 4. Facts the piece states (dates, names, figures, product claims). List them; each needs a source or is marked `[verify]`. For a product, ask whether you can see the product itself, its code or its interface.
-5. Anything already decided: brand, references, things to avoid.
+5. **The brand.** Ask for the brandbook or style sheet: a PDF, a link, a Figma file, design tokens, a guidelines `.md`, or even screenshots. Also ask for references and things to avoid.
+
+**Brand first.** A piece for a real brand has to look like that brand, so ask about it before proposing anything visual.
+
+- **If the person has a brandbook**, read it and write `BRAND.md` from the template: logo use, colours with roles, type and licences, graphic elements, imagery, motion, voice and video templates. Brandbooks are usually made for print and the web, so they rarely say how the brand moves. List what is missing for video (motion curves and durations, logo animation, transitions, lower thirds, end card) and propose those parts, marked as proposals, for the person to approve.
+- **If there is none**, offer to build a short one in the conversation. Ask for, or propose for approval, five decisions:
+  1. logo or name treatment and where it may appear;
+  2. a palette with roles, and the one accent and its job;
+  3. two type families with roles and licences;
+  4. the motion personality (curve, tempo, what is forbidden);
+  5. the voice, as a few words to use and avoid.
+
+  Write them to `BRAND.md`, marked "built in conversation".
+- **If the piece carries no brand** (a personal or one-off piece), say that `BRAND.md` is skipped and that `style` will set the look.
+
+Brand rules outrank this skill's defaults. When a brand rule triggers an AI tell or a legibility problem, for example a default font from `ai-tells.md`, or a colour pair below 4.5:1 for text, keep the rule, say so, and suggest the least intrusive fix.
 
 Then propose, and let the person choose or correct:
 
@@ -82,11 +98,13 @@ Then propose, and let the person choose or correct:
 - **The through-line.** The single visual idea that carries the whole piece, and the most important decision in the brief. Propose two or three options and recommend one. A piece about the history of AI made of nine unrelated effects reads as a demo reel; the same piece where one set of particles travels from a neuron to a human profile reads as a story. A good through-line is a transformation that means something.
 - **The beat map.** Sections with their tempo and beat lengths, and where the payoff lands on the tension curve.
 
-Write `VIDEO.md` from the template.
+Write `VIDEO.md` from the template, and `BRAND.md` when there is a brand.
 
 ### `style`
 
 Read `references/principles.md`, `references/ai-tells.md` and the index of `references/techniques.md` first.
+
+**Within the brand.** If `BRAND.md` exists, its palette, type, logo rules and forbidden items are fixed. The directions you propose vary what the brand leaves open: material, ground, light, composition and the signature move. Say which brand rules each direction relies on.
 
 **Propose before deciding.** Offer two or three directions and let the person choose; never pick a look silently. Directions must differ in material and ground, not only in colour: three palettes of the same idea are one direction. Do not reuse the look of earlier projects (earlier `STYLE.md` files, earlier pieces in the conversation) unless the person asks for it. For each direction give:
 
@@ -119,6 +137,12 @@ Build the storyboard from the spine and beat map in `VIDEO.md`; if they are miss
 - Choose each transition from `references/transitions.md` by the relation between the two beats, and write the relation next to it. Never the same type twice in a row; at least four kinds in a piece over 60 s; the biggest one leads into the payoff.
 - When the piece shows a product or a tool, simulate its interface with real components: the product's own when you can see it, otherwise the design system it is built on. Never invent controls.
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
+- **Library effects, zooms and sound.** When the target tool has an effects library (ChatCut does), read `references/effects.md`.
+  - The default is no effect.
+  - Add a cue only when it does a job the cut, framing or graphics cannot: guide the eye, stress a line, hide something, separate the subject, show how a machine sees, mark another time.
+  - Tie each zoom and sound accent to a word or line of the script.
+  - Respect the budgets: at most one tier C effect, with a reason; at most two stylize looks per piece; roughly one zoom per 8–12 s in a talking head; never the same library transition on three cuts in a row.
+  - Write every cue in the cue sheet of `STORYBOARD.md`, with its reason.
 - Check reading time for every line of text with the rule in `principles.md`. For silent pieces, flag any line held for less than its reading time.
 - Use only facts from `VIDEO.md`. Anything not there is marked `[verify]`.
 - Make sure the image and the text say the same thing. If the line says "funding freezes", the figure should freeze, not pile up.
@@ -130,6 +154,12 @@ Before finishing, review the storyboard as a whole and fix what fails, saying wh
 - **Transitions.** No type twice in a row, at least four kinds over 60 s, the biggest one into the payoff.
 - **Slide test.** No scene reads as a slide when paused; neighbouring beats use different devices.
 - **Variance.** If scenes share the same structure, apply `variance`.
+- **Cues.**
+  - Every cue in the cue sheet has a reason and a tier.
+  - No two distortions are stacked.
+  - No zoom and transition fall within the same 10 frames.
+  - The budgets in `effects.md` hold.
+- **Brand.** Nothing contradicts `BRAND.md`.
 
 ### `recipe <reference>`
 
@@ -156,15 +186,22 @@ Every export:
 
 - states motion as numbers (ms, curve values, px, counts) next to the intent behind them, because tools follow numbers more reliably than adjectives, and generalise better when they know why;
 - for each technique named in the storyboard, carries its key parameters and build notes from `references/techniques.md`, so the tool knows how to build it and not only what it should look like;
-- includes the forbidden list from `STYLE.md`;
+- includes the forbidden list from `STYLE.md` and the brand rules from `BRAND.md`;
+- carries the cue sheet from `STORYBOARD.md`: each effect, zoom, library transition and sound accent with its range in frames, its parameters and its reason. If the tool's library is available, the cues are applied directly; otherwise they are written so the tool can apply them (see the target file and `references/effects.md`);
 - asks the tool to pilot the first scene and the closing before building the rest, and to report what it could not do;
 - ends with the review checklist from `critique`, so the tool checks its own frames.
 
 ### `critique`
 
-Read `references/ai-tells.md`, `references/narrative.md`, `references/transitions.md`, and `STYLE.md` if it exists. `critique` works on a finished video, on frames, or on a plan (`STORYBOARD.md`) before anything is built; critiquing the plan is the cheapest moment to fix rhythm and transitions.
+Read `references/ai-tells.md`, `references/narrative.md`, `references/transitions.md`, and `STYLE.md` and `BRAND.md` if they exist. When the piece uses an editor's library effects, zooms or sound accents, also read `references/effects.md`. `critique` works on a finished video, on frames, or on a plan (`STORYBOARD.md`) before anything is built; critiquing the plan is the cheapest moment to fix rhythm and transitions.
 
-If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --storyboard STORYBOARD.md` first: it reports dips to black, stretches where nothing moves anywhere in the frame, hard cuts, and the planned rhythm and repeated transitions. Then look at frames, sampled densely around every transition.
+If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --storyboard STORYBOARD.md` first: it reports:
+
+- dips to black;
+- stretches where nothing moves anywhere in the frame;
+- hard cuts;
+- the planned rhythm and repeated transitions;
+- the cue sheet's budgets: cues without a reason, tier C and stylize looks over budget, zooms per minute, the same library transition three times in a row, zooms colliding with transitions, and stacked distortions. Then look at frames, sampled densely around every transition.
 
 Score each criterion from 1 to 5 with one line of evidence:
 
@@ -174,6 +211,7 @@ Score each criterion from 1 to 5 with one line of evidence:
 | Rhythm | Do beat lengths vary with purpose: building, then holding after a reveal? Or does it tick along evenly? |
 | Explanation | Is each idea shown happening, with a device, rather than written beside a demo? Does any paused frame read as a slide? |
 | Transitions | Does each transition say the relation between beats? How many kinds, and are any repeated back to back? |
+| Effects | Does every library effect, zoom and sound accent do a job the cut cannot? Is each zoom tied to a word? Are the budgets in `effects.md` kept, with no gimmick without a reason and nothing stacked? Would the beat be better with no effect at all? |
 | Concept | Is the figure understood without reading the text? |
 | Hierarchy | Does the eye know where to go first, second, third? |
 | Legibility | Can every line be read in the time it is on screen? |
@@ -181,7 +219,7 @@ Score each criterion from 1 to 5 with one line of evidence:
 | Timing | Do entrances decelerate, exits run faster, holds feel intended? |
 | Material and light | Does the piece have texture, depth, a physical feel? Does each style have its own world? |
 | Distinctiveness | How many AI tells are present? |
-| Consistency | Does it follow `STYLE.md`? |
+| Consistency | Does it follow `STYLE.md`, and `BRAND.md` when there is one: logo use, colour roles, type, voice? |
 
 Then list the AI tells you found, and the three fixes with the most impact. Write each fix as an instruction ready to paste into the tool. When a scene looks generic because of its technique, device or transition, suggest an alternative from `references/techniques.md`, `references/visual-explanation.md` or `references/transitions.md` that says the same thing better. Be specific about what stills cannot show: motion, fluidity and rhythm need the video.
 
@@ -199,6 +237,7 @@ If you cannot reach them either, work from the embedded essentials in the single
 |---|---|
 | `references/narrative.md` | Hook, promise, proof, payoff and ask; structures by type of piece; beats, rhythm and the beat map. `brief`, `storyboard`, `critique` |
 | `references/visual-explanation.md` | Devices that make an idea visible, the slide test, interface simulation with real design systems, cursor choreography. `style`, `storyboard`, `export`, `critique` |
+| `references/effects.md` | Library effects, zooms, transitions and sound accents (ChatCut's library and their Remotion and After Effects equivalents): choosing by intent, tiers, budgets, and how to apply them through ChatCut's tools or a prompt. `storyboard`, `export`, `critique` |
 | `references/transitions.md` | Transitions chosen by the relation between beats, a catalogue with durations and related techniques, eye trace and other ways to hide the seam. `storyboard`, `export`, `critique` |
 | `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour. `style`, `storyboard`, `recipe`, `export`, `critique` |
 | `references/ai-tells.md` | What makes motion and video read as AI-generated, and what to do instead. `style`, `export`, `critique` |
@@ -705,6 +744,250 @@ Durations are at `energy` 4–6; scale with the dial.
 - **ChatCut.** Name the transition, its relation, the duration and the curve in the prompt, and ask it to keep the two scenes in a single motion graphic when the transition needs both on screen at once (morphs, carry-overs, camera travel).
 - **After Effects and similar tools.** A camera layer over 3D layers for one canvas and zoom-through; track mattes for object-led masks; pixel motion blur for whips.
 
+## Embedded: references/effects.md
+
+### Effects, zooms and transitions from an editor's library
+
+Video editors such as ChatCut ship a library of ready-made effects, zooms and transitions. This file tells you which ones to use, when, how strongly, and when to leave them out. It also gives the equivalent in Remotion and After Effects, so a storyboard stays portable.
+
+The default is **no effect**. An effect earns its place by doing a job the cut, the framing or the graphics cannot do alone. Write that job down: it is the "Why" column of the storyboard, and `critique` checks it.
+
+#### Contents
+
+1. Choose by intent
+2. Tiers
+3. Catalogue: blur and sharpen; masks and keying; transform and distort; stylize
+4. Zoom
+5. Transitions from the library
+6. Sound accents
+7. Budgets and stacking
+8. Applying it in ChatCut
+9. Rebuilding it in Remotion and After Effects
+
+#### 1. Choose by intent
+
+Start from what the beat needs, never from the effect list.
+
+| The beat needs to… | Reach for | Not for this |
+|---|---|---|
+| Guide the eye to one region | Mask, Magnifying Glass, Dome Magnifier, Gaussian Blur on the rest, a slow push | Glow on everything, camera shake |
+| Stress one line of speech | One zoom (Quick Zoom In or Instant) on the stressed word | A zoom on every sentence, Flash |
+| Hide or protect something (faces, emails, plates, a mistake) | Local Mosaic, Gaussian Blur inside a mask | Cartoon or Posterize as a "disguise" |
+| Separate the speaker from the background (text behind the person, grade the room only) | Person Regions as a matte | Hair Regions on its own |
+| Show how a machine sees | Sobel Edges, Body Landmarks, Hand Landmarks, Heat Map, Threshold | Laser Eyes, ASCII Rain |
+| Mark another time or medium (archive, VHS, print, zine) | CRT Retro, Analog TV Sync, Dither, Color Halftone, Photocopy | Stacking three looks |
+| Put a UI or image on a real screen | Corner Pin | A flat overlay that ignores perspective |
+| Change mode (a story inside the explainer, a flashback, a quote) | Letterbox, one consistent look for that whole section | Switching looks every shot |
+| Fix the footage | Lens Correction, Sharpen (light), Flip (eyeline or continuity) | Fixes used as a style |
+
+#### 2. Tiers
+
+- **A · workhorse.** Safe by default when the intent fits. Use freely within budget.
+- **B · situational.** Right for one kind of moment or one section. It needs a reason in the storyboard.
+- **C · gimmick.** Reads as template or meme, and it is one of the reasons edits look "made with AI". Use it only when the brief asks for that register (meme, parody, retro, a single comic beat), at most once per piece, and with a written reason. If you are unsure, leave it out.
+
+#### 3. Catalogue
+
+Names are as the ChatCut library shows them. Availability differs between ChatCut Web and Desktop, and the library changes. Always discover what exists before applying it (see §8).
+
+##### Blur and sharpen
+
+| Effect | What it does | Use it for | Never | Tier | Remotion | After Effects |
+|---|---|---|---|---|---|---|
+| Gaussian Blur | Soft, even blur | Background behind a title or card; blur everything outside a mask to guide the eye; privacy | Blurring the subject the viewer must read | A | `blur()`, `regionBlur()` | Gaussian Blur |
+| Box Blur | Cheaper, squarer blur | Frosted panel behind text | Beauty shots, which it makes muddy | B | `blur()` | Fast Box Blur |
+| Mosaic Blur | Pixel blocks over the frame | A deliberate pixel motif; a censor look over a whole shot | Hiding a face in an otherwise clean edit (use Local Mosaic) | B | `pixelate()` | Mosaic |
+| Sharpen | Edge contrast | A light fix on soft footage | Pushing it until halos show | A (fix) | `contrast()` with a custom pass, or `createEffect()` | Unsharp Mask |
+| Tilt-Shift | Blurs top and bottom, sharp band | Overhead shots of cities, desks or setups (miniature look) | Talking heads | C | `linearProgressiveBlur()` | Camera Lens Blur with a gradient blur map |
+
+##### Masks and keying
+
+| Effect | What it does | Use it for | Never | Tier | Remotion | After Effects |
+|---|---|---|---|---|---|---|
+| Mask (rectangle, circle, linear) | Shows only a region | Reveals, picture-in-picture, isolating a UI region to explain | Hard edges on organic subjects (feather them) | A | CSS `clip-path` or mask on a layer; `iris()` for reveals | Masks, Track Matte |
+| Local Mosaic | Pixelates one region | Faces, emails, licence plates, secrets | As decoration | A | `pixelate()` inside a mask | Mosaic + mask, tracked |
+| Auto Threshold | Pure black and white by luminance | Making a matte; a stark poster beat | A whole piece | B | `createEffect()` (threshold) | Threshold |
+| Black Overlay (Screen) | Black layer in Screen mode | Laying light leaks or particles on black over footage | — | B | `mixBlendMode: 'screen'` | Screen blend mode |
+
+##### Transform and distort
+
+| Effect | What it does | Use it for | Never | Tier | Remotion | After Effects |
+|---|---|---|---|---|---|---|
+| Corner Pin | Maps a layer to four points | Putting a UI, slide or image onto a real screen in the shot | Without tracking on a moving camera | A | `cornerPin()` | Corner Pin + tracker |
+| Magnifying Glass | Circular lens over a region | Explaining a small UI detail; a figure inside a dense chart | Faces | A | `fisheye()` inside a circular mask | CC Lens inside a mask |
+| Dome Magnifier | Bulges a region | Calling attention to one element for a beat | Constant pulsing | B | `fisheye()`, `sphere()` | Bulge |
+| Lens Correction | Removes barrel distortion | Fixing wide-angle footage and screen recordings shot with a phone | — | A (fix) | `barrelDistortion()` with a negative amount | Optics Compensation (reverse) |
+| Lens Distortion | Adds barrel or pincushion | A subtle wide-lens feel on a graphic | Strong amounts on people | B | `barrelDistortion()` | Optics Compensation |
+| Letterbox | Black bars to a cinema ratio | Marking a section as "story mode"; a chapter shift | Toggling it on and off within a section | B | Two black `AbsoluteFill` bars | Solids or a crop |
+| Flip | Mirrors the shot | Fixing eyeline or screen direction for continuity | Shots with readable text | A (fix) | `mirror()` or `scaleX(-1)` | Transform scale −100 |
+| Elastic Scale | Scale with overshoot | A cartoon register | Serious or brand pieces (it is a bounce) | C | `spring()` with low damping | Scale with an overshoot expression |
+| Camera Shake | Random shake | A physical hit you can hear (a slam, a drop), for 4–8 frames | Long durations, or "energy" with no impact on screen | C | `random()`-driven translate on a parent | Wiggle expression |
+| Analog TV Sync | Vertical roll and sync error | A beat that changes channel or era | As a transition you reuse | C | `wave()`, `xyTranslate()`, `noise()` | Offset + Wave Warp + Noise |
+
+##### Stylize
+
+Some of these need person, face, hand or hair detection (marked •). Outside ChatCut they need precomputed masks or landmarks, for example from MediaPipe. Without those, do not promise them in a Remotion or After Effects export.
+
+| Effect | What it does | Use it for | Never | Tier | Remotion | After Effects |
+|---|---|---|---|---|---|---|
+| Person Regions • | Segments the person | A matte: text behind the speaker, grading only the background, a cut-out | As a coloured tint for its own sake | A (as matte) | Precomputed alpha + `<OffthreadVideo>` | Roto Brush |
+| Sobel Edges | Edge detection | "How a model sees": computer vision, detection, AI explainers | Decoration | B | `createEffect()` (Sobel) | Find Edges |
+| Body Landmarks • | Draws the pose skeleton | Explaining posture, motion or tracking | Decoration | B | Precomputed landmarks drawn as SVG | Third-party, or tracking plus shape layers |
+| Hand Landmarks • | Draws hand keypoints | Gesture interfaces, sign or hand tutorials | Decoration | B | Same as above | Same as above |
+| Heat Map | False colour by luminance | Showing attention, temperature or intensity as data | A look | B | `thermalVision()` | Colorama |
+| Threshold, Two-Level, Three-Level | Two or three tone bands | Poster beats, mattes | Long sections (it is tiring to watch) | B | `createEffect()`, `levels()` | Threshold, Posterize |
+| Posterize | Fewer colour steps | A graphic print section | Skin close-ups | B | `createEffect()` | Posterize |
+| Dither | Patterned dots instead of gradients | Lo-fi or bitmap texture that matches a pixel or LED language | Mixed with Halftone in the same piece | B | `dotGrid()`, `createEffect()` | Posterize + Noise, or third-party |
+| Color Halftone | Print dots per channel | Print or comic era | With small text on screen | B | `halftone()` | Third-party (no native) |
+| Photocopy | High-contrast grain | Zine or punk section | Product shots | B | `createEffect()`, `noise()` | Threshold + Noise |
+| CRT Retro | Scanlines, curvature, glow | Archive, retro tech, "old screen" | As a default look | B | `HtmlInCanvas` CRT shader, `barrelDistortion()` | Venetian Blinds + Optics Compensation + Glow |
+| Glow | Bloom on highlights | A subtle lift on light sources; LED or neon subjects | Everything glowing | B | `glow()` | Glow |
+| Soft Glow | Diffusion | A gentle beauty or dream section | Talking-head default | B | `glow()` with a low threshold, `blur()` blend | Glow + Gaussian Blur in Screen |
+| Color Distance | Isolates one colour | Keep one colour, grey the rest; colour mattes | — | B | `colorKey()` | Color Range, Leave Color |
+| Hair Regions • | Segments hair | A matte for a hair-colour demo | A look | B | Precomputed matte | Roto Brush |
+| Edge Glow | Glowing edges | — | Almost always | C | `createEffect()` + `glow()` | Find Edges + Glow |
+| Emboss | Relief | — | Almost always | C | `emboss()` | Emboss |
+| Cartoon | Flattens into cartoon | Parody | Brand or explainer pieces | C | `createEffect()` | Cartoon |
+| Primary Colors | Reduces to primaries | Pop parody | — | C | `createEffect()` | Colorama |
+| NDVI False Color | Vegetation index colours | Literal NDVI or remote-sensing content | Anything else | C | `createEffect()` | Colorama |
+| RGB Split | Channel offset | One glitch beat, 2–4 frames | As a transition every time | C | `chromaticAberration()` | Shift Channels + Transform |
+| ASCII Rain | Matrix-style characters | A Matrix reference the brief asks for | "Tech" as a theme | C | `HtmlInCanvas` shader | Third-party |
+| Laser Eyes, Face Laser Eyes • | Beams from the eyes | Memes | Any other register | C | Precomputed face landmarks + SVG | Face Tracker + Glow |
+
+#### 4. Zoom
+
+In ChatCut the zoom is one effect, `builtin:zoom`, with these properties:
+
+| Property | Range | Default | Meaning |
+|---|---|---|---|
+| `magnification` | 1–4 | 1.5 | Zoom factor |
+| `focalPointX`, `focalPointY` | 0–1 | 0.5 | Where to zoom to |
+| `focalMode` | `auto` / `manual` | `auto` | `auto` picks the subject; use `manual` for a UI detail |
+| `shape` | `punch` / `hold` / `slow-push` / `instant` | `hold` | Animation curve |
+| `easeInFrames`, `easeOutFrames` | 0–60 | 8 | Ramp length |
+
+The library shows six presets: Slow Push, Slow Pull Out, Instant, Quick Zoom In, Quick Zoom Out, Zoom In + Out. How each preset maps to `shape` is not documented. After applying one, read it back with `inspect_item` and write down the real values. The table below lists the intent of each preset; the starting values are Unrushed's defaults, not ChatCut's.
+
+| Preset | Says | Start with | Relation (transitions.md) |
+|---|---|---|---|
+| Slow Push | "This matters more and more": tension, a confession, the key claim | 1.08–1.2 over the whole line | B is a detail of A, slowly |
+| Slow Pull Out | "Here is the bigger picture": reveal context, end a section | From 1.2 back to 1.0 | A is part of B |
+| Instant | A second camera angle: emphasis without visible motion | 1.15–1.3, no ramp | Hard cut on the beat |
+| Quick Zoom In | Stress one word | 1.25–1.5, ease-in 4–6 frames | — |
+| Quick Zoom Out | Release after a punch, a joke landing | Back to 1.0 in 6–10 frames | — |
+| Zoom In + Out | Stress a single phrase, then return | 1.2–1.35, hold for the phrase | — |
+
+Rules:
+
+- Tie every zoom to a word or line in the script. Write it in the storyboard: `zoom: Quick Zoom In on "never"`.
+- Use `manual` focus for UI and screen recordings. `auto` follows faces and will miss the button you are talking about.
+- Above 2× the footage softens. Use it only when it reveals a detail, and check the pixels.
+- Alternate the scale between consecutive zooms (for example 1.0 → 1.25 → 1.0 → 1.15) so they do not feel stamped.
+- A zoom and a transition inside the same 10 frames fight each other. Choose one.
+
+#### 5. Transitions from the library
+
+Choose by the relation between the two beats, as in `transitions.md`. This table maps the library's transitions onto those relations.
+
+| Library transition | Relation it can say | Tier | Notes | Remotion | After Effects |
+|---|---|---|---|---|---|
+| Cross Dissolve | Time passes; A becomes B, softly | A | 8–16 frames. More than 24 frames feels like a slideshow. | `fade()` | Opacity cross-fade |
+| Dip to Black | End of a chapter; a large time skip; a tonal reset | A | Use it once or twice per piece, never between bullet points | `fade()` through a black solid | Dip to Black |
+| Soft Wipe | B continues A in space, sideways | B | Match the wipe direction to motion in the shot | `wipe()` with a feathered edge (custom) | Linear Wipe, feathered |
+| Clean Line Wipe | B opens a new chapter; list items in an editorial style | B | The line must belong to the design language (rule, cursor, divider) | `wipe()` + a 2 px line layer | Linear Wipe + stroke |
+| Luma Blend | A becomes B through light: bright areas lead | B | Works when both shots share bright regions | Custom HTML-in-canvas shader | Gradient Wipe using a luma layer |
+| Rack Focus | Attention shifts between planes; B is a detail of A | B | Reads as camera language, so it is good for documentary | `blur()` keyframed across a `fade()` | Camera Lens Blur keyframed |
+| Whip Pan | B continues A with energy; a location jump | B | Both shots should move, or seem to, in the same direction; add a whoosh | `slide()` + `zoomBlur()`, or a directional-blur shader | Transform + Directional Blur |
+| Organic Light Dissolve | Memory, mood, a dream | C | Reads as a template; a plain dissolve is usually better | `lightLeak()` over `fade()` | Gradient Wipe with Fractal Noise + Glow |
+| Anticipation Zoom | B is a detail of A, with energy | C | Only if the cut lands exactly on a beat | `zoomBlur()`, `zoomInOut()` | Scale + CC Radial Fast Blur |
+| Impact Shake | Contrast; a punchline on a hit | C | 4–8 frames, with a sound you can hear | `pushCut()` + shake | Wiggle burst |
+| Flash | Contrast; a camera flash inside the story | C | A white flash is a strong AI tell. Prefer a hard cut. | `pushCut()` | White solid, 2–4 frames |
+| Page Curl | A document or page turns, literally | C | Only when paper is on screen | `pageTurn()` | CC Page Turn |
+
+In ChatCut a library transition needs two adjacent clips on the same track with spare media on both sides (handles). If it is refused, use the duration the editor suggests, trim to expose handles, or keep the hard cut. A hard cut is a valid choice, and usually the best one.
+
+#### 6. Sound accents
+
+The cheapest way to connect ideas and mark emphasis is often a sound placed at the right frame, not a visual effect.
+
+- Pair sounds with motion that has a direction or an impact: whoosh with Whip Pan, a soft riser with Slow Push, a click or tick with a UI cursor, a low hit with Impact Shake.
+- Place the sound at the motion's peak, not its start. A whoosh peaks at the midpoint of the pan.
+- Keep accents out of music ducking, and set the volume per item.
+- At most one accent per beat. Silence before a key line is also a sound decision.
+
+#### 7. Budgets and stacking
+
+Per piece:
+
+- **Tier C:** at most one, with a written reason. A second one fails `critique`.
+- **Stylize:** at most one look per section, and at most two looks in the whole piece.
+- **Zoom in talking heads:** roughly one per 8–12 seconds, never two in a row on consecutive sentences. Screen recordings may use more, since there each zoom is an explanation.
+- **Transitions:** the same library transition never on three cuts in a row. Most cuts stay hard.
+
+Per shot:
+
+- Never stack two distortions (for example Lens Distortion and Dome Magnifier).
+- Never put a stylize effect on top of a zoom and a transition within the same second.
+- Text on screen beats texture: drop Halftone, Dither or CRT where small text must be read.
+- The brand accent rule still applies: one focus per frame.
+
+#### 8. Applying it in ChatCut
+
+##### With the ChatCut MCP (Claude Code or Codex agent plugin)
+
+1. **Discover.** Call `browse_library` with a category or query, for example `browse_library(category: "transitions", query: "dissolve")`. Built-ins have stable global ids. Do not hard-code ids other than `builtin:zoom`. Read each asset's editable properties before setting them.
+2. **Locate.** Get clip ids and frame ranges with `preview_timeline({views:["timeline"], tracks:["V1"]})`. Use `inspect_item` when you need full detail.
+3. **Apply** with `edit_item`. There are three shapes:
+
+   ```text
+   # Effect on a whole clip
+   edit_item(json: '{"adds":[{"type":"effect","assetId":"<id>","targetItemId":"<clip-id>","propertyOverrides":{...}}]}')
+
+   # Effect or zoom on a range of frames
+   edit_item(json: '{"adds":[{"type":"effect","assetId":"builtin:zoom","mode":"track-bound","trackId":"<track>","trackBoundFrom":90,"trackBoundDurationInFrames":24,"propertyOverrides":{"magnification":1.3,"shape":"punch"}}]}')
+
+   # Transition between two adjacent clips
+   edit_item(json: '{"adds":[{"type":"transition","assetId":"<id>","outgoingItemId":"<a>","incomingItemId":"<b>","durationInFrames":12}]}')
+   ```
+
+   Send only the properties you change.
+4. **Verify.** Confirm with `preview_timeline` that the effect sits on the right clip and range, then look at composed frames (`views:["viewer"]`). Never report success from the `edit_item` response alone.
+5. **Custom shader only as a last resort.** Use `submit_shader` only when nothing in the library fits the intent. Write the brief like a director:
+   - eased progress, never linear;
+   - both clips take part in a transition;
+   - the first and last frames match the clips exactly;
+   - an `intensity` or `amount` control, plus `softness` for transitions, with 2–5 controls in total.
+
+   Generation creates a library asset and may cost credits. Apply it only when the plan calls for it.
+
+ChatCut's agent does not add effects nobody asked for. Unrushed's job is to ask for them explicitly, cue by cue, from the storyboard.
+
+##### Without the MCP (a prompt in ChatCut's chat)
+
+Write one sentence per cue, with five parts:
+
+1. the target;
+2. the effect;
+3. the time range;
+4. the intensity;
+5. what must stay unchanged.
+
+For example:
+
+> On the clip at 00:42–00:45, add Quick Zoom In to 1.3× on the word "never", focus manual at the laptop screen, ease-in 5 frames. Keep the captions and the lower third unchanged.
+
+"Make it cinematic" is not a cue.
+
+#### 9. Rebuilding it in Remotion and After Effects
+
+- **Remotion.**
+  - `@remotion/effects` applies effects through the `effects` prop of `<Video>`, `<Img>`, `<Solid>`, `<HtmlInCanvas>` and others, in the order listed.
+  - Custom effects use `createEffect()`.
+  - Library-style transitions come from `@remotion/transitions` (`fade`, `slide`, `wipe`, `flip`, `clockWipe`, `iris`, `pushCut`, `zoomBlur`, `zoomInOut`, `pageTurn`, …). Custom ones are HTML-in-canvas presentations; shaders from gl-transitions.com (MIT) can be ported.
+  - WebGL effects need `--gl=angle` when rendering.
+- **After Effects.** The tables above give the native effect. Person, face, hand and hair effects need Roto Brush, the Face Tracker or third-party plug-ins.
+- **Detection effects (•).** These are not portable for free. If the target is not ChatCut, either supply precomputed masks or landmarks, or choose a different device.
+
 ## Embedded: references/ai-tells.md
 
 ### AI tells in motion and video
@@ -729,6 +1012,11 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Floating parallax layers that drift for no reason | Depth as decoration | Parallax only when depth is part of the story |
 | Glitch, RGB split or light-leak transitions as filler | Effects covering a weak cut | Use them once, where the content is about failure or noise |
 | Text moving while it must be read | Motion competing with reading | Animate in, rest, animate out |
+| A punch-in zoom on every sentence of a talking head | The auto-edit signature; emphasis everywhere means emphasis nowhere | One zoom per stressed word, roughly one per 8–12 s, with alternating scale (`effects.md`) |
+| Camera shake, impact shake or a white flash to add "energy" | Library effects covering a cut with no idea | A hard cut on the beat; shake only on a physical hit you can hear, for 4–8 frames |
+| Meme effects in a serious piece (laser eyes, ASCII rain, cartoon, heat map as a look) | Reaching for the library instead of the story | Leave them out, or use one, once, when the brief asks for that register |
+| Several stylize looks stacked or swapped shot to shot (CRT, then halftone, then dither) | A filter tour, not a style | One look per section, two per piece at most; looks never replace a through-line |
+| Page curl, organic light dissolve or anticipation zoom as the default transition | Template transitions from editors' libraries | Choose by relation (`transitions.md`); a dissolve or a hard cut is usually better |
 
 #### Visual
 
@@ -771,6 +1059,13 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 - **Frozen stretches**: long holds where nothing changes anywhere in the frame, which are sometimes intended and sometimes a render that stalled.
 - **Cut rhythm**: hard cuts and the average shot length. Many hard cuts in a piece meant to flow are a sign that transitions were not designed.
 - **The planned rhythm**, with `--storyboard STORYBOARD.md`: scene lengths that are all alike, and the same transition type back to back.
+- **The cue sheet**, from the same file. The detector checks the budgets in `effects.md`:
+  - cues without a reason or tier;
+  - more than one tier C cue, or more than two stylize looks;
+  - zooms per minute;
+  - the same library transition on three cuts in a row;
+  - a zoom within 10 frames of a transition;
+  - stacked distortions.
 
 Everything else needs eyes: use the tables above.
 
@@ -874,10 +1169,10 @@ Fill the Design Style fields once, and every later graphic in the project follow
 
 | Field | What to put |
 |---|---|
-| Design guide | Plain-language rules: layout and text zone, spacing, type hierarchy, the motion fundamentals as numbers (durations, curves, distances, stagger, exit timing), the material, the signature move, and the forbidden list |
-| Colors | Each hex value with its role: ground, ink, accent and what the accent is for |
+| Design guide | Start from `BRAND.md` when it exists: its rules go first, marked as brand rules. Then plain-language rules: layout and text zone, spacing, type hierarchy, the motion fundamentals as numbers (durations, curves, distances, stagger, exit timing), the material, the signature move, and the forbidden list |
+| Colors | Each hex value with its role, taken from `BRAND.md` when it exists: ground, ink, accent and what the accent is for |
 | Fonts | Each family with its role and sizes |
-| Logo | Only if the piece carries a brand |
+| Logo | Only if the piece carries a brand: the version, minimum size and clear space from `BRAND.md` |
 | Reference images | Stills that show material and texture; describe in the guide what each one is for |
 
 Reference images are static, so motion has to be described in the design guide, in words and numbers.
@@ -892,8 +1187,36 @@ Paste this into the AI composer, with the Design Style selected. Structure it li
 4. **Motion fundamentals**: repeat the key numbers even if they are in the Design Style. The agent follows what is in front of it.
 5. **Interfaces**: when a scene simulates a product or a tool, name the design system and components ("shadcn/ui Slider and Card, dark theme, Lucide icons", or the product's own), with radius, colours and font, and the cursor behaviour from `visual-explanation.md`.
 6. **Continuity**: if one element carries through the piece, such as particles or a line, say that every transformation starts from the exact end state of the previous scene, with no cuts between clips, and that it may build the whole sequence as a single motion graphic if needed.
-7. **Process**: pilot the hook and the payoff first, report, then build the rest.
-8. **Report**: ask it to list what it could not do, which frames it checked, and the real timings.
+7. **Cues**: the cue sheet from `STORYBOARD.md`, one sentence per cue (see "Library effects, zooms and sound" below). State that these are the only effects, zooms and library transitions wanted, so the agent adds nothing else.
+8. **Process**: pilot the hook and the payoff first, report, then build the rest.
+9. **Report**: ask it to list what it could not do, which frames it checked, the real timings, and the real parameters of every cue it applied.
+
+#### Library effects, zooms and sound
+
+ChatCut's library holds effects, zooms, transitions, LUTs and sound effects that attach to clips, ranges or cuts. Choose them in `storyboard` with `references/effects.md`, then apply the cue sheet. ChatCut's own agent does not add effects nobody asked for, so every cue must be requested explicitly.
+
+**Routes 1 and 2, with ChatCut's tools.** Apply the cue sheet cue by cue:
+
+1. `browse_library` finds the asset id by name or category. Do not hard-code ids other than `builtin:zoom`.
+2. `preview_timeline` gives the clip ids and frame ranges.
+3. `edit_item` applies the cue: an effect on a clip or a range, the zoom with its properties, or a transition between two adjacent clips with `durationInFrames`.
+4. `preview_timeline` with the viewer checks the composed frames.
+
+When the editor refuses a transition for lack of handles, use its suggested duration or keep the hard cut, and note it in the report. Generate a custom shader (`submit_shader`) only when nothing in the library fits, with the brief rules in `effects.md` §8.
+
+**Route 3, by prompt.** Write one sentence per cue, with five parts:
+
+1. the target;
+2. the library name;
+3. the time range;
+4. the intensity or parameters;
+5. what must stay unchanged.
+
+For example:
+
+> At 00:42–00:45 on the talking-head clip, add Quick Zoom In to 1.3× on the word "never", manual focus on the laptop screen, ease-in 5 frames; keep captions and the lower third unchanged.
+
+After the agent applies them, ask it to read back the real parameters, because the mapping of zoom presets to the zoom's internal `shape` values is not documented.
 
 #### Working with the agent
 

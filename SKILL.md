@@ -19,13 +19,14 @@ Reply in the person's language. Command names stay in English.
 
 ### Project files
 
-Commands share three files in the project folder. Read whichever exist before any command.
+Commands share up to four files in the project folder. Read whichever exist before any command.
 
 | File | Written by | Holds |
 |---|---|---|
+| `BRAND.md` | `brief`, from the person's brandbook or built in the conversation | The brand rules the piece must keep: logo use, colours with roles, type, graphic elements, imagery, motion, voice, video templates |
 | `VIDEO.md` | `brief` | What the piece is: topic, message, audience, format, sound, through-line, facts to verify |
 | `STYLE.md` | `style` | How it looks and moves: material, palette, type, dials, signature move, forbidden list |
-| `STORYBOARD.md` | `storyboard` | Scene by scene: exact text, figure, motion, timing, transition |
+| `STORYBOARD.md` | `storyboard` | Scene by scene: exact text, figure, motion, timing, transition, and the cue sheet of library effects, zooms and sound |
 
 Templates are in `assets/`. If a command needs a file that does not exist, say so and offer to run the command that creates it, rather than inventing its contents.
 
@@ -57,11 +58,11 @@ How `energy` maps to numbers, as a starting point:
 
 | Group | Command | Does | Reads | Writes |
 |---|---|---|---|---|
-| Context | `brief` | Captures what the piece is and its one visual idea | — | `VIDEO.md` |
-| Context | `style` | Defines the visual and motion system | `VIDEO.md` | `STYLE.md` |
-| Create | `storyboard` | Breaks the piece into timed scenes | `VIDEO.md`, `STYLE.md` | `STORYBOARD.md` |
+| Context | `brief` | Captures what the piece is, its one visual idea and the brand it must keep | a brandbook, if there is one | `VIDEO.md`, `BRAND.md` |
+| Context | `style` | Defines the visual and motion system | `VIDEO.md`, `BRAND.md` | `STYLE.md` |
+| Create | `storyboard` | Breaks the piece into timed scenes and cues | `VIDEO.md`, `STYLE.md`, `BRAND.md` | `STORYBOARD.md` |
 | Create | `recipe <reference>` | Turns a site, clip or screenshot into reusable motion values | — | a recipe in the reply |
-| Deliver | `export <target>` | Compiles everything into a prompt or spec for one tool | all three files | the deliverable |
+| Deliver | `export <target>` | Compiles everything into a prompt or spec for one tool | all project files | the deliverable |
 | Review | `critique` | Scores frames or a video and lists what to fix | `STYLE.md` if it exists | a report in the reply |
 
 ### `brief`
@@ -72,7 +73,22 @@ Read `references/narrative.md` first. Ask only what you cannot infer from the co
 2. Audience: who they are, what they already know or believe, and what they should feel or do afterwards.
 3. Platform, aspect ratio, duration and sound. A silent piece carries its whole narrative in on-screen text and motion beats, which changes the timing rules.
 4. Facts the piece states (dates, names, figures, product claims). List them; each needs a source or is marked `[verify]`. For a product, ask whether you can see the product itself, its code or its interface.
-5. Anything already decided: brand, references, things to avoid.
+5. **The brand.** Ask for the brandbook or style sheet: a PDF, a link, a Figma file, design tokens, a guidelines `.md`, or even screenshots. Also ask for references and things to avoid.
+
+**Brand first.** A piece for a real brand has to look like that brand, so ask about it before proposing anything visual.
+
+- **If the person has a brandbook**, read it and write `BRAND.md` from the template: logo use, colours with roles, type and licences, graphic elements, imagery, motion, voice and video templates. Brandbooks are usually made for print and the web, so they rarely say how the brand moves. List what is missing for video (motion curves and durations, logo animation, transitions, lower thirds, end card) and propose those parts, marked as proposals, for the person to approve.
+- **If there is none**, offer to build a short one in the conversation. Ask for, or propose for approval, five decisions:
+  1. logo or name treatment and where it may appear;
+  2. a palette with roles, and the one accent and its job;
+  3. two type families with roles and licences;
+  4. the motion personality (curve, tempo, what is forbidden);
+  5. the voice, as a few words to use and avoid.
+
+  Write them to `BRAND.md`, marked "built in conversation".
+- **If the piece carries no brand** (a personal or one-off piece), say that `BRAND.md` is skipped and that `style` will set the look.
+
+Brand rules outrank this skill's defaults. When a brand rule triggers an AI tell or a legibility problem, for example a default font from `ai-tells.md`, or a colour pair below 4.5:1 for text, keep the rule, say so, and suggest the least intrusive fix.
 
 Then propose, and let the person choose or correct:
 
@@ -80,11 +96,13 @@ Then propose, and let the person choose or correct:
 - **The through-line.** The single visual idea that carries the whole piece, and the most important decision in the brief. Propose two or three options and recommend one. A piece about the history of AI made of nine unrelated effects reads as a demo reel; the same piece where one set of particles travels from a neuron to a human profile reads as a story. A good through-line is a transformation that means something.
 - **The beat map.** Sections with their tempo and beat lengths, and where the payoff lands on the tension curve.
 
-Write `VIDEO.md` from the template.
+Write `VIDEO.md` from the template, and `BRAND.md` when there is a brand.
 
 ### `style`
 
 Read `references/principles.md`, `references/ai-tells.md` and the index of `references/techniques.md` first.
+
+**Within the brand.** If `BRAND.md` exists, its palette, type, logo rules and forbidden items are fixed. The directions you propose vary what the brand leaves open: material, ground, light, composition and the signature move. Say which brand rules each direction relies on.
 
 **Propose before deciding.** Offer two or three directions and let the person choose; never pick a look silently. Directions must differ in material and ground, not only in colour: three palettes of the same idea are one direction. Do not reuse the look of earlier projects (earlier `STYLE.md` files, earlier pieces in the conversation) unless the person asks for it. For each direction give:
 
@@ -117,6 +135,12 @@ Build the storyboard from the spine and beat map in `VIDEO.md`; if they are miss
 - Choose each transition from `references/transitions.md` by the relation between the two beats, and write the relation next to it. Never the same type twice in a row; at least four kinds in a piece over 60 s; the biggest one leads into the payoff.
 - When the piece shows a product or a tool, simulate its interface with real components: the product's own when you can see it, otherwise the design system it is built on. Never invent controls.
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
+- **Library effects, zooms and sound.** When the target tool has an effects library (ChatCut does), read `references/effects.md`.
+  - The default is no effect.
+  - Add a cue only when it does a job the cut, framing or graphics cannot: guide the eye, stress a line, hide something, separate the subject, show how a machine sees, mark another time.
+  - Tie each zoom and sound accent to a word or line of the script.
+  - Respect the budgets: at most one tier C effect, with a reason; at most two stylize looks per piece; roughly one zoom per 8–12 s in a talking head; never the same library transition on three cuts in a row.
+  - Write every cue in the cue sheet of `STORYBOARD.md`, with its reason.
 - Check reading time for every line of text with the rule in `principles.md`. For silent pieces, flag any line held for less than its reading time.
 - Use only facts from `VIDEO.md`. Anything not there is marked `[verify]`.
 - Make sure the image and the text say the same thing. If the line says "funding freezes", the figure should freeze, not pile up.
@@ -128,6 +152,12 @@ Before finishing, review the storyboard as a whole and fix what fails, saying wh
 - **Transitions.** No type twice in a row, at least four kinds over 60 s, the biggest one into the payoff.
 - **Slide test.** No scene reads as a slide when paused; neighbouring beats use different devices.
 - **Variance.** If scenes share the same structure, apply `variance`.
+- **Cues.**
+  - Every cue in the cue sheet has a reason and a tier.
+  - No two distortions are stacked.
+  - No zoom and transition fall within the same 10 frames.
+  - The budgets in `effects.md` hold.
+- **Brand.** Nothing contradicts `BRAND.md`.
 
 ### `recipe <reference>`
 
@@ -154,15 +184,22 @@ Every export:
 
 - states motion as numbers (ms, curve values, px, counts) next to the intent behind them, because tools follow numbers more reliably than adjectives, and generalise better when they know why;
 - for each technique named in the storyboard, carries its key parameters and build notes from `references/techniques.md`, so the tool knows how to build it and not only what it should look like;
-- includes the forbidden list from `STYLE.md`;
+- includes the forbidden list from `STYLE.md` and the brand rules from `BRAND.md`;
+- carries the cue sheet from `STORYBOARD.md`: each effect, zoom, library transition and sound accent with its range in frames, its parameters and its reason. If the tool's library is available, the cues are applied directly; otherwise they are written so the tool can apply them (see the target file and `references/effects.md`);
 - asks the tool to pilot the first scene and the closing before building the rest, and to report what it could not do;
 - ends with the review checklist from `critique`, so the tool checks its own frames.
 
 ### `critique`
 
-Read `references/ai-tells.md`, `references/narrative.md`, `references/transitions.md`, and `STYLE.md` if it exists. `critique` works on a finished video, on frames, or on a plan (`STORYBOARD.md`) before anything is built; critiquing the plan is the cheapest moment to fix rhythm and transitions.
+Read `references/ai-tells.md`, `references/narrative.md`, `references/transitions.md`, and `STYLE.md` and `BRAND.md` if they exist. When the piece uses an editor's library effects, zooms or sound accents, also read `references/effects.md`. `critique` works on a finished video, on frames, or on a plan (`STORYBOARD.md`) before anything is built; critiquing the plan is the cheapest moment to fix rhythm and transitions.
 
-If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --storyboard STORYBOARD.md` first: it reports dips to black, stretches where nothing moves anywhere in the frame, hard cuts, and the planned rhythm and repeated transitions. Then look at frames, sampled densely around every transition.
+If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --storyboard STORYBOARD.md` first: it reports:
+
+- dips to black;
+- stretches where nothing moves anywhere in the frame;
+- hard cuts;
+- the planned rhythm and repeated transitions;
+- the cue sheet's budgets: cues without a reason, tier C and stylize looks over budget, zooms per minute, the same library transition three times in a row, zooms colliding with transitions, and stacked distortions. Then look at frames, sampled densely around every transition.
 
 Score each criterion from 1 to 5 with one line of evidence:
 
@@ -172,6 +209,7 @@ Score each criterion from 1 to 5 with one line of evidence:
 | Rhythm | Do beat lengths vary with purpose: building, then holding after a reveal? Or does it tick along evenly? |
 | Explanation | Is each idea shown happening, with a device, rather than written beside a demo? Does any paused frame read as a slide? |
 | Transitions | Does each transition say the relation between beats? How many kinds, and are any repeated back to back? |
+| Effects | Does every library effect, zoom and sound accent do a job the cut cannot? Is each zoom tied to a word? Are the budgets in `effects.md` kept, with no gimmick without a reason and nothing stacked? Would the beat be better with no effect at all? |
 | Concept | Is the figure understood without reading the text? |
 | Hierarchy | Does the eye know where to go first, second, third? |
 | Legibility | Can every line be read in the time it is on screen? |
@@ -179,7 +217,7 @@ Score each criterion from 1 to 5 with one line of evidence:
 | Timing | Do entrances decelerate, exits run faster, holds feel intended? |
 | Material and light | Does the piece have texture, depth, a physical feel? Does each style have its own world? |
 | Distinctiveness | How many AI tells are present? |
-| Consistency | Does it follow `STYLE.md`? |
+| Consistency | Does it follow `STYLE.md`, and `BRAND.md` when there is one: logo use, colour roles, type, voice? |
 
 Then list the AI tells you found, and the three fixes with the most impact. Write each fix as an instruction ready to paste into the tool. When a scene looks generic because of its technique, device or transition, suggest an alternative from `references/techniques.md`, `references/visual-explanation.md` or `references/transitions.md` that says the same thing better. Be specific about what stills cannot show: motion, fluidity and rhythm need the video.
 
@@ -197,6 +235,7 @@ If you cannot reach them either, work from the embedded essentials in the single
 |---|---|
 | `references/narrative.md` | Hook, promise, proof, payoff and ask; structures by type of piece; beats, rhythm and the beat map. `brief`, `storyboard`, `critique` |
 | `references/visual-explanation.md` | Devices that make an idea visible, the slide test, interface simulation with real design systems, cursor choreography. `style`, `storyboard`, `export`, `critique` |
+| `references/effects.md` | Library effects, zooms, transitions and sound accents (ChatCut's library and their Remotion and After Effects equivalents): choosing by intent, tiers, budgets, and how to apply them through ChatCut's tools or a prompt. `storyboard`, `export`, `critique` |
 | `references/transitions.md` | Transitions chosen by the relation between beats, a catalogue with durations and related techniques, eye trace and other ways to hide the seam. `storyboard`, `export`, `critique` |
 | `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour. `style`, `storyboard`, `recipe`, `export`, `critique` |
 | `references/ai-tells.md` | What makes motion and video read as AI-generated, and what to do instead. `style`, `export`, `critique` |
