@@ -199,7 +199,9 @@ If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --s
 - stretches where nothing moves anywhere in the frame;
 - hard cuts;
 - the planned rhythm and repeated transitions;
-- the cue sheet's budgets: cues without a reason, tier C and stylize looks over budget, zooms per minute, the same library transition three times in a row, zooms colliding with transitions, and stacked distortions. Then look at frames, sampled densely around every transition.
+- the cue sheet's budgets: cues without a reason, tier C and stylize looks over budget, zooms per minute, the same library transition three times in a row, zooms colliding with transitions, and stacked distortions.
+
+Then look at frames, sampled densely around every transition.
 
 Score each criterion from 1 to 5 with one line of evidence:
 
