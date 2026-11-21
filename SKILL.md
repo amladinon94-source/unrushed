@@ -66,15 +66,19 @@ How `energy` maps to numbers, as a starting point:
 
 ### `brief`
 
-Ask only what you cannot infer from the conversation or files, and at most five questions at once:
+Read `references/narrative.md` first. Ask only what you cannot infer from the conversation or files, and at most five questions at once:
 
-1. Topic and the one sentence the viewer should leave with.
-2. Audience, platform, aspect ratio and duration.
-3. Sound: silent, music only, or voice. A silent piece carries its whole narrative in on-screen text, which changes the timing rules.
-4. Facts the piece states (dates, names, figures). List them; each needs a source or is marked `[verify]`.
-5. The through-line.
+1. Topic, the goal (explain, sell, launch, teach, celebrate) and the one sentence the viewer should leave with.
+2. Audience: who they are, what they already know or believe, and what they should feel or do afterwards.
+3. Platform, aspect ratio, duration and sound. A silent piece carries its whole narrative in on-screen text and motion beats, which changes the timing rules.
+4. Facts the piece states (dates, names, figures, product claims). List them; each needs a source or is marked `[verify]`. For a product, ask whether you can see the product itself, its code or its interface.
+5. Anything already decided: brand, references, things to avoid.
 
-The through-line is the single visual idea that carries the whole piece, and it is the most important decision in the brief. Propose two or three options and recommend one. A piece about the history of AI made of nine unrelated effects reads as a demo reel; the same piece where one set of particles travels from a neuron to a human profile reads as a story. A good through-line is a transformation that means something.
+Then propose, and let the person choose or correct:
+
+- **The spine.** Hook, promise, proof, payoff and ask, one line each, and the structure that fits the type of piece. The hook must work visually in the first second.
+- **The through-line.** The single visual idea that carries the whole piece, and the most important decision in the brief. Propose two or three options and recommend one. A piece about the history of AI made of nine unrelated effects reads as a demo reel; the same piece where one set of particles travels from a neuron to a human profile reads as a story. A good through-line is a transformation that means something.
+- **The beat map.** Sections with their tempo and beat lengths, and where the payoff lands on the tension curve.
 
 Write `VIDEO.md` from the template.
 
@@ -93,7 +97,7 @@ Write `STYLE.md`. Include a ready-to-paste style block for the likely target (fo
 
 ### `storyboard`
 
-Build a table with one row per scene: start time, duration, exact on-screen text, the figure or visual, the technique, what moves (with curve, duration and distance), and the transition into the next scene.
+Build the storyboard from the spine and beat map in `VIDEO.md`; if they are missing, offer to run `brief` first. Build a table with one row per scene: start time, duration, exact on-screen text, the figure or visual, the technique, what moves (with curve, duration and distance), and the transition into the next scene.
 
 - Choose each scene's technique from the line's meaning. Read the index by meaning in `references/techniques.md`, pick the entry whose image enacts the line, and adapt its key parameters to `STYLE.md`. Name the entry in the table so `export` can carry its build notes. Keep the signature move as the thread; techniques serve it, not the other way round.
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
@@ -164,6 +168,7 @@ If you cannot reach them either, work from the embedded essentials in the single
 
 | File | Read for |
 |---|---|
+| `references/narrative.md` | Hook, promise, proof, payoff and ask; structures by type of piece; beats, rhythm and the beat map. `brief`, `storyboard`, `critique` |
 | `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour. `style`, `storyboard`, `recipe`, `export`, `critique` |
 | `references/ai-tells.md` | What makes motion and video read as AI-generated, and what to do instead. `style`, `export`, `critique` |
 | `references/techniques.md` | 38 techniques from real reference pieces, indexed by meaning and by family, with key parameters and build routes. `style`, `storyboard`, `recipe`, `export`, `critique` |
