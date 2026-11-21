@@ -45,6 +45,11 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Dates, statistics or names that nobody checked | Confident and wrong | Every fact sourced or marked `[verify]` |
 | Even pacing from start to end | No climax, no rest | Build tension, release it, and give the ending a hold |
 | A logo sting with sparkles at the end | Ending by habit | End on the idea; let the last frame breathe |
+| Every scene is a slide: label, title, support line and a demo box | Presenting instead of explaining; a deck with motion | Explain inside the scene with a device from `visual-explanation.md`; pass the slide test |
+| Side-by-side panels that never change shape | A comparison layout used as a crutch | Same space with two behaviours, a ghost overlay, or a rewind |
+| Every beat the same length | No rhythm; a template ticking along | A beat map with at least three beat lengths (`narrative.md`) |
+| Invented interface: made-up controls, "Button", lorem ipsum | Reads as fake immediately | Real components from the product or a recognised design system (`visual-explanation.md`) |
+| A cursor that teleports or glides in straight lines at constant speed | No hand behind it | Arcs, deceleration onto the target, a pause before clicking |
 
 ## What can be detected automatically
 

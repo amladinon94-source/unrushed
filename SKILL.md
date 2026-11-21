@@ -92,6 +92,7 @@ Read `references/principles.md` and `references/ai-tells.md` first.
 4. **Dials.** Set `energy`, `density` and `variance`, and say why.
 5. **Signature move.** One recurring motion that identifies the piece, such as particles that reassemble or a mask that always opens from the bottom. Look in `references/techniques.md` for techniques whose meaning matches the through-line and whose behaviour matches the material, and say which entry you started from.
 6. **Forbidden list.** The generic choices this piece in particular is tempted by.
+7. **Interface system**, when the piece shows a product or a tool: which components, icons and fonts the interface uses, and their licences. See `references/visual-explanation.md`.
 
 Write `STYLE.md`. Include a ready-to-paste style block for the likely target (for ChatCut, the Design Style fields; see `references/targets/`).
 
@@ -100,6 +101,8 @@ Write `STYLE.md`. Include a ready-to-paste style block for the likely target (fo
 Build the storyboard from the spine and beat map in `VIDEO.md`; if they are missing, offer to run `brief` first. Build a table with one row per scene: start time, duration, exact on-screen text, the figure or visual, the technique, what moves (with curve, duration and distance), and the transition into the next scene.
 
 - Choose each scene's technique from the line's meaning. Read the index by meaning in `references/techniques.md`, pick the entry whose image enacts the line, and adapt its key parameters to `STYLE.md`. Name the entry in the table so `export` can carry its build notes. Keep the signature move as the thread; techniques serve it, not the other way round.
+- Give each beat a device from `references/visual-explanation.md`: the way the idea becomes visible (interface simulation, ghosts, same space with two behaviours, a camera push, one canvas…). Neighbouring beats use different devices or compositions. Run the slide test on every scene: if a paused frame reads as a slide, rework it.
+- When the piece shows a product or a tool, simulate its interface with real components: the product's own when you can see it, otherwise the design system it is built on. Never invent controls.
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
 - Check reading time for every line of text with the rule in `principles.md`. For silent pieces, flag any line held for less than its reading time.
 - Use only facts from `VIDEO.md`. Anything not there is marked `[verify]`.
@@ -169,6 +172,7 @@ If you cannot reach them either, work from the embedded essentials in the single
 | File | Read for |
 |---|---|
 | `references/narrative.md` | Hook, promise, proof, payoff and ask; structures by type of piece; beats, rhythm and the beat map. `brief`, `storyboard`, `critique` |
+| `references/visual-explanation.md` | Devices that make an idea visible, the slide test, interface simulation with real design systems, cursor choreography. `style`, `storyboard`, `export`, `critique` |
 | `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour. `style`, `storyboard`, `recipe`, `export`, `critique` |
 | `references/ai-tells.md` | What makes motion and video read as AI-generated, and what to do instead. `style`, `export`, `critique` |
 | `references/techniques.md` | 38 techniques from real reference pieces, indexed by meaning and by family, with key parameters and build routes. `style`, `storyboard`, `recipe`, `export`, `critique` |

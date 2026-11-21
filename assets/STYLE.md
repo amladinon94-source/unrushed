@@ -47,5 +47,13 @@ One recurring motion that identifies the piece:
 Generic choices this piece in particular is tempted by:
 - 
 
+## Interface system
+Only when the piece shows a product or a tool. See `references/visual-explanation.md`.
+
+- **Source**: the product's own components / a design system (shadcn/ui, Material 3, Fluent 2, Apple HIG…)
+- **Icons**:
+- **Fonts in the interface**:
+- **Licences**:
+
 ## Tool style block
 (Ready to paste into the target tool's style feature. For ChatCut: design guide, colors with roles, fonts with roles, reference image notes.)
