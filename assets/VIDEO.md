@@ -14,6 +14,24 @@ Only when the person asked to skip questions. One line each, so each can be corr
 - **Duration**:
 - **Sound**: silent / music only / voice. A silent piece tells its story through on-screen text.
 
+## The one true thing
+See `references/narrative.md` §5.
+
+- **Problem** (what the viewer struggles with):
+- **Emotion** (what they should feel at the end):
+- **The one real feature or moment this piece is for**:
+
+## Brand inventory
+What the brand already owns, so the idea can come from it. One line each; leave blank what does not exist.
+
+- **Logo shape**:
+- **Core control** (the button, gesture or input users touch most):
+- **Material**:
+- **Key verb**:
+- **Success moment** (when the user knows it worked):
+- **Voice** (real phrases from the brand):
+- **What it would never do**:
+
 ## Goal
 - **Type of piece**: explainer / product promo / launch / showcase / tutorial / social
 - **Goal**: explain / sell / launch / teach / celebrate
@@ -27,7 +45,7 @@ One line each. See `references/narrative.md`.
 - **Promise**:
 - **Proof** (at most three beats, rising in strength):
 - **Payoff** (the strongest image, around 70–85% of the piece):
-- **Ask** (held at least 4 s):
+- **Ask** (one action, readable, final frame held 0.6–1.4 s):
 
 ## Beat map
 | Section | Tempo | Beat lengths | Intensity (1–5) |
@@ -39,6 +57,7 @@ The single visual idea that carries the whole piece. It is usually a transformat
 
 - **Chosen**:
 - **Why**:
+- **Cover-the-logo test** (does it stop working with a competitor's name?):
 - **Alternatives considered**:
 
 ## Product

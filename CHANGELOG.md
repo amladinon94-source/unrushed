@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.5 — 2026-11-23
+
+After 0.4, pieces still looked noisy, careless with information and "very AI", with the motion as decoration instead of the protagonist, and the researched physics never reached the build. Part of the cause was Unrushed itself: its rules and its example prescribed page furniture, a quota of transition kinds and a long end card. This version removes what prescribed slop, turns the research into numbers and checks, and adopts lessons from motionmaxxing (Apache-2.0) while keeping Unrushed's job: directing motion inside your own editor, with your footage and your real product.
+
+### Removed
+- The quota of "at least four transition kinds"; hard cuts on motion are now the default, with 1–3 designed transitions per minute.
+- The 4 s closing hold. The final frame holds 0.6–1.4 s, and the URL goes in the post copy.
+- Page furniture from the example brand and storyboard: labels, counters, crop marks, episode numbers, serif italic on screen, the end card with a URL.
+
+### Added
+- **Never ship**: eleven patterns that make a piece unfinished, whatever else scores well.
+- **Looking honestly**: run the gates, describe every frame of a contact sheet in one sentence, check Never ship, watch key moves as strips, fix in a fixed order, report numbers and never certify.
+- **Gates** in `detect.py` on any export: G0 piece exists, G2 no empty frames, G3 short ending, with G1, G4 and G5 judged by eye; `--expect`, `--expect-audio`, `--strict`; notes on loudness and motion against human-made films; `--sheet` for a contact sheet and the frames around every cut.
+- **Plan checks** in `detect.py --storyboard`: counters, URLs, slogan copy, numbers missing from `VIDEO.md`, page furniture in the visual plan, what each beat buys and the importance budget.
+- **Information discipline** (`narrative.md` §5): the one true thing, the brand inventory and the cover-the-logo test, "what each beat buys", importance 1–3 with at most a quarter emphasised, show then say, words on screen, real content.
+- **Motion kit** (`motion-kit.md`, `assets/remotion/unrushed-motion.ts`): ten measured curves as cubic-beziers, recipes in numbers, and how to apply them in ChatCut, Remotion and After Effects.
+- **Building in passes**: the hardest beat first, then blocking, type, motion and finish, with a check after each.
+- **Taste**: `TASTE.md` per project, `taste/` with the author's verdicts and edits, and `blind_review.py`.
+- New AI tells: page and template patterns, words on screen, gradient text and wide glows.
+
+### Changed
+- Durations, holds, stagger, overshoot and arrivals in `principles.md`, and the energy table in `SKILL.md`, follow the measured values (median move 10 frames).
+- The curve table uses the measured curves; the early-overshoot back-out curve is gone.
+- Library effects: Cross Dissolve and Dip to Black are situational, not workhorses; sound accents are 1–3 hand-placed hits per piece.
+
 ## 0.4 — 2026-11-23
 
 Lessons from a real test in ChatCut. Asked to "improve the whole video" of a product launch made without Unrushed, the agent:

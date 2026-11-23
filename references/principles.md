@@ -30,55 +30,64 @@ If a movement does none of them, remove it. Stillness is part of the vocabulary:
 
 ## 2. Duration
 
-Size and distance set duration. Larger things and longer journeys take longer, as they would in the physical world.
+Professional motion is faster than it feels. Across about 4,300 moves measured by the motionmaxxing project (Apache-2.0, github.com/Tejashmakwana/motionmaxxing), the median move lasts **10 frames at 30 fps (0.33 s)**. A piece built on 20–30 frame ease-outs everywhere is slower than every professional sample, and slow, even motion is what reads as "a slide deck that moves".
 
-| What moves | Typical duration | At 30 fps |
+| What moves | Default at 30 fps | Usual range (p25–p75) |
 |---|---|---|
-| Micro details: an underline, a dot, a tick | 150–300 ms | 5–9 frames |
-| Small elements: labels, icons, single words | 300–500 ms | 9–15 frames |
-| Text blocks: titles and support lines | 500–900 ms | 15–27 frames |
-| Large shapes and panels | 700–1200 ms | 21–36 frames |
-| Scene transitions | 900–1600 ms | 27–48 frames |
-| Transformations: morphs and reassemblies | 1200–2000 ms | 36–60 frames |
+| An entry by position or scale | 12 frames (0.4 s) | 6–24 frames |
+| An exit by position | 13–14 frames, accelerating | 7–27 frames |
+| Opacity, used only as a helper | 6 frames (0.2 s) | 4–12 frames |
+| Blur clearing | 7 frames | 4–10 frames |
+| A camera push or pull | 10–18 frames | 6–22 frames |
+| A drift that keeps a hold alive | 20+ frames, linear, 1–3 px per frame | — |
+| A transformation, such as a morph | 18–36 frames | once or twice per piece |
 
-Video tolerates longer durations than interface animation, because nobody is waiting to click. It does not tolerate empty time: a long transition must have something happening throughout.
+Size and distance still matter: a bigger thing, or a longer journey, takes longer. But start from these numbers, not from a second.
 
-**Holds.** After an element arrives, let it rest. A hold is where meaning lands. Typical holds run from 1.5 s for a single word to the full reading time for a sentence (section 7).
+**Holds.** A hold is where meaning lands, but a frozen frame reads as a slide. While something holds:
+- keep one living thing on it: a slow drift, a caret, light moving, a counter ticking;
+- give a designed breath of 0.6–1.5 s, with a reason you can state, right before a payoff;
+- let a payoff the viewer must read sit perfectly still for at most about 1 s;
+- hold the final frame 0.6–1.4 s.
+
+Source: the numbers in this section and sections 3–6 are measured by the motionmaxxing project (Apache-2.0, github.com/Tejashmakwana/motionmaxxing): about 4,300 moves in 53 professional moments, sampled frame by frame. They are defaults to start from, not rules for every frame.
 
 ## 3. Curves
 
 The curve says how something gains and loses speed, and it carries more character than the duration.
 
-| Job | Curve | cubic-bezier |
+| Job | Curve (from `motion-kit.md`) | cubic-bezier |
 |---|---|---|
-| Enter: arrives fast, settles gently | expo-out | `(0.16, 1, 0.3, 1)` |
-| Enter, softer | quint-out | `(0.22, 1, 0.36, 1)` |
-| Exit: starts gently, leaves fast | expo-in | `(0.7, 0, 0.84, 0)` |
-| Move on screen from A to B | cubic in-out | `(0.65, 0, 0.35, 1)` |
-| Gentle oscillation and breathing | sine in-out | `(0.37, 0, 0.63, 1)` |
-| Playful arrival with overshoot | back-out | `(0.34, 1.56, 0.64, 1)` |
-| Continuous motion: drift, rotation, marquee | linear | `(0, 0, 1, 1)` |
+| Enter: arrives, decelerates, settles | `softLand` | `(0.22, 0.776, 0.511, 0.942)` |
+| Hero entry or the closing beat: most of the travel at once | `snapSettle` | `(0.136, 1.058, 0.298, 0.943)` |
+| Medium move or camera push | `glide` | `(0.524, 0.892, 0.878, 0.995)` |
+| Exit: starts gently, leaves fast, still moving at the end | `accelExit` | `(0.288, 0, 0.632, 0.043)` |
+| Exit into a hard cut at full speed | `crashOut` | `(0.434, 0, 0.73, 0)` |
+| Opacity, blur and colour ramps | `softInOut` | `(0.345, 0.074, 0.655, 0.926)` |
+| Continuous motion: drift, creep, counters | linear | `(0, 0, 1, 1)` |
+| The one late lean past the mark, once per piece | `popOver` | `(0.295, 0.157, 0.309, 1.398)` |
+
+These are fits to measured professional moves. `motion-kit.md` has their usual durations, the recipes built from them (land, arrive from oversize, press, camera snap, whip…) and how to apply them in ChatCut, Remotion and After Effects. A brand's own curve, when `BRAND.md` has one, replaces `softLand` for entries; keep the exits accelerating.
 
 Rules of thumb:
 
-- **Entrances decelerate.** Things arriving should spend most of their time settling, which reads as confidence.
-- **Exits accelerate.** Things leaving should get out of the way.
+- **Landings decelerate.** Most professional landings ease out: they cover most of the distance in the first few frames and settle. That reads as heavy and certain.
+- **Exits accelerate and end on the cut.** Things leaving speed up and are still moving when the shot ends. The cut is the edit, and the next shot inherits the speed.
 - **Linear is only for continuous motion.** A linear entrance looks mechanical; a linear drift looks natural.
-- **Overshoot is spice.** Use it on small accents, never on headlines or long text, and less of it at low `energy`.
+- **Overshoot is rare, late and small.** Fewer than one move in ten overshoots, and when it does, the peak comes late (about 65–70% of the way through), as a slow lean past the mark and back, not a fast bounce. Give a piece at most one visible spring, on the payoff.
 - **Springs** are an alternative to curves when the motion should feel physical. Stiffness sets how fast it returns; damping sets how much it wobbles. High stiffness with high damping feels precise; low stiffness with low damping feels elastic and playful.
 
-## 4. Distance
+## 4. Distance and arrival
 
-Small distances look intentional; large ones look like a template.
-
-- Text and small elements: 8–24 px of travel at 1080p. Most of the effect comes from the curve and the fade together, not from the distance.
-- The protagonist of a scene may travel far, because it is the thing the viewer is meant to follow.
-- Scale changes: 0.92 → 1 reads as "arriving"; 0.6 → 1 reads as "appearing from far away". Use large scale changes only when depth is part of the idea.
-- A blur-to-focus entrance (8 px of blur to 0 with a slight scale-up) feels like a camera finding focus and is a good alternative to the overused fade-up.
+- **Arrive by moving, not by fading.** Professional work uses movement for arrivals about six times as often as fades. Opacity is a 4–6 frame helper under a move, never the move itself. A fade-up of 8–24 px is the template entrance.
+- **Identity objects arrive from larger and come down.** A logo, a key word, a card or a cursor starts at 1.4–5× its size and decelerates down to rest. Nothing with identity grows from zero.
+- **Spend scale once.** One oversized arrival per piece is a decision; one in every beat is a house style. Endings usually get smaller.
+- **Typical travel is larger than a nudge.** The median move travels about 5% of the frame's width sideways, or 8% of its height vertically. Small nudges are for helpers, not for the protagonist.
+- **Blur to focus.** 3–10 px of blur clearing over 4–8 frames, under a move, reads as a camera finding focus.
 
 ## 5. Asymmetry: entering and leaving
 
-Exits should take roughly half to two thirds of the entrance duration and use an accelerating curve. A 700 ms entrance pairs with a 300–450 ms exit. The viewer has already read what is leaving; lingering exits feel sluggish, and symmetrical in-and-out timing is one of the clearest signs of a template.
+Exits accelerate; entrances decelerate. In frames they are about the same length (12 in, 13–14 out), but an exit ends at speed, usually on the cut, while an entrance settles. Symmetrical in-and-out timing, with the same curve both ways, is one of the clearest signs of a template.
 
 ## 6. Choreography
 
@@ -86,9 +95,9 @@ Choreography is who moves, when, and in what order. Most generic motion fails he
 
 - **One protagonist at a time.** At any moment one thing leads. Others are still, nearly still, or clearly secondary.
 - **The 60% rule.** A secondary element starts when the main movement is about 60% complete. It feels connected without competing.
-- **Order carries meaning.** Year → title → support line reads as context → claim → detail. Typical offsets: 150 ms between year and title, 300–400 ms between title and support line.
-- **Stagger with intention.** 40–120 ms between items in a group. Vary it with what the items are: words in a headline get a tighter stagger than cards in a grid. A uniform stagger on everything is a tell.
-- **Overlap, never gap.** The next scene begins before the last one has fully left. Dead frames and dips to black break the thread.
+- **One claim per frame.** A frame says one thing. A label above a title above a support line is a slide, not a shot.
+- **Stagger with intention.** Repeated siblings (letters, rows, tiles) start 1–3 frames apart, with uneven gaps, and each move lasts about twice the gap, so the tails overlap and the group reads as one gesture. Whole words run slower, 2–5 frames apart. A call to action spreads out to about 8 frames. A uniform timer delay reads as a loading list.
+- **Overlap, never gap.** The next scene begins before the last one has fully left. Dead frames and dips to black break the thread. Scenes start already moving.
 - **Parenting.** When one element drives another (a line that pulls a label, a shape that carries text), let the follower lag slightly behind the leader. Lag is what makes it feel attached.
 - **Continuity of identity.** If something transforms, keep it the same thing: the same particles, the same line, the same shape. Viewers follow identity across transformations, which is why morphs tell stories that cuts cannot.
 
@@ -96,12 +105,13 @@ Choreography is who moves, when, and in what order. Most generic motion fails he
 
 For silent pieces the text is the narration, so it must be legible and have time to be read.
 
-- **Reading time:** about 1 second per 3 words, plus 1 second of settling. A 12-word line needs about 5 seconds fully visible. Short titles need at least 1.5 seconds.
-- **Do not move text while it has to be read.** Animate it in, let it rest, animate it out.
-- **Sizes at 1920×1080:** titles 72–110 px, support lines 26–34 px, labels 18–24 px with wide tracking. For vertical 1080×1920 video meant for phones, increase support text to at least 40 px.
-- **At most two lines** of support text per scene. If it needs more, it needs another scene.
-- **Enter by word or by line.** Letter-by-letter entrances only when kinetic type is the concept itself.
-- **Keep text away from the protagonist.** Pick a stable text zone, such as the lower left third, so the eye always knows where to read.
+- **Fewer words, not longer holds.** One to three display words need 0.5–1 s; a short sentence needs 1.5–2 s; a paragraph never belongs on screen. If a line needs more than 2.5 s to read, it has too many words: cut it, or let the voice carry it.
+- **Do not move text while it has to be read.** It arrives, it rests with at most a slow drift, it leaves.
+- **Hierarchy by scale, not by labels.** Use two sizes doing the work: large for the one word that matters, small for everything else. Weight stays in the 400–550 range; emphasis comes from scale and colour, not from bold or from an italic serif word dropped into a sans line.
+- **No page furniture.** No kicker above the headline, no tracked-caps labels, no scene counters ("02 / 05"), no timecodes, no corner brand names, no crop marks or brackets. A video is not a page. See `ai-tells.md`.
+- **Sizes at 1920×1080:** display 120–220 px for the one word that matters, other lines 44–64 px. Interface text shown in the video must be at least 4% of the frame height (about 43 px), magnified by the camera if needed. For vertical 1080×1920 video, scale up by about 1.3.
+- **Words arrive whole.** Enter by word or line, 2–5 frames apart. Letter-by-letter typing only inside the product's own input field.
+- **Place text where the picture needs it.** Usually one line near the optical centre, or a phrase split by an object. Never the same caption slot shot after shot, and never a left-aligned headline beside a box.
 
 ## 8. Material behaviour
 

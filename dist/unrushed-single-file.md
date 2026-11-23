@@ -5,7 +5,7 @@ description: Motion direction for videos and animated pieces that must not look 
 
 # Unrushed
 
-> **Single-file edition.** The reference files are embedded at the end of this file, each under a heading "Embedded: <path>". Whenever an instruction says to read a file in `references/`, read that section instead of looking for the file on disk. Files not embedded (`targets/remotion.md`, `targets/generic.md`, the templates, the example, `scripts/detect.py`) can be read from https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>.
+> **Single-file edition.** The reference files are embedded at the end of this file, each under a heading "Embedded: <path>". Whenever an instruction says to read a file in `references/`, read that section instead of looking for the file on disk. Files not embedded (`targets/remotion.md`, `targets/generic.md`, the templates, the example, `scripts/detect.py`, `assets/remotion/unrushed-motion.ts`) can be read from https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>.
 
 Generic motion comes from defaults: every element fades up the same 30 px in the same half second, scenes dip to black, the palette is neon on navy, and nothing moves for a reason. Unrushed replaces adjectives with decisions. Every movement gets a purpose, a duration, a curve, a distance and a place in the order of things. "Smooth and modern" is not a direction; "enters over 700 ms on an expo-out curve, 16 px, 150 ms after the year" is.
 
@@ -21,7 +21,7 @@ Reply in the person's language. Command names stay in English.
 
 ### Project files
 
-Commands share up to four files in the project folder. Read whichever exist before any command.
+Commands share these files in the project folder. Read whichever exist before any command. Read `TASTE.md` first: what this person rejected before outranks the skill's defaults.
 
 | File | Written by | Holds |
 |---|---|---|
@@ -30,6 +30,7 @@ Commands share up to four files in the project folder. Read whichever exist befo
 | `STYLE.md` | `style` | How it looks and moves: material, palette, type, dials, signature move, forbidden list |
 | `STORYBOARD.md` | `storyboard` | Scene by scene: exact text, figure, motion, timing, transition, and the cue sheet of library effects, zooms and sound |
 | `REVISION.md` | `improve` | Baseline scores, the fixes with their acceptance tests, and their status after the rebuild |
+| `TASTE.md` | every command, whenever the person reacts | What this person said about pieces made for them, before-and-after pairs, and picks from blind reviews |
 
 Templates are in `assets/`. If a command needs a file that does not exist, say so and offer to run the command that creates it, rather than inventing its contents.
 
@@ -49,7 +50,75 @@ No command that creates or changes visuals (`style`, `storyboard`, `export`, `im
    - format and constraints.
 4. **Write it down.** Put the answers in `VIDEO.md` and `BRAND.md`.
 
+**Taste.** If `TASTE.md` does not exist, create it from the template. Read `taste/verdicts.md` in this skill too: the shared example of what made pieces read as AI-made, and why several rules exist.
+
 Do not start building in the same turn as the questions. If the person says to skip the questions, go ahead, but write an **Assumptions** list at the top of the plan and of the report, one line per assumption, so each can be corrected.
+
+## Never ship
+
+A piece that contains any of these is not finished. Delete the element; do not justify it. These are the patterns that made people say "this was made with AI", in our tests and in a study of rejected films (motionmaxxing, Apache-2.0, github.com/Tejashmakwana/motionmaxxing). Details and alternatives are in `references/ai-tells.md`.
+
+1. **Page furniture.** A brand or title in a corner, tracked-caps labels, scene or chapter counters ("02 / 05"), timecodes, FPS or resolution text, progress bars, crop marks, label chips naming the app or scene.
+2. **Deck layouts.** A kicker above a headline, a held left-aligned headline beside a box or device, title then content, a header or footer bar.
+3. **An invented product.** Made-up controls, names, numbers or messages when the real ones were reachable; a generic card with a status dot and "label · value"; a screenshot moved around by the camera instead of the product doing something.
+4. **Invented proof.** Statistics, users, logos or quotes that are not in `VIDEO.md` with a source; a stat slide (a big centred number over a small label).
+5. **Slogan copy.** "Meet X", "Not just X. It's Y.", "Unlock", "the future of", "in seconds", "AI-powered", three one-word sentences in a row.
+6. **A flat swatch per scene, or a small object on a void.** A different flat colour for every scene reads as a deck; a small card in an empty ground reads as unfinished.
+7. **A pinned element.** The same pill, dock or caption box at the same place through three or more shots.
+8. **The house style as a default.** A designed transition, a dissolve or a whoosh on every cut; a different effect in every beat; a dot that becomes the logo because nothing else did; a headline typed letter by letter with a caret; glow, vignette or grain added "for depth".
+9. **A web-footer ending.** Logo, tagline, button and URL stacked; any final frame held longer than 1.4 s.
+10. **Self-certification.** "Verified", "clean" or "looks great" without the numbers from `scripts/detect.py` and a description of the frames you looked at.
+11. **A piece nobody watched.** Delivering without sampling frames around every cut and every key movement.
+
+## Looking honestly
+
+Every command that judges a piece (`critique`, the verify step of `improve`, and the report after any direct build) follows the same order, because a model that ticks its own checklist reports a finished piece that is not:
+
+1. **Run the gates** when you have the file: `python scripts/detect.py <video> --expect <planned seconds> [--expect-audio] --storyboard STORYBOARD.md`. It computes, from any tool's export:
+
+   | Gate | Passes when | How |
+   |---|---|---|
+   | G0 piece exists | it decodes, is not blank, moves, matches the planned length, and has sound if sound was planned | script |
+   | G1 proof readable | interface text is at least 4% of the frame height; the proof is large or cropped by the frame | by eye, on the contact sheet |
+   | G2 no empty frames | no run of more than 3 flat frames | script |
+   | G3 short ending | the final frame holds at most 1.4 s; the final shot is at most 25% of the piece | script |
+   | G4 one hero per frame | one thing the eye goes to first in every frame | by eye, on the contact sheet |
+   | G5 no page furniture | nothing from Never ship item 1 or 2 | the plan with `--storyboard`, the render by eye |
+
+   A failed gate is fixed, never argued. It also prints notes that are questions, not gates: overall motion against human-made films, loudness, and sound that stops before the picture.
+2. **Describe before you judge.** `--sheet` writes a contact sheet of evenly spaced frames and a second image with the frames around every cut, where broken transitions hide. Write one sentence per frame: what is on screen, what the eye goes to first, and whether it would pass for a slide.
+3. **Check the Never ship list** against those frames and the plan. Any item present is a fix, whatever else scores well.
+4. **Watch the moves that matter** as strips or a profile (`principles.md` §9), never from single stills.
+5. **Fix in this order:** anything untrue or broken; the idea and what the viewer must understand; how beats connect; hierarchy and scale; timing; surface and finish; sound. Two or three honest passes beat ten cosmetic ones.
+6. **Report, never certify.** Quote the gate results and numbers the script printed, say which gates you judged by eye, list the frame descriptions, say what is real and what is approximate, and say what you would still improve. Only the person decides whether it is good.
+
+## Building in passes
+
+Whenever you build or rebuild a piece yourself (`export` inside the tool, `improve`), build it in passes instead of in one go. A piece built in one go comes back polished on the surface and wrong underneath, and by then every fix is expensive. Each pass has one job, ends with a look at the render, and is fixed before the next starts.
+
+| Pass | Job | Look at | Done when |
+|---|---|---|---|
+| 0. Hardest beat | Build only the hero moment (usually the payoff) and its hardest handoff, with real motion | 3 stills and a strip of the key move | It reads at full speed. If not, fix the idea or the staging now, before anything else exists |
+| 1. Blocking | Every scene in place: real durations, positions, sizes, cuts and the carried object. Simple motion is fine | Contact sheet (`--sheet`) and `detect.py --expect <seconds>` | Length and rhythm match the plan; one hero per frame (G4); no frame reads as a slide; G0 passes |
+| 2. Type and information | The exact words, sizes by role, reading time, real content and numbers | Contact sheet, and `--storyboard` | Every line readable in its time (G1); one claim per frame; no Never ship words |
+| 3. Motion | The recipes from `references/motion-kit.md`: landings, exits, stagger, camera, press, cuts on motion | Strips and profiles of the 2–3 key moves (`--strip`, `--profile`), the cuts image | Landings decelerate, exits accelerate, no dead frames (G2), the ending holds 0.6–1.4 s (G3) |
+| 4. Finish | Material, light and texture that belong to the world; cues; sound with 1–3 hand-placed hits | All gates and notes | Every gate passes or is reported as failed; the report follows "Looking honestly" |
+
+Rules for every pass:
+
+- **Describe the contact sheet** in one sentence per frame before changing anything.
+- **Revise by frame range.** Name the scene and the frames ("frames 120–168: the card stops dead; give it `softLand` 12 f"), never "make it smoother".
+- **Fix in the order of "Looking honestly"**, and do not polish a pass whose job is not done: grain does not rescue blocking, and timing does not rescue a beat that buys nothing.
+- **Show the person after pass 0**, and again at the end. Credits and render time are spent on the passes in between only once the hardest beat works.
+- **Two or three honest rounds per pass**, at most. If a pass still fails, say so and ask, rather than starting a new idea on your own.
+
+## Learning the person's taste
+
+Taste is learned from reactions, not assumed. Whenever the person reacts to a piece ("this looks AI", "too slow", "I like the second one"):
+
+1. **Append it to `TASTE.md`** the same turn: date, piece and version, their words, what they reacted to (scene, time or frame) and the narrowest lesson it supports. Never rewrite an earlier entry.
+2. **Apply it as far as its context goes.** A rejection of one ending is not a rule against all endings. When a verdict contradicts this skill's defaults, the verdict wins for this person; say so.
+3. **When there are versions to choose between**, offer a blind review: `python scripts/blind_review.py old.mp4 new.mp4` writes a page that plays them side by side under random labels, records a pick, a rating, "looks AI-made" and the worst moment for each, and copies the verdict to paste into `TASTE.md`. Picking without knowing which is the new one keeps the comparison honest.
 
 ## Dials
 
@@ -62,14 +131,14 @@ Four settings shape every decision. Defaults suit most explainers; the person ca
 | `variance` | 1–10 | 5 | How much scenes differ from one another in layout, rhythm and structure |
 | `material` | a word | chosen in `style` | The physical behaviour motion borrows: ink, paper, glass, cloth, fluid, particles, metal, light |
 
-How `energy` maps to numbers, as a starting point:
+How `energy` maps to numbers, as a starting point. Durations are in frames at 30 fps. Professional moves have a median of 10 frames (0.33 s); see `principles.md`.
 
-| energy | Text entrance | Scene transition | Overshoot | Moving at once |
+| energy | Entry | Joins between scenes | Overshoot | Moving at once |
 |---|---|---|---|---|
-| 1–3 | 800–1200 ms | 1400–2000 ms | none | 1 |
-| 4–6 | 500–900 ms | 900–1500 ms | small elements only | 1–2 |
-| 7–8 | 300–600 ms | 500–900 ms | allowed on accents | 2–3 |
-| 9–10 | 150–400 ms | 250–600 ms | expressive | many, but choreographed |
+| 1–3 | 15–24 f (0.5–0.8 s) | hard cuts; one designed transition at most | none | 1 |
+| 4–6 | 10–15 f (0.33–0.5 s) | hard cuts on motion; 1–3 designed transitions per minute | one late lean on an accent | 1–2 |
+| 7–8 | 6–12 f (0.2–0.4 s) | fast hard cuts on motion | one visible spring, on the payoff | 2–3, staggered 1–3 f |
+| 9–10 | 3–8 f snaps | rapid cuts, often 2–4 per second | expressive, still late and small | many, but choreographed |
 
 `variance` guards against the most common failure of a long piece: every scene built the same way. Above 4, vary at least one of composition, rhythm or entrance pattern between neighbouring scenes.
 
@@ -118,10 +187,12 @@ Read `references/narrative.md` first. Ask only what you cannot infer from the co
 
 Brand rules outrank this skill's defaults. When a brand rule triggers an AI tell or a legibility problem, for example a default font from `ai-tells.md`, or a colour pair below 4.5:1 for text, keep the rule, say so, and suggest the least intrusive fix.
 
+Before the spine, write **the one true thing** and the **brand inventory** in `VIDEO.md` (`narrative.md` §5): the problem, the emotion, the one real feature or moment the piece is for, and what the brand already owns (logo shape, core control, material, key verb, success moment, voice).
+
 Then propose, and let the person choose or correct:
 
 - **The spine.** Hook, promise, proof, payoff and ask, one line each, and the structure that fits the type of piece. The hook must work visually in the first second.
-- **The through-line.** The single visual idea that carries the whole piece, and the most important decision in the brief. Propose two or three options and recommend one. A piece about the history of AI made of nine unrelated effects reads as a demo reel; the same piece where one set of particles travels from a neuron to a human profile reads as a story. A good through-line is a transformation that means something.
+- **The through-line.** The single visual idea that carries the whole piece, and the most important decision in the brief. Propose two or three options and recommend one. A piece about the history of AI made of nine unrelated effects reads as a demo reel; the same piece where one set of particles travels from a neuron to a human profile reads as a story. A good through-line is a transformation that means something, and it comes from the brand inventory rather than from the name's first association. Run the cover-the-logo test on each option: if a competitor's name could replace the brand's, say so.
 - **The beat map.** Sections with their tempo and beat lengths, and where the payoff lands on the tension curve.
 
 For a product piece, also write the **product demo script** (`visual-explanation.md` §9): every step of the real flow with its action, the product's response, the screen and components it uses, and their source.
@@ -148,25 +219,26 @@ Recommend one and say why it serves the through-line. Once the person chooses, c
 3. **Type.** Two families at most, each with a role and sizes for the target resolution. Avoid the defaults listed in `ai-tells.md` unless the person asks for them.
 4. **Light and finish.** What makes it physical: grain that moves (renewed every two frames, never a static overlay), motion blur on fast moves, shadow and depth, refraction or bloom only when the material has them.
 5. **Dials.** Set `energy`, `density` and `variance`, and say why.
-6. **Signature move.** One recurring motion that identifies the piece, such as particles that reassemble or a mask that always opens from the bottom. Name the entry in `references/techniques.md` it starts from.
+6. **Signature move.** One motion that identifies the piece, such as particles that reassemble or a mask that opens from the bottom. Name the entry in `references/techniques.md` it starts from. It appears at the moments that matter, not in every scene, and it changes role each time; repeated identically, it becomes a template.
 7. **Forbidden list.** The generic choices this piece in particular is tempted by.
 8. **Interface system**, when the piece shows a product or a tool: which components, icons and fonts the interface uses, and their licences. See `references/visual-explanation.md`.
 
-**Pieces that show several styles or techniques**, such as a showcase or a demo of what a tool can do: define a frame system that stays constant (type, text zone, the through-line element), and give each style its own world, with its own ground, palette and light. If every style shares the same paper and ink, the viewer sees one style with different shapes.
+**Pieces that show several styles or techniques**, such as a showcase or a demo of what a tool can do: define a frame system that stays constant (type and the through-line element), and give each style its own world, with its own ground, palette and light. If every style shares the same paper and ink, the viewer sees one style with different shapes.
 
 Write `STYLE.md`. Include a ready-to-paste style block for the likely target (for ChatCut, the Design Style fields; see `references/targets/`).
 
 ### `storyboard`
 
-Build the storyboard from the spine and beat map in `VIDEO.md`; if they are missing, offer to run `brief` first. Build a table with one row per scene: start time, duration, exact on-screen text, the figure or visual, the technique, what moves (with curve, duration and distance), and the transition into the next scene.
+Build the storyboard from the spine and beat map in `VIDEO.md`; if they are missing, offer to run `brief` first. Build a table with one row per scene: start time, duration, what the beat buys ("the viewer believes ___") and its importance from 1 to 3 (`narrative.md` §5), exact on-screen text, the figure or visual, the technique, what moves (with curve, duration and distance), and the transition into the next scene.
 
-- Choose each scene's technique from the line's meaning. Read the index by meaning in `references/techniques.md`, pick the entry whose image enacts the line, and adapt its key parameters to `STYLE.md`. Name the entry in the table so `export` can carry its build notes. Keep the signature move as the thread; techniques serve it, not the other way round.
+- Use one idea and only the techniques it needs. Most scenes need no named technique: a cut, a camera move and a well-timed arrival are enough. When a line has a meaning a technique can enact, read the index by meaning in `references/techniques.md`, pick that entry, and adapt its key parameters to `STYLE.md`. Name it in the table so `export` can carry its build notes. A new technique in every beat is a showreel, not a piece.
 - Give each beat a device from `references/visual-explanation.md`: the way the idea becomes visible (interface simulation, ghosts, same space with two behaviours, a camera push, one canvas…). Neighbouring beats use different devices or compositions. Run the slide test on every scene: if a paused frame reads as a slide, rework it.
-- Choose each transition from `references/transitions.md` by the relation between the two beats, and write the relation next to it. Never the same type twice in a row; at least four kinds in a piece over 60 s; the biggest one leads into the payoff.
+- Join scenes with hard cuts on motion by default. Use a designed transition from `references/transitions.md` only where the relation between two beats needs it, and write the relation next to it. Never use a dissolve between scenes by default, never repeat a designed transition twice in a row, and lead into the payoff with the biggest one.
 - When the piece shows a product or a tool, simulate its interface with real components: the product's own, found as described in `visual-explanation.md` §8, otherwise the design system it is built on. Never invent controls.
   - Build demo scenes from the product demo script in `VIDEO.md`. Every key step shows an action and the product's visible response.
   - A camera move over a still screen connects steps; it is never a step.
   - Mark any screen not built from the real product as approximate.
+- Write "What moves" with the recipes and curve names from `references/motion-kit.md` ("words land, softLand 12 f, from 5% H; card arrives from 1.6× on snapSettle 18 f"), so the build uses measured values instead of improvising.
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
 - **Library effects, zooms and sound.** When the target tool has an effects library (ChatCut does), read `references/effects.md`.
   - The default is no effect.
@@ -174,6 +246,7 @@ Build the storyboard from the spine and beat map in `VIDEO.md`; if they are miss
   - Tie each zoom and sound accent to a word or line of the script.
   - Respect the budgets: at most one tier C effect, with a reason; at most two stylize looks per piece; roughly one zoom per 8–12 s in a talking head; never the same library transition on three cuts in a row.
   - Write every cue in the cue sheet of `STORYBOARD.md`, with its reason.
+- **Information.** At most a quarter of the beats are importance 3, and the payoff is one of them. Every claim is shown happening, with the proof before it or right after it; every setup (a prompt, a question, a problem) is answered on screen. One claim per frame, in as few words as the beat allows.
 - Check reading time for every line of text with the rule in `principles.md`. For silent pieces, flag any line held for less than its reading time.
 - Use only facts from `VIDEO.md`. Anything not there is marked `[verify]`.
 - Make sure the image and the text say the same thing. If the line says "funding freezes", the figure should freeze, not pile up.
@@ -181,8 +254,10 @@ Build the storyboard from the spine and beat map in `VIDEO.md`; if they are miss
 Before finishing, review the storyboard as a whole and fix what fails, saying what you changed:
 
 - **Spine.** Each beat is tagged hook, promise, proof, payoff or ask, and the payoff is the strongest image at roughly 70–85% of the piece.
-- **Rhythm.** At least three different beat lengths; the beat map in `VIDEO.md` is followed. With Python available, `python scripts/detect.py --storyboard STORYBOARD.md` checks scene lengths and repeated transitions.
-- **Transitions.** No type twice in a row, at least four kinds over 60 s, the biggest one into the payoff.
+- **Information.** Every beat says what it buys; the importance budget holds; the picture still says each beat with the text covered.
+- **Rhythm.** At least three different beat lengths; the beat map in `VIDEO.md` is followed. With Python available, `python scripts/detect.py --storyboard STORYBOARD.md` checks scene lengths, designed transitions, what each beat buys, the importance budget and the Never ship words.
+- **Transitions.** Most joins are hard cuts on motion. Designed transitions appear only where a relation needs them, none is repeated back to back, there is no dissolve by default, and the biggest one leads into the payoff.
+- **Never ship.** None of the items in the Never ship list. `detect.py --storyboard` flags counters, URLs, slogan words and unsourced numbers in the on-screen text, and page furniture named in the visual column.
 - **Slide test.** No scene reads as a slide when paused; neighbouring beats use different devices.
 - **Variance.** If scenes share the same structure, apply `variance`.
 - **Cues.**
@@ -215,12 +290,13 @@ If you are running inside the target tool itself, as with ChatCut's agent, or ha
 
 Every export:
 
-- states motion as numbers (ms, curve values, px, counts) next to the intent behind them, because tools follow numbers more reliably than adjectives, and generalise better when they know why;
+- states motion as numbers from `references/motion-kit.md` (curve name and cubic-bezier, frames, distance, counts) next to the intent behind them, never as adjectives such as "smooth", because tools follow numbers more reliably than adjectives, and generalise better when they know why;
 - for each technique named in the storyboard, carries its key parameters and build notes from `references/techniques.md`, so the tool knows how to build it and not only what it should look like;
 - includes the forbidden list from `STYLE.md` and the brand rules from `BRAND.md`;
 - carries the cue sheet from `STORYBOARD.md`: each effect, zoom, library transition and sound accent with its range in frames, its parameters and its reason. If the tool's library is available, the cues are applied directly; otherwise they are written so the tool can apply them (see the target file and `references/effects.md`);
-- asks the tool to pilot the first scene and the closing before building the rest, and to report what it could not do;
-- ends with the review checklist from `critique`, so the tool checks its own frames.
+- asks the tool to build in passes ("Building in passes"): the hardest beat first, then blocking, type, motion and finish, with a contact sheet after each, and to report what it could not do;
+- includes the Never ship list, word for word, as things the tool must not add;
+- ends with the review checklist from `critique`, so the tool checks its own frames, and asks for a report with numbers and frame descriptions instead of a verdict.
 
 ### `critique [focus]`
 
@@ -228,15 +304,16 @@ With a focus, such as `critique physics`, `critique demo`, `critique rhythm`, `c
 
 Read `references/ai-tells.md`, `references/narrative.md`, `references/transitions.md`, and `STYLE.md` and `BRAND.md` if they exist. When the piece uses an editor's library effects, zooms or sound accents, also read `references/effects.md`. Read `references/principles.md` §9 for Physics, and `references/visual-explanation.md` when a product is shown. `critique` works on a finished video, on frames, or on a plan (`STORYBOARD.md`) before anything is built; critiquing the plan is the cheapest moment to fix rhythm and transitions.
 
-If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --storyboard STORYBOARD.md` first: it reports:
+If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --expect <seconds> --storyboard STORYBOARD.md` first: it reports:
 
+- the gates G0–G5 (see "Looking honestly");
 - dips to black;
 - stretches where nothing moves anywhere in the frame;
 - hard cuts;
 - the planned rhythm and repeated transitions;
 - the cue sheet's budgets: cues without a reason, tier C and stylize looks over budget, zooms per minute, the same library transition three times in a row, zooms colliding with transitions, and stacked distortions.
 
-Then look at frames, sampled densely around every transition. Stills cannot show physics. For the two or three movements that matter most, read consecutive frames (`detect.py --strip <seconds>`) or the per-frame change (`--profile <start> <end>`), as described in `principles.md` §9, or watch the video at full speed. If none of these is possible, say that Physics was not scored rather than guessing.
+Then follow "Looking honestly": describe the sampled frames in one sentence each and check the Never ship list before scoring. Look at frames sampled densely around every transition. Stills cannot show physics. For the two or three movements that matter most, read consecutive frames (`detect.py --strip <seconds>`) or the per-frame change (`--profile <start> <end>`), as described in `principles.md` §9, or watch the video at full speed. If none of these is possible, say that Physics was not scored rather than guessing.
 
 Score each criterion from 1 to 5 with one line of evidence:
 
@@ -247,6 +324,7 @@ Score each criterion from 1 to 5 with one line of evidence:
 | Explanation | Is each idea shown happening, with a device, rather than written beside a demo? Does any paused frame read as a slide? |
 | Transitions | Does each transition say the relation between beats? How many kinds, and are any repeated back to back? |
 | Effects | Does every library effect, zoom and sound accent do a job the cut cannot? Is each zoom tied to a word? Are the budgets in `effects.md` kept, with no gimmick without a reason and nothing stacked? Would the beat be better with no effect at all? |
+| Information | Does every beat buy one belief, with at most a quarter of them emphasised? Is every claim shown happening, every setup answered, every number and name real and sourced? Does the idea pass the cover-the-logo test? |
 | Concept | Is the figure understood without reading the text? |
 | Hierarchy | Does the eye know where to go first, second, third? |
 | Legibility | Can every line be read in the time it is on screen? |
@@ -258,7 +336,7 @@ Score each criterion from 1 to 5 with one line of evidence:
 | Distinctiveness | How many AI tells are present? |
 | Consistency | Does it follow `STYLE.md`, and `BRAND.md` when there is one: logo use, colour roles, type, voice? |
 
-Then list the AI tells you found, and the fixes:
+Then list the Never ship items and the AI tells you found, and the fixes. Every Never ship item present is a fix, and Distinctiveness scores 2 or less while any remains:
 
 - **Which fixes.** The three with the most impact, plus one for every criterion scored 2 or less. A low score never goes without a fix.
 - **What each fix contains:**
@@ -295,7 +373,7 @@ Use it for a video or project that already exists, whether or not Unrushed made 
 
    Update `STORYBOARD.md` for the scenes that change.
 4. **Approval.** Show the plan with the heavy fixes marked, and wait for approval. If the person already said to apply without asking, continue, with the Assumptions list at the top.
-5. **Rebuild.** Build every approved fix in full, heavy fixes first. This is the **fix contract**:
+5. **Rebuild** in passes ("Building in passes"), starting with the fix that touches the hardest beat. Build every approved fix in full, heavy fixes first. This is the **fix contract**:
    - Never swap a fix for a cheaper one. A rebuilt demo cannot become a camera move, physics cannot become grain, and a new transition cannot become a slower old one.
    - If a fix cannot be done as planned, stop that fix, say why, and propose the closest real alternative.
    - Nothing approved becomes "optional" later.
@@ -304,7 +382,7 @@ Use it for a video or project that already exists, whether or not Unrushed made 
    - each fix as **done**, **partial** or **not done**, with evidence (time, frame, measurement);
    - what could not be verified.
 
-   A criterion whose score did not rise is not reported as fixed.
+   A criterion whose score did not rise is not reported as fixed. Offer a blind review of the old and new versions, and add the person's pick to `TASTE.md`. Quote the detector's numbers and the frame descriptions; never call the result verified or clean.
 
 ## References
 
@@ -322,12 +400,15 @@ If you cannot reach them either, work from the embedded essentials in the single
 | `references/visual-explanation.md` | Devices that make an idea visible, the slide test, interface simulation with real design systems, cursor choreography, finding the real product (code, design files, running app) and the product demo script. `brief`, `style`, `storyboard`, `export`, `critique`, `improve` |
 | `references/effects.md` | Library effects, zooms, transitions and sound accents (ChatCut's library and their Remotion and After Effects equivalents): choosing by intent, tiers, budgets, and how to apply them through ChatCut's tools or a prompt. `storyboard`, `export`, `critique` |
 | `references/transitions.md` | Transitions chosen by the relation between beats, a catalogue with durations and related techniques, eye trace and other ways to hide the seam. `storyboard`, `export`, `critique` |
+| `references/motion-kit.md` | The measured curves as cubic-beziers, recipes in numbers (land, leave, arrive from oversize, stagger, press, camera push and snap, whip, counters, the one spring) and how to apply them in ChatCut, Remotion (`assets/remotion/unrushed-motion.ts`) and After Effects. `storyboard`, `export`, `improve` |
 | `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour, physics and how to check it in a video. `style`, `storyboard`, `recipe`, `export`, `critique`, `improve` |
 | `references/ai-tells.md` | What makes motion and video read as AI-generated, and what to do instead. `style`, `export`, `critique` |
 | `references/techniques.md` | 38 techniques from real reference pieces, indexed by meaning and by family, with key parameters and build routes. `style`, `storyboard`, `recipe`, `export`, `critique` |
 | `references/targets/chatcut.md` | Exporting to ChatCut |
 | `references/targets/remotion.md` | Exporting to Remotion, through Claude Code or any coding agent |
 | `references/targets/generic.md` | Any other tool, or a spec for a human animator |
+| `taste/verdicts.md`, `taste/edits.md` | What the author said about real pieces made with Unrushed, and before-and-after corrections: the shared example of taste, and the reason behind several rules. Every command, before proposing |
+| `scripts/blind_review.py` | A page to compare versions side by side under random labels and record the person's pick for `TASTE.md` |
 | `scripts/detect.py` | Automatic checks on an exported video (dips, freezes, cuts), frame strips and motion profiles for judging physics, and checks on the rhythm, transitions and cue sheet of a `STORYBOARD.md` |
 
 
@@ -335,7 +416,7 @@ If you cannot reach them either, work from the embedded essentials in the single
 
 # Embedded references (single-file edition)
 
-This edition embeds the essentials so the skill works where only one file is installed. The full files, with every source link, are in the repository: https://github.com/amladinon94-source/unrushed. `targets/remotion.md`, `targets/generic.md`, the templates and `scripts/detect.py` are only there.
+This edition embeds the essentials so the skill works where only one file is installed. The full files, with every source link, are in the repository: https://github.com/amladinon94-source/unrushed. `targets/remotion.md`, `targets/generic.md`, the templates, `scripts/detect.py` and `assets/remotion/unrushed-motion.ts` are only there.
 
 ## Embedded: references/narrative.md
 
@@ -349,10 +430,11 @@ A motion piece is a story before it is an animation. The story decides the rhyth
 2. Hooks
 3. Structures by type of piece
 4. Beats, not scenes
-5. Rhythm and the beat map
-6. Tension and release
-7. Pieces that sell a product
-8. Checklist
+5. Information discipline: the one true thing, the brand's idea, what each beat buys, show then say, words, real content
+6. Rhythm and the beat map
+7. Tension and release
+8. Pieces that sell a product
+9. Checklist
 
 #### 1. The spine
 
@@ -406,7 +488,59 @@ A beat is one idea shown once. A scene can hold several beats; one beat can cros
 - Each beat needs a different visual device or composition from its neighbours. If three beats in a row share the same layout, the viewer stops looking and starts waiting.
 - Text supports the beat; it does not carry it. If the beat cannot be understood with the sound off and the text hidden, the image is not doing its job.
 
-#### 5. Rhythm and the beat map
+#### 5. Information discipline
+
+Noise in a generated piece is rarely too many effects. It is too many claims, said instead of shown, with nothing in them that belongs to this brand. Decide what the piece says before deciding how it moves. Several rules here follow a study of designer-made and AI-made launch films (motionmaxxing, Apache-2.0, github.com/Tejashmakwana/motionmaxxing), restated in our own words.
+
+##### The one true thing
+
+Before the spine, write four short lines in `VIDEO.md`: the **problem** the viewer has, the **audience**, the **goal** of the piece, and the **emotion** it should leave. Then name the one real feature or moment the piece exists for. Everything else is support or is cut.
+
+##### The idea belongs to the brand
+
+Look at what the brand already owns before inventing anything: the shape of its logo, its core control, its material, the verb it is about, the moment its users succeed, its voice. The strongest ideas turn one of those into the product's action: the logo's shape becomes the switch, the success moment becomes the ending.
+
+- **Cover-the-logo test.** Cover the logo and swap in a competitor's name. If the piece still works, it is the category's film, not this brand's.
+- **Avoid the name's first association.** Stars for a name that suggests stars, a glow for a name that suggests fire, a rocket for "launch". Everyone thinks of it first.
+- **Invent the surroundings, keep the product literal.** The stage, light, camera and metaphor can be invented; the interface, logo, type and copy are the real ones.
+
+##### What each beat buys
+
+Every beat earns its place by changing what the viewer believes. Write it in the storyboard as **Buys: the viewer believes ___** ("this is for me", "it understood my mess", "it is one click", "I can try it now"). If you cannot finish the sentence, cut the beat.
+
+Give each beat an **importance** before designing it:
+
+| Importance | What it is | How it is treated |
+|---|---|---|
+| 1 | Connective | Fast, small: a cut, a word swap, a carried object |
+| 2 | Supporting | Normal timing and size |
+| 3 | The point | Slower, larger, its own sound, held for reading time plus 0.5–1 s |
+
+At most a quarter of the beats are a 3, and the payoff is one of them. Treating every line the same is one of the strongest AI tells: when everything is emphasised, nothing is.
+
+##### Show it, then say it
+
+- **Consequence over claim.** Replace the adjective with what it causes. Not "smart alerts": the price crosses the line and the notification arrives. Not "fast": the result is on screen before the cursor finishes moving.
+- **Proof before claim.** Let the viewer see it happen, then name it, or cut straight from the claim to the product doing it. A claim with no proof after it is a caption.
+- **Every setup is answered on screen.** A typed prompt, a question, a toggle or a problem shown at the start has its result shown later. A setup that is never answered reads as unfinished.
+- **The text-covered test.** Cover the on-screen text. If the picture no longer says the beat, the image is not doing its job.
+
+##### Words on screen
+
+- **One claim per frame,** one line at a time.
+- **Few words.** One to three display words read in 0.5–1 s; a sentence needs 1.5–2 s; a paragraph never belongs on screen. A fast section uses fewer words, not less reading time.
+- **The brand's own phrasing,** quoted exactly, beats any copywriting formula (`ai-tells.md`, "Words on screen").
+- **Emphasis by scale first,** then colour, then isolation. Weight comes last. Spend the biggest size once.
+
+##### Specific, real content
+
+Specific content is the cheapest proof that a product is real; generic content proves the opposite.
+
+- **Order of preference:** real copy and screens from the product; plausible, specific content marked as illustrative in `VIDEO.md`; an honest abstract idea. Never "Project Alpha", "Your Brand Here", lorem ipsum or a sender called "Name".
+- **Numbers only from `VIDEO.md`,** with a source. A number earns screen time when it is real and the piece makes its size felt; shown inside the action that causes it, not on a slide. A counter for a claim lands on a round value; a counter in a data field lands on a specific value, so the screen feels real.
+- **Nothing invented and shown as real:** users, customers, testimonials, partners, results or interface.
+
+#### 6. Rhythm and the beat map
 
 Rhythm is the pattern of durations. Monotony, every beat the same length, is the most common sign of a generated piece after the visual clichés.
 
@@ -415,11 +549,13 @@ Draw a beat map in `VIDEO.md`: each section with its tempo and its beat lengths.
 | Section | Tempo | Beat lengths |
 |---|---|---|
 | Hook | fast | 1–2 s |
-| Promise | settle | 3–4 s hold |
-| Proof 1–3 | builds | 6 s, 5 s, 4 s |
+| Promise | settle | 2–3 s |
+| Proof 1–3 | builds, shortening | 5 s, 4 s, 3 s |
 | Montage | fast, accelerating | 2.5 → 1.2 s |
-| Payoff | slow | 6–8 s with a long hold |
-| Ask | still | 4–5 s |
+| Payoff | a breath, then the strongest image | 0.6–1.5 s breath, then 3–5 s |
+| Ask | resolve | 2–3 s, final frame held 0.6–1.4 s |
+
+These are starting points, and shorter is usually better. In one study of designer-made and AI-made launch films, the tightest films ran 15–20 s, and the longer ones (40–90 s) tended to repeat a device or end twice (motionmaxxing, Apache-2.0). Stop before the idea is exhausted.
 
 Rules:
 
@@ -430,7 +566,7 @@ Rules:
 - **Silent pieces** keep rhythm through motion beats: impacts, stops, holds and cuts on movement. With music, cut on the beat, place hits on downbeats and transitions on bar changes.
 - **Reading time still rules** (see `principles.md`). A fast section uses fewer words, not shorter reading time.
 
-#### 6. Tension and release
+#### 7. Tension and release
 
 Plot the piece as a curve of intensity over time. A flat line is boring; a line that only rises is exhausting.
 
@@ -439,7 +575,7 @@ Plot the piece as a curve of intensity over time. A flat line is boring; a line 
 - After the payoff, release: slower motion, more space, a hold.
 - The ending breathes. The last frame stays long enough to read and remember.
 
-#### 7. Pieces that sell a product
+#### 8. Pieces that sell a product
 
 When the piece sells or explains a real product:
 
@@ -447,14 +583,18 @@ When the piece sells or explains a real product:
 - **Show the real product.** Use its real interface when available, or the design system it is built on (see `visual-explanation.md`). Invented interfaces read as fake.
 - **One benefit per beat.** Show the user's outcome, not the button.
 - **The "aha" is the payoff.** The moment the product does something the viewer did not expect, held long enough to land.
-- **The ask is concrete.** A URL, a command, a date, a single action, held at least 4 s.
+- **The ask is concrete.** A URL, a command, a date, a single action, shown long enough to read and no longer. The final frame holds 0.6–1.4 s with something alive. A lockup of logo, tagline, button and URL is a landing page, not an ending: keep the name and the one action.
 - **Claims are sourced.** Figures, customers and results come from the brief, or they are marked `[verify]`.
 
-#### 8. Checklist
+#### 9. Checklist
 
 - Can you state the hook, promise, proof, payoff and ask in one line each?
 - Is something already moving or unresolved in the first second?
 - Is the strongest image the payoff, at roughly 70–85% of the piece?
+- Does every beat say what it buys, and are at most a quarter of them importance 3?
+- Does the piece pass the cover-the-logo test and the text-covered test?
+- Is every claim shown happening, and every setup answered on screen?
+- Is every number and name on screen real and sourced?
 - Does the piece use at least three different beat lengths?
 - Do neighbouring beats use different compositions or devices?
 - Could a viewer follow the story with the sound off and the text hidden?
@@ -494,55 +634,64 @@ If a movement does none of them, remove it. Stillness is part of the vocabulary:
 
 #### 2. Duration
 
-Size and distance set duration. Larger things and longer journeys take longer, as they would in the physical world.
+Professional motion is faster than it feels. Across about 4,300 moves measured by the motionmaxxing project (Apache-2.0, github.com/Tejashmakwana/motionmaxxing), the median move lasts **10 frames at 30 fps (0.33 s)**. A piece built on 20–30 frame ease-outs everywhere is slower than every professional sample, and slow, even motion is what reads as "a slide deck that moves".
 
-| What moves | Typical duration | At 30 fps |
+| What moves | Default at 30 fps | Usual range (p25–p75) |
 |---|---|---|
-| Micro details: an underline, a dot, a tick | 150–300 ms | 5–9 frames |
-| Small elements: labels, icons, single words | 300–500 ms | 9–15 frames |
-| Text blocks: titles and support lines | 500–900 ms | 15–27 frames |
-| Large shapes and panels | 700–1200 ms | 21–36 frames |
-| Scene transitions | 900–1600 ms | 27–48 frames |
-| Transformations: morphs and reassemblies | 1200–2000 ms | 36–60 frames |
+| An entry by position or scale | 12 frames (0.4 s) | 6–24 frames |
+| An exit by position | 13–14 frames, accelerating | 7–27 frames |
+| Opacity, used only as a helper | 6 frames (0.2 s) | 4–12 frames |
+| Blur clearing | 7 frames | 4–10 frames |
+| A camera push or pull | 10–18 frames | 6–22 frames |
+| A drift that keeps a hold alive | 20+ frames, linear, 1–3 px per frame | — |
+| A transformation, such as a morph | 18–36 frames | once or twice per piece |
 
-Video tolerates longer durations than interface animation, because nobody is waiting to click. It does not tolerate empty time: a long transition must have something happening throughout.
+Size and distance still matter: a bigger thing, or a longer journey, takes longer. But start from these numbers, not from a second.
 
-**Holds.** After an element arrives, let it rest. A hold is where meaning lands. Typical holds run from 1.5 s for a single word to the full reading time for a sentence (section 7).
+**Holds.** A hold is where meaning lands, but a frozen frame reads as a slide. While something holds:
+- keep one living thing on it: a slow drift, a caret, light moving, a counter ticking;
+- give a designed breath of 0.6–1.5 s, with a reason you can state, right before a payoff;
+- let a payoff the viewer must read sit perfectly still for at most about 1 s;
+- hold the final frame 0.6–1.4 s.
+
+Source: the numbers in this section and sections 3–6 are measured by the motionmaxxing project (Apache-2.0, github.com/Tejashmakwana/motionmaxxing): about 4,300 moves in 53 professional moments, sampled frame by frame. They are defaults to start from, not rules for every frame.
 
 #### 3. Curves
 
 The curve says how something gains and loses speed, and it carries more character than the duration.
 
-| Job | Curve | cubic-bezier |
+| Job | Curve (from `motion-kit.md`) | cubic-bezier |
 |---|---|---|
-| Enter: arrives fast, settles gently | expo-out | `(0.16, 1, 0.3, 1)` |
-| Enter, softer | quint-out | `(0.22, 1, 0.36, 1)` |
-| Exit: starts gently, leaves fast | expo-in | `(0.7, 0, 0.84, 0)` |
-| Move on screen from A to B | cubic in-out | `(0.65, 0, 0.35, 1)` |
-| Gentle oscillation and breathing | sine in-out | `(0.37, 0, 0.63, 1)` |
-| Playful arrival with overshoot | back-out | `(0.34, 1.56, 0.64, 1)` |
-| Continuous motion: drift, rotation, marquee | linear | `(0, 0, 1, 1)` |
+| Enter: arrives, decelerates, settles | `softLand` | `(0.22, 0.776, 0.511, 0.942)` |
+| Hero entry or the closing beat: most of the travel at once | `snapSettle` | `(0.136, 1.058, 0.298, 0.943)` |
+| Medium move or camera push | `glide` | `(0.524, 0.892, 0.878, 0.995)` |
+| Exit: starts gently, leaves fast, still moving at the end | `accelExit` | `(0.288, 0, 0.632, 0.043)` |
+| Exit into a hard cut at full speed | `crashOut` | `(0.434, 0, 0.73, 0)` |
+| Opacity, blur and colour ramps | `softInOut` | `(0.345, 0.074, 0.655, 0.926)` |
+| Continuous motion: drift, creep, counters | linear | `(0, 0, 1, 1)` |
+| The one late lean past the mark, once per piece | `popOver` | `(0.295, 0.157, 0.309, 1.398)` |
+
+These are fits to measured professional moves. `motion-kit.md` has their usual durations, the recipes built from them (land, arrive from oversize, press, camera snap, whip…) and how to apply them in ChatCut, Remotion and After Effects. A brand's own curve, when `BRAND.md` has one, replaces `softLand` for entries; keep the exits accelerating.
 
 Rules of thumb:
 
-- **Entrances decelerate.** Things arriving should spend most of their time settling, which reads as confidence.
-- **Exits accelerate.** Things leaving should get out of the way.
+- **Landings decelerate.** Most professional landings ease out: they cover most of the distance in the first few frames and settle. That reads as heavy and certain.
+- **Exits accelerate and end on the cut.** Things leaving speed up and are still moving when the shot ends. The cut is the edit, and the next shot inherits the speed.
 - **Linear is only for continuous motion.** A linear entrance looks mechanical; a linear drift looks natural.
-- **Overshoot is spice.** Use it on small accents, never on headlines or long text, and less of it at low `energy`.
+- **Overshoot is rare, late and small.** Fewer than one move in ten overshoots, and when it does, the peak comes late (about 65–70% of the way through), as a slow lean past the mark and back, not a fast bounce. Give a piece at most one visible spring, on the payoff.
 - **Springs** are an alternative to curves when the motion should feel physical. Stiffness sets how fast it returns; damping sets how much it wobbles. High stiffness with high damping feels precise; low stiffness with low damping feels elastic and playful.
 
-#### 4. Distance
+#### 4. Distance and arrival
 
-Small distances look intentional; large ones look like a template.
-
-- Text and small elements: 8–24 px of travel at 1080p. Most of the effect comes from the curve and the fade together, not from the distance.
-- The protagonist of a scene may travel far, because it is the thing the viewer is meant to follow.
-- Scale changes: 0.92 → 1 reads as "arriving"; 0.6 → 1 reads as "appearing from far away". Use large scale changes only when depth is part of the idea.
-- A blur-to-focus entrance (8 px of blur to 0 with a slight scale-up) feels like a camera finding focus and is a good alternative to the overused fade-up.
+- **Arrive by moving, not by fading.** Professional work uses movement for arrivals about six times as often as fades. Opacity is a 4–6 frame helper under a move, never the move itself. A fade-up of 8–24 px is the template entrance.
+- **Identity objects arrive from larger and come down.** A logo, a key word, a card or a cursor starts at 1.4–5× its size and decelerates down to rest. Nothing with identity grows from zero.
+- **Spend scale once.** One oversized arrival per piece is a decision; one in every beat is a house style. Endings usually get smaller.
+- **Typical travel is larger than a nudge.** The median move travels about 5% of the frame's width sideways, or 8% of its height vertically. Small nudges are for helpers, not for the protagonist.
+- **Blur to focus.** 3–10 px of blur clearing over 4–8 frames, under a move, reads as a camera finding focus.
 
 #### 5. Asymmetry: entering and leaving
 
-Exits should take roughly half to two thirds of the entrance duration and use an accelerating curve. A 700 ms entrance pairs with a 300–450 ms exit. The viewer has already read what is leaving; lingering exits feel sluggish, and symmetrical in-and-out timing is one of the clearest signs of a template.
+Exits accelerate; entrances decelerate. In frames they are about the same length (12 in, 13–14 out), but an exit ends at speed, usually on the cut, while an entrance settles. Symmetrical in-and-out timing, with the same curve both ways, is one of the clearest signs of a template.
 
 #### 6. Choreography
 
@@ -550,9 +699,9 @@ Choreography is who moves, when, and in what order. Most generic motion fails he
 
 - **One protagonist at a time.** At any moment one thing leads. Others are still, nearly still, or clearly secondary.
 - **The 60% rule.** A secondary element starts when the main movement is about 60% complete. It feels connected without competing.
-- **Order carries meaning.** Year → title → support line reads as context → claim → detail. Typical offsets: 150 ms between year and title, 300–400 ms between title and support line.
-- **Stagger with intention.** 40–120 ms between items in a group. Vary it with what the items are: words in a headline get a tighter stagger than cards in a grid. A uniform stagger on everything is a tell.
-- **Overlap, never gap.** The next scene begins before the last one has fully left. Dead frames and dips to black break the thread.
+- **One claim per frame.** A frame says one thing. A label above a title above a support line is a slide, not a shot.
+- **Stagger with intention.** Repeated siblings (letters, rows, tiles) start 1–3 frames apart, with uneven gaps, and each move lasts about twice the gap, so the tails overlap and the group reads as one gesture. Whole words run slower, 2–5 frames apart. A call to action spreads out to about 8 frames. A uniform timer delay reads as a loading list.
+- **Overlap, never gap.** The next scene begins before the last one has fully left. Dead frames and dips to black break the thread. Scenes start already moving.
 - **Parenting.** When one element drives another (a line that pulls a label, a shape that carries text), let the follower lag slightly behind the leader. Lag is what makes it feel attached.
 - **Continuity of identity.** If something transforms, keep it the same thing: the same particles, the same line, the same shape. Viewers follow identity across transformations, which is why morphs tell stories that cuts cannot.
 
@@ -560,12 +709,13 @@ Choreography is who moves, when, and in what order. Most generic motion fails he
 
 For silent pieces the text is the narration, so it must be legible and have time to be read.
 
-- **Reading time:** about 1 second per 3 words, plus 1 second of settling. A 12-word line needs about 5 seconds fully visible. Short titles need at least 1.5 seconds.
-- **Do not move text while it has to be read.** Animate it in, let it rest, animate it out.
-- **Sizes at 1920×1080:** titles 72–110 px, support lines 26–34 px, labels 18–24 px with wide tracking. For vertical 1080×1920 video meant for phones, increase support text to at least 40 px.
-- **At most two lines** of support text per scene. If it needs more, it needs another scene.
-- **Enter by word or by line.** Letter-by-letter entrances only when kinetic type is the concept itself.
-- **Keep text away from the protagonist.** Pick a stable text zone, such as the lower left third, so the eye always knows where to read.
+- **Fewer words, not longer holds.** One to three display words need 0.5–1 s; a short sentence needs 1.5–2 s; a paragraph never belongs on screen. If a line needs more than 2.5 s to read, it has too many words: cut it, or let the voice carry it.
+- **Do not move text while it has to be read.** It arrives, it rests with at most a slow drift, it leaves.
+- **Hierarchy by scale, not by labels.** Use two sizes doing the work: large for the one word that matters, small for everything else. Weight stays in the 400–550 range; emphasis comes from scale and colour, not from bold or from an italic serif word dropped into a sans line.
+- **No page furniture.** No kicker above the headline, no tracked-caps labels, no scene counters ("02 / 05"), no timecodes, no corner brand names, no crop marks or brackets. A video is not a page. See `ai-tells.md`.
+- **Sizes at 1920×1080:** display 120–220 px for the one word that matters, other lines 44–64 px. Interface text shown in the video must be at least 4% of the frame height (about 43 px), magnified by the camera if needed. For vertical 1080×1920 video, scale up by about 1.3.
+- **Words arrive whole.** Enter by word or line, 2–5 frames apart. Letter-by-letter typing only inside the product's own input field.
+- **Place text where the picture needs it.** Usually one line near the optical centre, or a phrase split by an object. Never the same caption slot shot after shot, and never a left-aligned headline beside a box.
 
 #### 8. Material behaviour
 
@@ -634,6 +784,125 @@ From the animation canon (Disney's twelve principles) and its adaptation to inte
 - **Masking.** Revealing through a shape that grows or wipes; a strong alternative to fading.
 - **Parallax and dimensionality.** Depth through different speeds and through folding or flipping.
 - **Dolly and zoom.** Moving the camera through the scene rather than moving the scene past the camera.
+
+## Embedded: references/motion-kit.md
+
+### Motion kit: measured values, ready to paste
+
+`principles.md` says why things move the way they do. This file gives the numbers to paste, so a tool builds measured motion instead of improvising average motion. Use the curve names in the storyboard's "What moves" column ("words land, softLand 12 f, from 5% H below"), and `export` translates them into each tool.
+
+Source: curve shapes, durations, offsets and ratios are measured frame by frame on about 4,300 moves in 53 professional moments by the motionmaxxing project (Apache-2.0, github.com/Tejashmakwana/motionmaxxing). The cubic-bezier fits, recipes and code here are Unrushed's own.
+
+Durations are in frames at 30 fps (f). At 24 fps multiply by 0.8; at 60 fps by 2. H is the frame height, W the width.
+
+#### Contents
+
+1. The curves
+2. Recipes
+3. In ChatCut
+4. In Remotion
+5. In After Effects
+6. What not to do
+
+#### 1. The curves
+
+Each curve is a cubic-bezier fitted to the median of a cluster of real moves. The shape column gives how much of the travel is done at 10, 25, 50 and 75% of the time.
+
+| Name | cubic-bezier | Shape at 10/25/50/75% | Frames (usual) | Use it for |
+|---|---|---|---|---|
+| `softLand` | `(0.22, 0.776, 0.511, 0.942)` | 30 / 59 / 85 / 95 | 12 (6–21) | Entries: text rising, panels sliding, scale-ins. The workhorse |
+| `snapSettle` | `(0.136, 1.058, 0.298, 0.943)` | 54 / 84 / 96 / 98 | 11 (6–29) | Hero entries and the closing beat: most of the travel at once, then a soft tail |
+| `glide` | `(0.524, 0.892, 0.878, 0.995)` | 16 / 39 / 69 / 91 | 10 (7–18) | Medium moves, camera pushes, blur to focus |
+| `whip` | `(0.375, 0.947, 0.721, 1.0)` | 23 / 52 / 83 / 97 | 8 (7–13) | Big fast moves; the arriving half of a whip |
+| `softInOut` | `(0.345, 0.074, 0.655, 0.926)` | 4 / 17 / 50 / 83 | 9 (6–16) | Opacity, blur, colour and ground ramps |
+| `gentleIn` | `(0.252, 0, 0.595, 0.161)` | 1 / 6 / 24 / 55 | 9 (6–17) | The start of a fade-out; a slow push running into a cut |
+| `accelExit` | `(0.288, 0, 0.632, 0.043)` | 0 / 3 / 17 / 47 | 13 (9–19) | Exits off frame and scale exits: peak speed near the end |
+| `crashOut` | `(0.434, 0, 0.73, 0)` | 0 / 1 / 8 / 35 | 17 (11–31) | An exit or camera pull that ends at full speed on a hard cut |
+| `cruise` | linear | 10 / 25 / 50 / 75 | 9, or 26+ for drift | Drift, camera creep, counters, fades |
+| `popOver` | `(0.295, 0.157, 0.309, 1.398)` | 10 / 46 / 96 / 108 | 15 (11–27) | The one late lean past the mark (peak 1.08 at 72% of the time). Once per piece |
+
+How often professionals reach for each: linear about 18%, `glide` and `softInOut` 14% each, `softLand` 9%, `gentleIn` 9%, `snapSettle` and `whip` 6% each, `accelExit` 5%, `crashOut` 4%, `popOver` 2%. Two curves that overshoot hard, a slam that passes its mark early and a big bounce, appear in about 1% of moves and are left out of the kit on purpose.
+
+#### 2. Recipes
+
+Each recipe is a move in numbers. Combine them; do not stack more than two channels on one element.
+
+| Move | Values | Notes |
+|---|---|---|
+| **Land** | `softLand` 12 f; words from 3–7% H below their slot or 3% W beside it; cards from below the frame; opacity 0.2 → 1 over the first 4–6 f only | Arrive by moving. Opacity alone is the template entrance |
+| **Hero entry** | `snapSettle` 11 f; for a logo or wordmark 18–30 f | One per scene at most |
+| **Arrive from oversize** | identity objects (logo, key word, card, cursor) start at 1.4–5× and come down on `snapSettle` 18 f; a calm brand 1.1–1.9× | Never grow them from zero. Spend the big version once |
+| **Blur to focus** | 3–6 px for type, 8–12 px for a status word, up to 18 px for a logo; to 0 over 4–8 f on `glide` | A helper under a move, not a look |
+| **Leave** | `accelExit` 13 f, still moving on the last frame; into a hard cut `crashOut` 17 f | The cut is the edit; the next shot inherits the speed |
+| **Siblings** (letters, rows, tiles) | starts 1–3 f apart with uneven gaps (3, 2, 2, 3, 2…); each move about twice the gap | A wave under 0.6 s reads as one gesture |
+| **Words** | whole words 2–4 f apart in a hook, 4–6 in a headline, 8–12 when they follow a voice; a closing stack about 8 f | Words arrive whole. Letter by letter only inside the product's own input |
+| **Hold alive** | linear drift 1–3 px per frame, or a 0.5–1% scale creep, a caret, light moving on the ground | Only the payoff may be fully still, for under ~1 s |
+| **Camera push** | multiplier by duration: 1.25× for a 6 f punch, 1.4× for 12–18 f, 1.5× for 20–45 f, up to 2.4× for a slow drift; `glide` or linear | Move the whole interface as one group, never its parts separately |
+| **Reveal snap** | the camera covers about 60% of the change in one frame (ratio 0.56–0.77), then settles over 9–18 f on `softLand` | The jump has the punch of a cut; the tail lets the frame be read |
+| **Camera pull** | about 1.8× on `accelExit`, ~17 f | Pulls accelerate; pushes decelerate |
+| **Whip** | 7–8 f; arriving half `whip`, departing half `accelExit`; the cut lands at peak speed and the new shot continues the direction | An object riding the whip keeps its size |
+| **Cursor** | enters off frame at 1.5–2× and comes down; travels on an arc and decelerates (`softLand`); parks still for about 0.1 s before acting | A cursor that glides straight at one speed has no hand behind it |
+| **Press** | cursor to 0.85–0.9 in 2 f; the target to 0.76–0.8 over ~6 f, starting 1 f after the cursor; release slower, ~10 f on `softLand`, or `popOver` for a +5% rebound; the target brightens | No ripple ring, no white flash |
+| **Counter** | a new value every frame, with steps shrinking (`softLand`) over 7–23 f; lands on a round number for a claim, a specific one for a data field | Only after the cause that triggers it |
+| **The one spring** | `popOver` 15 f on the payoff, or snap to 0.9× and settle to 1.0 over ~5 f with a small wobble | Once per piece. Overshoot on everything is the AI default |
+| **Cut on motion** | scenes start already moving on frame 0 and end mid-move | A cut on a still frame reads as a slide change |
+
+#### 3. In ChatCut
+
+**Motion graphics generated by the agent.** The agent writes the animation code, so give it curves and numbers, not adjectives. Put the kit's values in the "Motion fundamentals" block of the prompt (`targets/chatcut.md`):
+
+> Entries move and decelerate: cubic-bezier(0.22, 0.776, 0.511, 0.942) over 12 frames at 30 fps, words from 5% of the height below their place, opacity from 0.2 to 1 in the first 5 frames only. Exits accelerate: cubic-bezier(0.288, 0, 0.632, 0.043) over 13 frames and are still moving on the last frame. Whole words start 4–6 frames apart, uneven. No overshoot except one late lean on the payoff: cubic-bezier(0.295, 0.157, 0.309, 1.398) over 15 frames. Held frames keep one thing drifting 1–2 px per frame.
+
+Name the recipe for each scene in one line ("the card arrives from 1.6× on snapSettle, 18 frames"), not the whole table.
+
+**Zooms (`builtin:zoom`).** Choose the magnification from the length, as in the camera push recipe: about 1.25 for a 6–8 frame punch, 1.3–1.4 for 12–18 frames, 1.5 for 20–45 frames. A reveal works best as `instant` plus a short ease-out tail. Which curve ChatCut applies inside its ease-in and ease-out frames is not documented: after applying a zoom, measure it with `scripts/detect.py <export> --profile <start> <end>` and write the real behaviour down in `targets/chatcut.md`, "Saving what worked".
+
+**Checking.** Export, run `detect.py --profile` on the two or three key moves and `--strip` to see them frame by frame. A landing should show steps that shrink; an exit, steps that grow.
+
+#### 4. In Remotion
+
+Copy `assets/remotion/unrushed-motion.ts` into `src/` and use its functions instead of writing curves by hand:
+
+```tsx
+import {useCurrentFrame, useVideoConfig} from 'remotion';
+import {land, leave, arrive, stagger, press, revealSnap, ease} from './unrushed-motion';
+
+const frame = useCurrentFrame();
+const {fps} = useVideoConfig();
+const title = land(frame, 10, {from: 48, fps});      // {offset, opacity}
+const logo = arrive(frame, 90, {from: 1.6, fps});     // scale, 1.6 → 1
+const wordStart = (i: number) => 20 + stagger(i, [5, 4, 6, 4], fps);
+const click = press(frame, 140, {fps});              // {cursor, target, pressed}
+const camera = revealSnap(frame, 60, {from: 2.2, fps});
+```
+
+Every function is a pure function of the frame, so renders are deterministic. `ease.<name>` gives the raw curves for `interpolate(..., {easing: ease.softLand})` and for `@remotion/transitions` timings.
+
+#### 5. In After Effects
+
+Animate with two linear keyframes, then paste this expression on the property. It reshapes the motion between the keyframes with one of the kit's curves:
+
+```js
+// Unrushed curve: set c to a cubic-bezier from references/motion-kit.md
+var c = [0.22, 0.776, 0.511, 0.942]; // softLand
+function bx(s){ return 3*(1-s)*(1-s)*s*c[0] + 3*(1-s)*s*s*c[2] + s*s*s; }
+function by(s){ return 3*(1-s)*(1-s)*s*c[1] + 3*(1-s)*s*s*c[3] + s*s*s; }
+function curve(t){ var lo = 0, hi = 1; for (var i = 0; i < 30; i++){ var m = (lo + hi) / 2; if (bx(m) < t) lo = m; else hi = m; } return by((lo + hi) / 2); }
+if (numKeys > 1 && time > key(1).time && time < key(2).time) {
+  var t = (time - key(1).time) / (key(2).time - key(1).time);
+  key(1).value + (key(2).value - key(1).value) * curve(t);
+} else value;
+```
+
+Plugins that take a cubic-bezier (such as Flow) accept the same four numbers.
+
+#### 6. What not to do
+
+- One curve for everything, usually expo-out for every move. Landings and exits use different curves.
+- Overshoot on every arrival, or a bounce that peaks early. Overshoot is rare, late and small.
+- Durations of 20–30 frames for every move. The professional median is 10 frames; slow is a choice for one move, not a default.
+- Identical stagger gaps. Uneven gaps read as separate bodies; a fixed delay reads as a loading list.
+- Animating the camera by moving the interface's pieces one by one. One group, one transform.
 
 ## Embedded: references/visual-explanation.md
 
@@ -862,7 +1131,7 @@ Durations are at `energy` 4–6; scale with the dial.
 
 **Whip pan.** A camera move so fast it becomes a blur, 250–400 ms, cut at peak blur into B moving in the same direction. *Says:* energy, a jump to elsewhere. Use it sparingly, once or twice per piece.
 
-**Carry-over element.** One element (a line, a cursor, a word, a particle cloud) stays in place or keeps moving while the world around it changes. *Says:* this thread connects everything. It is often the through-line itself.
+**Carry-over element.** One element (a line, a cursor, a word, a particle cloud) keeps moving while the world around it changes. *Says:* this thread connects everything. It is often the through-line itself. It must move, scale or change role at every seam; parked at the same coordinates shot after shot, it reads as a pinned label.
 
 **Object-led mask.** An element of A grows, slides or opens to become a window onto B: a circle that expands, a card that becomes full frame, a shape that wipes. 500–900 ms with expo-out. *Techniques:* `editorial-reveal-system` (circular reveal), `page-transitions` (inset and polygon masks, blurred covering shapes), `liquid-lens`. *Says:* a new chapter, an answer. The mask should come from something in A, not appear from nowhere.
 
@@ -878,11 +1147,13 @@ Durations are at `energy` 4–6; scale with the dial.
 
 #### 3. Rules
 
-- **Never use the same transition type twice in a row.** In any piece over 60 s, use at least four kinds.
-- **The transition carries the relation.** Write the relation in the storyboard next to the transition ("B is a detail of A → zoom-through").
-- **Overlap, never gap.** The next beat starts before the last one has fully left (`principles.md`). No empty frames, no dips to black.
-- **Cut more than you think.** Not every change needs a crafted transition. Crafted transitions mark the important turns; clean cuts keep the rhythm between them.
-- **Save the biggest transition for the payoff.** The most elaborate transition should lead into the strongest image, not be spent in the first ten seconds.
+- **The default join is a hard cut on motion.** Professionals cut far more than they transition: in about 96% of measured professional moments the joins are hard cuts, roughly 20 per moment, landed while something moves (measured by the motionmaxxing project, Apache-2.0). Scenes start already moving, and clips end mid-move.
+- **A designed transition is the exception.** A morph, a mask, a camera travel or a carry-over goes only where the relation between beats needs it, usually one to three per minute. Write the relation next to it ("B is a detail of A → zoom-through"). There is no quota of kinds: asking for variety produces a showreel of transitions.
+- **No dissolve or fade between scenes by default.** A dissolve says time passes; used everywhere, it says nobody decided.
+- **Never the same designed transition twice in a row.** Repeated hard cuts are normal; a repeated wipe is a template.
+- **Save the biggest transition for the payoff.** The most elaborate join leads into the strongest image, not into the second scene.
+- **A carried element travels.** A thread object moves, scales or changes role at every seam. Parked at the same place for more than two shots, it becomes a pinned label.
+- **Overlap, never gap.** No empty frames, no dips to black.
 - **Respect reading time.** Never transition while a line is still being read.
 
 #### 4. Hiding the seam
@@ -1029,7 +1300,7 @@ The library shows six presets: Slow Push, Slow Pull Out, Instant, Quick Zoom In,
 | Slow Push | "This matters more and more": tension, a confession, the key claim | 1.08–1.2 over the whole line | B is a detail of A, slowly |
 | Slow Pull Out | "Here is the bigger picture": reveal context, end a section | From 1.2 back to 1.0 | A is part of B |
 | Instant | A second camera angle: emphasis without visible motion | 1.15–1.3, no ramp | Hard cut on the beat |
-| Quick Zoom In | Stress one word | 1.25–1.5, ease-in 4–6 frames | — |
+| Quick Zoom In | Stress one word | 1.25 for a 6–8 frame punch, up to 1.4 for 12–18 frames; ease-in 4–6 frames | — |
 | Quick Zoom Out | Release after a punch, a joke landing | Back to 1.0 in 6–10 frames | — |
 | Zoom In + Out | Stress a single phrase, then return | 1.2–1.35, hold for the phrase | — |
 
@@ -1047,8 +1318,8 @@ Choose by the relation between the two beats, as in `transitions.md`. This table
 
 | Library transition | Relation it can say | Tier | Notes | Remotion | After Effects |
 |---|---|---|---|---|---|
-| Cross Dissolve | Time passes; A becomes B, softly | A | 8–16 frames. More than 24 frames feels like a slideshow. | `fade()` | Opacity cross-fade |
-| Dip to Black | End of a chapter; a large time skip; a tonal reset | A | Use it once or twice per piece, never between bullet points | `fade()` through a black solid | Dip to Black |
+| Cross Dissolve | Time passes; A becomes B, softly | B | Only when time passes. 8–16 frames; more than 24 feels like a slideshow. A dissolve between every scene is a tell. | `fade()` | Opacity cross-fade |
+| Dip to Black | End of a chapter; a large time skip; a tonal reset | B | At most once per piece, and never mid-piece between ideas | `fade()` through a black solid | Dip to Black |
 | Soft Wipe | B continues A in space, sideways | B | Match the wipe direction to motion in the shot | `wipe()` with a feathered edge (custom) | Linear Wipe, feathered |
 | Clean Line Wipe | B opens a new chapter; list items in an editorial style | B | The line must belong to the design language (rule, cursor, divider) | `wipe()` + a 2 px line layer | Linear Wipe + stroke |
 | Luma Blend | A becomes B through light: bright areas lead | B | Works when both shots share bright regions | Custom HTML-in-canvas shader | Gradient Wipe using a luma layer |
@@ -1069,7 +1340,8 @@ The cheapest way to connect ideas and mark emphasis is often a sound placed at t
 - Pair sounds with motion that has a direction or an impact: whoosh with Whip Pan, a soft riser with Slow Push, a click or tick with a UI cursor, a low hit with Impact Shake.
 - Place the sound at the motion's peak, not its start. A whoosh peaks at the midpoint of the pan.
 - Keep accents out of music ducking, and set the volume per item.
-- At most one accent per beat. Silence before a key line is also a sound decision.
+- One to three hand-placed accents in the whole piece: the click, the name, the turn. A hit on every cut is a tell.
+- Silence before a key line is also a sound decision. Pull the music down before the biggest move.
 
 #### 7. Budgets and stacking
 
@@ -1156,10 +1428,10 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 
 | Tell | Why it reads as AI | Do instead |
 |---|---|---|
-| Everything fades in and slides up 20–40 px with the same duration | The default entrance of every template | Vary the entrance by role; use small distances, blur-to-focus or masks; keep timing asymmetric |
+| Everything fades in and slides up 20–40 px with the same duration | The default entrance of every template | Arrive by moving, with opacity only as a 4–6 frame helper; identity objects come down from larger; median move about 10 frames (`principles.md`) |
 | The same stagger on every group | Rhythm with no hierarchy | Tight stagger for words, looser for objects; let the order carry meaning |
 | Dip or fade to black between scenes | Hides the lack of a transition idea | Overlap scenes; transform one figure into the next; use a mask or a cut on movement |
-| One transition type for the whole piece, usually a wipe or a crossfade | A template, not an edit | Choose each transition by the relation between beats (`transitions.md`); never the same type twice in a row |
+| A designed transition, or a crossfade, between every scene | A template, not an edit | Hard cuts on motion by default; a designed transition only where the relation between beats needs it (`transitions.md`) |
 | Ease-in-out on everything, or linear entrances | No distinction between arriving, leaving and moving | Entrances decelerate, exits accelerate, linear only for continuous motion |
 | Bouncy overshoot on headlines | Playfulness applied to the wrong element | Overshoot only on small accents, and only when `energy` allows |
 | Slow zoom on every shot | Movement used to hide a static idea | Move the camera only when the move reveals something |
@@ -1188,9 +1460,43 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Centred title and subtitle in every scene | Same layout, no composition | A stable text zone plus a composition that changes with the figure |
 | Icons in rounded squares, emojis | Template components | Drawn marks consistent with the material |
 | Perfectly clean digital rendering | Nothing physical to hold onto | Grain, motion blur, self-shadowing, refraction: light and material carry quality |
-| A static grain overlay | Reads as a filter laid on top, not as film or paper | Grain renewed every two frames, with its intensity tied to the ground |
+| A static grain overlay, or grain added as "depth" | Reads as a filter laid on top, not as film or paper | Texture only when it belongs to the material or the captured surface, and then renewed every two frames |
 | Grain, glow or blur offered as the fix for flat motion or a weak demo | A finish standing in for the missing work | Fix the motion itself, or the demo itself; finish comes last |
 | A showcase where every style shares the same ground and palette | The viewer sees one style with different shapes | Give each style its own world: ground, palette and light |
+
+#### Page and template
+
+These come from web pages and slide decks, and they are the loudest tells of all. A study of rejected AI-made films ranked them at the top, and found that several were caused by the wording of the skill that made the films (motionmaxxing, Apache-2.0). Unrushed's own first brand system used several of them, which is why they are listed here plainly.
+
+| Tell | Why it reads as AI | Do instead |
+|---|---|---|
+| Corner furniture: a brand name or title in tracked caps, a timecode, FPS or resolution text, corner brackets or crop marks | The urge to look "designed"; it frames the video as a page | Nothing. The frame is the claim, the product, and the logo once |
+| Scene or chapter counters ("02 / 05", "01 — The problem"), progress bars | Decks have page numbers | A chapter is a change of world plus a carried object, never a label |
+| A kicker above the headline, a left-aligned headline beside a box or device | Web and keynote layouts | One line near the optical centre, or a phrase split by an object |
+| Label chips naming the scene or app ("Messages", "Editor") | Looks informative | The interface shows which app it is |
+| A flat colour ground that changes per scene | Brand hex values read as swatches | A world with light, depth and a surface; flat only for a flood under 1 s |
+| A stat slide: a big centred number with a small label | Numbers signal credibility | A number only inside an action that causes it, or show the thing instead |
+| A feature tour: card plus caption, repeated at the same coordinates | The completeness reflex | One proof, one object per frame, beats of unequal length |
+| An element pinned at the same place through several shots | A "recurring element" taken literally | A carried element moves, scales or changes role at every seam |
+| A different effect in every beat | Showing range instead of an idea | One idea and only the effects it needs |
+| Near-black ground with a warm glow, vignette and lens flare | "Premium dark mode" averaged | Light with a source, a ground that belongs to the brand; a light ground is as premium as a dark one |
+| One italic serif word inside a sans line | A recent SaaS-reel habit | One family; scale carries emphasis |
+| A tracked-caps tagline | Looks editorial | No tagline |
+| An end card with logo, tagline, button and URL | A landing page's call to action | The name, or one action, held 0.6–1.4 s, still alive |
+| Ghost decoration: huge words at 3–9% opacity, hairline rules, dot grids, grain as depth | A renderer's house style | None; texture only from a real surface |
+| A giant single word on a flat ground | Scale used as a slide | Spend scale once, and give the word a surface or a cause |
+| Gradient-filled text, or a glow or blur wider than about 24 px around type | Decoration standing in for hierarchy; it also blurs the letters | Solid ink; emphasis by scale; light only from a source in the world |
+
+
+#### Words on screen
+
+| Tell | Why it reads as AI | Do instead |
+|---|---|---|
+| "Meet X", "Introducing", "Unlock", "the future of", "supercharge", "seamless", "in seconds", "AI-powered" | Stock launch copy; the cheapest tell there is | The brand's own phrasing, quoted exactly, or a plain sentence a person would say |
+| "Not just X. It's Y." and three one-word sentences in a row ("Fast. Simple. Yours.") | A copywriting template | One sentence with one claim |
+| A number with no source ("10x faster", "95% of teams") | Confident and unverifiable | A number only from `VIDEO.md` with its source, shown inside the action that causes it |
+| A URL or handle on screen | A web page's footer | Put it in the post copy or the description |
+| A headline typed letter by letter with a caret | Typing belongs to an input | Typing only inside the product's own field; headlines arrive as whole words |
 
 #### Structure
 
@@ -1215,9 +1521,13 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 
 `scripts/detect.py` finds some tells in an exported video without any judgment involved:
 
+- **The gates** (`SKILL.md`, "Looking honestly"): a blank or still render, a length that does not match the plan, missing sound, more than 3 flat frames in a row, a final hold longer than 1.4 s, a final shot longer than a quarter of the piece.
+- **Motion against human-made films**: the average change between frames, compared with the band measured on human work (median 6.8, middle half 4.4–9.8 on its scale). It is a question, not a gate: calm brands sit below it on purpose.
+
 - **Fades and dips to black**: stretches where the frame goes almost completely dark.
 - **Frozen stretches**: long holds where nothing changes anywhere in the frame, which are sometimes intended and sometimes a render that stalled.
 - **Cut rhythm**: hard cuts and the average shot length. Many hard cuts in a piece meant to flow are a sign that transitions were not designed.
+- **Words and furniture in the plan**, with `--storyboard`: counters, URLs, slogan words and unsourced numbers in the on-screen text, and page furniture named in the visual column. In a rendered video they cannot be found in pixels yet; check them on the contact sheet (`--sheet`).
 - **The planned rhythm**, with `--storyboard STORYBOARD.md`: scene lengths that are all alike, and the same transition type back to back.
 - **The cue sheet**, from the same file. The detector checks the budgets in `effects.md`:
   - cues without a reason or tier;
@@ -1344,12 +1654,13 @@ Paste this into the AI composer, with the Design Style selected. Structure it li
 1. **Deliverable**: duration, resolution, frame rate, sound or none.
 2. **Concept**: the through-line in two sentences.
 3. **Storyboard**: the table from `STORYBOARD.md`, with exact text, the beat each scene serves, its device and its transition written as relation and type ("B is a detail of A → zoom-through, 900 ms, expo"). Durations come from the beat map; do not even them out.
-4. **Motion fundamentals**: repeat the key numbers even if they are in the Design Style. The agent follows what is in front of it.
+4. **Motion fundamentals**: repeat the key numbers even if they are in the Design Style. The agent follows what is in front of it. Use the paste-ready block in `motion-kit.md` §3 and the curve names from the storyboard, each with its cubic-bezier and frames.
 5. **Interfaces**: when a scene simulates a product or a tool, name the design system and components ("shadcn/ui Slider and Card, dark theme, Lucide icons", or the product's own), with radius, colours and font, and the cursor behaviour from `visual-explanation.md`.
 6. **Continuity**: if one element carries through the piece, such as particles or a line, say that every transformation starts from the exact end state of the previous scene, with no cuts between clips, and that it may build the whole sequence as a single motion graphic if needed.
 7. **Cues**: the cue sheet from `STORYBOARD.md`, one sentence per cue (see "Library effects, zooms and sound" below). State that these are the only effects, zooms and library transitions wanted, so the agent adds nothing else.
-8. **Process**: pilot the hook and the payoff first, report, then build the rest.
-9. **Report**: ask it to list what it could not do, which frames it checked, the real timings, and the real parameters of every cue it applied.
+8. **Process**: build in passes (`SKILL.md`, "Building in passes"). Pass 0 is the hardest beat, usually the payoff: build it alone, check it, and report before building the rest. Then blocking, type, motion and finish, with `preview_timeline` frames after each pass.
+9. **Never ship**: paste the Never ship list from `SKILL.md` and say none of it may be added: no labels, counters, chips, stat slides, invented screens, slogan lines or end card with a URL.
+10. **Report**: ask it to list what it could not do, which frames it checked with one sentence each, the real timings, and the real parameters of every cue it applied. Ask for numbers and descriptions, not a verdict such as "looks great".
 
 #### Library effects, zooms and sound
 
@@ -1386,6 +1697,7 @@ After the agent applies them, ask it to read back the real parameters, because t
 - **Look for the product outside ChatCut too.** ChatCut's agent runs on Claude Code, so it can use the host's tools: git and the GitHub CLI, connectors, and a browser for the running product. Read the repository as described in `visual-explanation.md` §8 before rebuilding any demo screen. If nothing is reachable, ask for the repository or link in the intake round.
 - **Rebuild demos as motion graphics from the real components.** Pass the tokens (colours, radii, fonts), the component anatomy, the real copy and the states from the repository, plus the demo script with the cursor's actions. Do not animate a screenshot when the real interface can be rebuilt.
 - **Keep the previous timeline** and build the new version on a copy, so the before and after can be compared.
+- **Verify the export with the gates.** Export, then run `scripts/detect.py <export> --expect <seconds> --sheet` and `detect.py <export> --expect <seconds> --storyboard STORYBOARD.md`. Quote the gate results in the report.
 - **Verify with the viewer.** Use `preview_timeline` with `views:["viewer"]` on consecutive frames around each movement, as a strip, to check physics, and around each demo step to check the action and its response.
 
 #### Working with the agent
@@ -1407,3 +1719,55 @@ When a piece comes out well, keep it in two places:
 
 - Motion cannot be shown to the agent through images; it has to be described in words and numbers.
 - Real 3D materials, such as physically based glass, cloth simulation or volumetric light, may be better rendered elsewhere, for example in Blender, and imported as clips.
+
+## Embedded: taste/verdicts.md
+
+### Verdicts
+
+What the author of Unrushed said about real pieces made with it, with context. Read it before proposing an idea, a style or a fix. These are reactions to specific pieces, not universal rules: generalise each one only as far as its context goes.
+
+Each project keeps its own `TASTE.md` (template in `assets/TASTE.md`) for the person it is made for. This file is the shared example and the reason behind several of the skill's rules. Quotes stay in the language they were said in, with a translation.
+
+#### How to add a verdict
+
+When the person reacts to a piece, append an entry to the project's `TASTE.md`: date, piece and version, the quote, what they were reacting to (scene, time, frame), and the narrowest lesson it supports. Never rewrite an earlier entry; add a new one that refines it.
+
+#### Rejected
+
+**Before 0.4 · Unrushed 0.3, a run inside ChatCut on a new piece.**
+- Quote: "no me pidió reglas para trabajar, imágenes de marca, no sé, algo para el guion, solo se asumió apenas lo inicié" (it asked for no working rules, brand images or anything for the script; it just assumed as soon as I started it).
+- Reacting to: the skill starting to build with no intake.
+- Lesson: no visual work before the intake; if the person skips the questions, write the assumptions down where they can be corrected. Became "Context before creation" in 0.4.
+
+**Before 0.4 · Unrushed 0.3, run on a video made without the skill.**
+- Quote: "cuando hizo cambios fueron poco estrictos, y muy perezosos" (the changes it made were lax and very lazy).
+- Reacting to: small cosmetic changes (a duration here, grain or a camera move there) instead of treating the problems the critique named.
+- Lesson: every fix has an acceptance test, and a fix cannot be swapped for a cheaper one. Became the fix contract in `improve`.
+
+**Before 0.4 · Same run, the product demo.**
+- Quote: "no hizo el mínimo esfuerzo por revisar el repositorio del producto para proponer interfaces reales del producto" (it made no effort to check the product's repository to propose its real interfaces).
+- Reacting to: invented screens moved around by camera pushes.
+- Lesson: find the real product first (code, design files, running app) and build the demo from its components; a camera move over a still screen is not a demo step.
+
+**2026-11-23 · Unrushed 0.4, pieces built after the 0.4 changes.**
+- Quote: "se ven ruidosos, poco cuidados en la información, no está siendo el protagonista la animación sino que sigue sintiéndose muy AI" (they look noisy, careless with information; the animation is not the protagonist and it still feels very AI).
+- Reacting to: scenes crowded with labels and text, every beat equally loud, motion as decoration around the text.
+- Lesson: the skill's own rules and example were prescribing page furniture (labels, counters, a long end card with a URL) and a quota of transition kinds. Removed in 0.5; added the Never ship list, the importance budget and "what each beat buys".
+
+**2026-11-23 · Same pieces, the research.**
+- Quote: "investigamos físicas, técnicas, pero nada de eso se aplica" (we researched physics and techniques, but none of it is applied).
+- Reacting to: measured curves and techniques that lived in prose and never reached the built motion.
+- Lesson: motion values must arrive as numbers the tool executes (the motion kit and its Remotion file), and a render must be checked by script (the gates), not by the agent's own description.
+
+#### Preferred
+
+**2026-11-23 · How to learn from another project.**
+- Quote: "hay que tomar las cosas buenas que sí hace motionmaxxing… para conservar nuestro objetivo pero con los aprendizajes de motionmaxxing" (we should take the good things motionmaxxing does, to keep our goal but with its lessons).
+- Lesson: keep Unrushed's job (directing motion inside the person's own editor, with their footage and their real product) and adopt measured values, gates and honest review; do not become a second film generator.
+
+**Standing preference · Working style.**
+- The author wants a plan for long tasks, executed in parts, with a critical voice rather than agreement, and questions when something is unclear. Pieces built with Unrushed should follow the same rhythm: pass 0 first, shown before the rest is built.
+
+#### Measured on our own work (not a verdict, but evidence)
+
+**2026-11-23 · The 2-minute Unrushed video made in Remotion during 0.2.** `detect.py` reports: 21 flat frames in three runs (G2 fails), a final hold of 5.7 s (G3 fails), 13% of frames changing, motion 0.3 against a human median of 6.8. It is the clearest example of "the animation is not the protagonist".

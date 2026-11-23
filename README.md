@@ -2,7 +2,9 @@
 
 Motion direction for AI agents. Unrushed helps an agent brief, style, storyboard, export and critique motion graphics and videos so they do not look AI-generated: every movement gets a purpose, a duration, a curve, a distance and a place in the order of things, and every piece gets a story, a rhythm and transitions chosen for what they say.
 
-Current version: **0.4** (see [CHANGELOG](CHANGELOG.md)).
+Current version: **0.5** (see [CHANGELOG](CHANGELOG.md)).
+
+Unrushed directs motion inside the tool you already edit in, with your footage and your real product. It does not generate films on its own; it decides what each beat says, how it moves in measured numbers, and checks the export by script.
 
 It works with any tool. The project files (`BRAND.md`, `VIDEO.md`, `STYLE.md`, `STORYBOARD.md`) describe the piece independently of the software, and adapters in `references/targets/` translate it for ChatCut, Remotion, or anything else.
 
@@ -52,7 +54,7 @@ ChatCut's agent runs on Claude Code and loads the skills in your Claude account.
 
 ### Optional: the video detector
 
-`scripts/detect.py` checks an exported video for dips to black, stretches where nothing moves, and hard cuts. It also checks a `STORYBOARD.md` for even scene lengths and repeated transitions, and checks its cue sheet against the effect budgets. It needs Python 3, and ffmpeg for videos (numpy makes it faster if installed):
+`scripts/detect.py` checks an exported video from any tool against six gates (the piece exists and matches its planned length, no empty frames, a short ending, plus three judged by eye on a contact sheet), and reports dips to black, frozen stretches, cuts, loudness and motion compared with human-made films. It also checks a `STORYBOARD.md` for rhythm, designed transitions, what each beat buys, the importance budget and Never ship words, and checks its cue sheet against the effect budgets. It needs Python 3, and ffmpeg for videos (numpy makes it faster if installed):
 
 ```bash
 brew install ffmpeg        # macOS
@@ -83,7 +85,7 @@ brief  →  style  →  storyboard  →  export  →  (make it in your tool)  �
 
    With ChatCut's agent plugin installed, the cues are applied directly through ChatCut's tools and checked in the viewer. Without it, the agent writes one precise sentence per cue for ChatCut's chat.
 
-5. Make the video in your tool. Start with the pilot scene the export asks for.
+5. Make the video in your tool, in passes: the hardest beat first, then blocking, type, motion and finish, with a contact sheet after each.
 
 6. **`critique`**: share the storyboard before building, or screenshots or the exported video after. You get scores on story, rhythm, explanation, transitions and craft, the AI tells it found, and the three fixes with the most impact, ready to paste back into your tool.
    > *"unrushed critique" + screenshots or video*
@@ -132,7 +134,7 @@ It is not allowed to swap a fix for a cheaper one, such as grain instead of phys
 
 It also sets budgets, such as one gimmick per piece, two stylize looks, and roughly one zoom per 8–12 s in a talking head, and explains how to apply each cue through ChatCut's tools or by prompt.
 
-`examples/unrushed-launch/` shows the whole set for a 45-second launch: `BRAND.md` from the Unrushed brandbook, `VIDEO.md`, and a `STORYBOARD.md` with a cue sheet that passes the detector.
+`examples/unrushed-launch/` shows the whole set for a 39-second launch: `BRAND.md` from the Unrushed brandbook, `VIDEO.md`, and a `STORYBOARD.md` with a cue sheet that passes the detector.
 
 ### Dials
 
@@ -157,7 +159,18 @@ python scripts/detect.py --storyboard STORYBOARD.md                  # check the
 python scripts/detect.py my-video.mp4 --storyboard STORYBOARD.md     # both
 python scripts/detect.py my-video.mp4 --strip 12.4                   # 12 consecutive frames as one image, to judge physics
 python scripts/detect.py my-video.mp4 --profile 12.0 13.2            # per-frame change: a rough speed curve with a reading
+python scripts/detect.py my-video.mp4 --expect 30 --expect-audio --strict   # gates; exit code 3 if one fails
+python scripts/detect.py my-video.mp4 --sheet                        # contact sheet, and the frames around every cut
+python scripts/blind_review.py old.mp4 new.mp4                       # compare versions blind, record your pick
 ```
+
+### Measured motion, in numbers
+
+`references/motion-kit.md` gives ten curves fitted to measured professional moves as cubic-beziers, with their usual durations, and recipes in numbers: land, leave, arrive from oversize, stagger, press, camera push and snap, whip, counters and the one spring per piece. It says how to apply them in ChatCut, in After Effects (an expression) and in Remotion, where `assets/remotion/unrushed-motion.ts` provides them as functions.
+
+### Your taste
+
+Each project keeps a `TASTE.md`: what you said about pieces made for you, before-and-after pairs and your picks from blind reviews. Unrushed reads it before every command and adds your reactions as you give them. `taste/` holds the author's own verdicts as the shared example.
 
 ## What's inside
 
@@ -167,15 +180,19 @@ unrushed/
 ├── references/
 │   ├── narrative.md          Hook, promise, proof, payoff, ask; structures; rhythm and the beat map
 │   ├── principles.md         Timing, curves, distance, choreography, type, materials, physics and how to check it
+│   ├── motion-kit.md         Measured curves as cubic-beziers and recipes in numbers, per tool
 │   ├── visual-explanation.md Devices, the slide test, real interfaces, cursors, finding the product, demo scripts
 │   ├── transitions.md        Transitions by relation, catalogue, hiding the seam
 │   ├── effects.md            Library effects, zooms, transitions and sound: intent, tiers, budgets, ChatCut, Remotion, AE
 │   ├── ai-tells.md           What makes video read as AI-generated, and what to do instead
 │   ├── techniques.md         38 techniques from real reference pieces, indexed by meaning
 │   └── targets/              chatcut.md, remotion.md, generic.md
-├── assets/                   Templates for BRAND.md, VIDEO.md, STYLE.md, STORYBOARD.md, REVISION.md
+├── assets/                   Templates for BRAND.md, VIDEO.md, STYLE.md, STORYBOARD.md, REVISION.md, TASTE.md
+│   └── remotion/             unrushed-motion.ts: the motion kit as Remotion functions
+├── taste/                    The author's verdicts and before-and-after edits
 ├── examples/unrushed-launch/ A worked example with a brand and a cue sheet
-├── scripts/detect.py         Automatic checks on an exported video and on a storyboard
+├── scripts/detect.py         Gates and checks on an exported video, contact sheets, and checks on a storyboard
+├── scripts/blind_review.py   Side-by-side blind comparison of versions
 ├── scripts/build_single.py   Builds dist/unrushed-single-file.md
 └── dist/                     The single-file edition
 ```
@@ -189,6 +206,7 @@ The principles are written in our own words, drawing on:
 - Daniel Shiffman, *The Nature of Code* (2024): forces, oscillation, particles. Recommended reading; no text or code is reproduced here.
 - Paul Bakaus's *Impeccable*, whose structure inspired this one: one skill, commands as shared vocabulary, context files, named anti-patterns and deterministic detectors.
 - Measured values from the 36 reference pieces studied while building the skill.
+- [motionmaxxing](https://github.com/Tejashmakwana/motionmaxxing) by Tejas Makwana (Apache-2.0): the measured motion values (about 4,300 moves in 53 professional moments), the human motion band, the gate thresholds, the study of what makes films read as AI-made, and the ideas of a Never ship list, honest review, the hardest beat first, a taste file and blind review. Unrushed restates them in its own words and implements its own code; the cubic-bezier fits are its own.
 
 ## License
 

@@ -4,6 +4,9 @@ A library of motion techniques studied from real reference pieces: what each one
 
 Every entry links to its source and credits its author. Entries describe techniques and record observed parameter values in our own words; no code or assets are copied. If a build route says "record or export", check the source's licence before commercial use.
 
+
+**Use sparingly.** Most scenes need no named technique: a cut, a camera move and a well-timed arrival carry them. A piece uses one idea and only the techniques it needs, usually one signature technique and perhaps one supporting it. A new technique in every beat reads as a showreel, which is one of the clearest AI tells (`ai-tells.md`).
+
 ## Contents
 
 1. How to use this library

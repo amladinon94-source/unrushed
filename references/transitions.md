@@ -48,7 +48,7 @@ Durations are at `energy` 4–6; scale with the dial.
 
 **Whip pan.** A camera move so fast it becomes a blur, 250–400 ms, cut at peak blur into B moving in the same direction. *Says:* energy, a jump to elsewhere. Use it sparingly, once or twice per piece.
 
-**Carry-over element.** One element (a line, a cursor, a word, a particle cloud) stays in place or keeps moving while the world around it changes. *Says:* this thread connects everything. It is often the through-line itself.
+**Carry-over element.** One element (a line, a cursor, a word, a particle cloud) keeps moving while the world around it changes. *Says:* this thread connects everything. It is often the through-line itself. It must move, scale or change role at every seam; parked at the same coordinates shot after shot, it reads as a pinned label.
 
 **Object-led mask.** An element of A grows, slides or opens to become a window onto B: a circle that expands, a card that becomes full frame, a shape that wipes. 500–900 ms with expo-out. *Techniques:* `editorial-reveal-system` (circular reveal), `page-transitions` (inset and polygon masks, blurred covering shapes), `liquid-lens`. *Says:* a new chapter, an answer. The mask should come from something in A, not appear from nowhere.
 
@@ -64,11 +64,13 @@ Durations are at `energy` 4–6; scale with the dial.
 
 ## 3. Rules
 
-- **Never use the same transition type twice in a row.** In any piece over 60 s, use at least four kinds.
-- **The transition carries the relation.** Write the relation in the storyboard next to the transition ("B is a detail of A → zoom-through").
-- **Overlap, never gap.** The next beat starts before the last one has fully left (`principles.md`). No empty frames, no dips to black.
-- **Cut more than you think.** Not every change needs a crafted transition. Crafted transitions mark the important turns; clean cuts keep the rhythm between them.
-- **Save the biggest transition for the payoff.** The most elaborate transition should lead into the strongest image, not be spent in the first ten seconds.
+- **The default join is a hard cut on motion.** Professionals cut far more than they transition: in about 96% of measured professional moments the joins are hard cuts, roughly 20 per moment, landed while something moves (measured by the motionmaxxing project, Apache-2.0). Scenes start already moving, and clips end mid-move.
+- **A designed transition is the exception.** A morph, a mask, a camera travel or a carry-over goes only where the relation between beats needs it, usually one to three per minute. Write the relation next to it ("B is a detail of A → zoom-through"). There is no quota of kinds: asking for variety produces a showreel of transitions.
+- **No dissolve or fade between scenes by default.** A dissolve says time passes; used everywhere, it says nobody decided.
+- **Never the same designed transition twice in a row.** Repeated hard cuts are normal; a repeated wipe is a template.
+- **Save the biggest transition for the payoff.** The most elaborate join leads into the strongest image, not into the second scene.
+- **A carried element travels.** A thread object moves, scales or changes role at every seam. Parked at the same place for more than two shots, it becomes a pinned label.
+- **Overlap, never gap.** No empty frames, no dips to black.
 - **Respect reading time.** Never transition while a line is still being read.
 
 ## 4. Hiding the seam

@@ -37,12 +37,13 @@ Paste this into the AI composer, with the Design Style selected. Structure it li
 1. **Deliverable**: duration, resolution, frame rate, sound or none.
 2. **Concept**: the through-line in two sentences.
 3. **Storyboard**: the table from `STORYBOARD.md`, with exact text, the beat each scene serves, its device and its transition written as relation and type ("B is a detail of A → zoom-through, 900 ms, expo"). Durations come from the beat map; do not even them out.
-4. **Motion fundamentals**: repeat the key numbers even if they are in the Design Style. The agent follows what is in front of it.
+4. **Motion fundamentals**: repeat the key numbers even if they are in the Design Style. The agent follows what is in front of it. Use the paste-ready block in `motion-kit.md` §3 and the curve names from the storyboard, each with its cubic-bezier and frames.
 5. **Interfaces**: when a scene simulates a product or a tool, name the design system and components ("shadcn/ui Slider and Card, dark theme, Lucide icons", or the product's own), with radius, colours and font, and the cursor behaviour from `visual-explanation.md`.
 6. **Continuity**: if one element carries through the piece, such as particles or a line, say that every transformation starts from the exact end state of the previous scene, with no cuts between clips, and that it may build the whole sequence as a single motion graphic if needed.
 7. **Cues**: the cue sheet from `STORYBOARD.md`, one sentence per cue (see "Library effects, zooms and sound" below). State that these are the only effects, zooms and library transitions wanted, so the agent adds nothing else.
-8. **Process**: pilot the hook and the payoff first, report, then build the rest.
-9. **Report**: ask it to list what it could not do, which frames it checked, the real timings, and the real parameters of every cue it applied.
+8. **Process**: build in passes (`SKILL.md`, "Building in passes"). Pass 0 is the hardest beat, usually the payoff: build it alone, check it, and report before building the rest. Then blocking, type, motion and finish, with `preview_timeline` frames after each pass.
+9. **Never ship**: paste the Never ship list from `SKILL.md` and say none of it may be added: no labels, counters, chips, stat slides, invented screens, slogan lines or end card with a URL.
+10. **Report**: ask it to list what it could not do, which frames it checked with one sentence each, the real timings, and the real parameters of every cue it applied. Ask for numbers and descriptions, not a verdict such as "looks great".
 
 ## Library effects, zooms and sound
 
@@ -79,6 +80,7 @@ After the agent applies them, ask it to read back the real parameters, because t
 - **Look for the product outside ChatCut too.** ChatCut's agent runs on Claude Code, so it can use the host's tools: git and the GitHub CLI, connectors, and a browser for the running product. Read the repository as described in `visual-explanation.md` §8 before rebuilding any demo screen. If nothing is reachable, ask for the repository or link in the intake round.
 - **Rebuild demos as motion graphics from the real components.** Pass the tokens (colours, radii, fonts), the component anatomy, the real copy and the states from the repository, plus the demo script with the cursor's actions. Do not animate a screenshot when the real interface can be rebuilt.
 - **Keep the previous timeline** and build the new version on a copy, so the before and after can be compared.
+- **Verify the export with the gates.** Export, then run `scripts/detect.py <export> --expect <seconds> --sheet` and `detect.py <export> --expect <seconds> --storyboard STORYBOARD.md`. Quote the gate results in the report.
 - **Verify with the viewer.** Use `preview_timeline` with `views:["viewer"]` on consecutive frames around each movement, as a strip, to check physics, and around each demo step to check the action and its response.
 
 ## Working with the agent

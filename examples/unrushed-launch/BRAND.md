@@ -60,18 +60,16 @@
 |---|---|---|---|
 | Stack Sans Headline Medium | titles, figures | display 140–180, title 72–96 | OFL |
 | Stack Sans Text | body, subtitles | 36–44 | OFL |
-| JetBrains Mono | labels, code, wordmark, timecode | 22–26 caps +10%, code 32–48 | OFL |
-| PT Serif Italic | quotes | 56–72 | OFL |
+| JetBrains Mono | code and the wordmark only | code 32–48 | OFL |
+| PT Serif Italic | quotes in print and social posts, never on screen in video | 56–72 | OFL |
 
 ## Graphic elements
 - **LED matrix:** grounds and data, made of dots.
-- **Crop marks:** frame what matters.
-- **◇ bullet:** the active item in orange.
-- **Dotted leader:** joins a name and its value.
-- **Chamfered card:** a 45° corner, 1/12 of the side.
-- **Numbering:** 001.
-- **Frame ruler:** 24 fps, with an orange playhead.
-- **Prompt:** `> command █`.
+- **In video:**
+  - **LED matrix**, as material the camera can enter, not as a flat backdrop;
+  - **Prompt:** `> command █`, only when a real command is part of the story;
+  - **one orange dot**, which travels and changes role between shots.
+- **Print, docs and the brandbook only, never in video:** crop marks, the ◇ bullet, the dotted leader, the chamfered card, numbering (001), the frame ruler. In a video these read as page furniture (`references/ai-tells.md`).
 
 ## Imagery
 - **Yes:**
@@ -126,10 +124,16 @@
 ## Video templates
 | Piece | Format | Composition |
 |---|---|---|
-| Cover | 16:9 | black with a grafito dot field, symbol (no grid) top left, `EP 001` in mono, title in Headline, orange dot bars |
-| End card | 16:9 | crema, full symbol centred, `unrushed` in mono, the GitHub URL in piedra |
-| Lower third | — | crema chamfered card, a 14 px señal bar on the left, name in Headline, role in mono caps |
+| Thumbnail | 16:9 | one strong frame from the film itself plus the title in Headline; no episode number, no corner symbol |
+| Last frame | 16:9 | the full symbol, assembled from the orange dot the film carried, `unrushed` in mono; held 0.6–1.4 s and still alive. The URL goes in the post copy, not on screen |
+| Name on screen | — | the name in Headline, no card, no bar, no role in caps; only when a person speaks |
 | Social post | 4:5 | crema card, a PT Serif Italic quote, the compact symbol with its accent |
+
+## Video rules
+- No corner labels, counters, timecodes, episode numbers, crop marks or kickers on screen.
+- No tagline. The last frame is the name or one action, not a stack of logo, tagline, button and URL.
+- One family on screen: Stack Sans. Emphasis comes from scale, not from an italic serif word.
+- Grounds are worlds with light and depth; crema or grafito flat only as a flood under 1 s.
 
 ## Safe areas
 - 1920×1080: 96 px at the sides, 64 px at the top and bottom.

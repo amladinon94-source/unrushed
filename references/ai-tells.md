@@ -8,10 +8,10 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 
 | Tell | Why it reads as AI | Do instead |
 |---|---|---|
-| Everything fades in and slides up 20–40 px with the same duration | The default entrance of every template | Vary the entrance by role; use small distances, blur-to-focus or masks; keep timing asymmetric |
+| Everything fades in and slides up 20–40 px with the same duration | The default entrance of every template | Arrive by moving, with opacity only as a 4–6 frame helper; identity objects come down from larger; median move about 10 frames (`principles.md`) |
 | The same stagger on every group | Rhythm with no hierarchy | Tight stagger for words, looser for objects; let the order carry meaning |
 | Dip or fade to black between scenes | Hides the lack of a transition idea | Overlap scenes; transform one figure into the next; use a mask or a cut on movement |
-| One transition type for the whole piece, usually a wipe or a crossfade | A template, not an edit | Choose each transition by the relation between beats (`transitions.md`); never the same type twice in a row |
+| A designed transition, or a crossfade, between every scene | A template, not an edit | Hard cuts on motion by default; a designed transition only where the relation between beats needs it (`transitions.md`) |
 | Ease-in-out on everything, or linear entrances | No distinction between arriving, leaving and moving | Entrances decelerate, exits accelerate, linear only for continuous motion |
 | Bouncy overshoot on headlines | Playfulness applied to the wrong element | Overshoot only on small accents, and only when `energy` allows |
 | Slow zoom on every shot | Movement used to hide a static idea | Move the camera only when the move reveals something |
@@ -40,9 +40,43 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Centred title and subtitle in every scene | Same layout, no composition | A stable text zone plus a composition that changes with the figure |
 | Icons in rounded squares, emojis | Template components | Drawn marks consistent with the material |
 | Perfectly clean digital rendering | Nothing physical to hold onto | Grain, motion blur, self-shadowing, refraction: light and material carry quality |
-| A static grain overlay | Reads as a filter laid on top, not as film or paper | Grain renewed every two frames, with its intensity tied to the ground |
+| A static grain overlay, or grain added as "depth" | Reads as a filter laid on top, not as film or paper | Texture only when it belongs to the material or the captured surface, and then renewed every two frames |
 | Grain, glow or blur offered as the fix for flat motion or a weak demo | A finish standing in for the missing work | Fix the motion itself, or the demo itself; finish comes last |
 | A showcase where every style shares the same ground and palette | The viewer sees one style with different shapes | Give each style its own world: ground, palette and light |
+
+## Page and template
+
+These come from web pages and slide decks, and they are the loudest tells of all. A study of rejected AI-made films ranked them at the top, and found that several were caused by the wording of the skill that made the films (motionmaxxing, Apache-2.0). Unrushed's own first brand system used several of them, which is why they are listed here plainly.
+
+| Tell | Why it reads as AI | Do instead |
+|---|---|---|
+| Corner furniture: a brand name or title in tracked caps, a timecode, FPS or resolution text, corner brackets or crop marks | The urge to look "designed"; it frames the video as a page | Nothing. The frame is the claim, the product, and the logo once |
+| Scene or chapter counters ("02 / 05", "01 — The problem"), progress bars | Decks have page numbers | A chapter is a change of world plus a carried object, never a label |
+| A kicker above the headline, a left-aligned headline beside a box or device | Web and keynote layouts | One line near the optical centre, or a phrase split by an object |
+| Label chips naming the scene or app ("Messages", "Editor") | Looks informative | The interface shows which app it is |
+| A flat colour ground that changes per scene | Brand hex values read as swatches | A world with light, depth and a surface; flat only for a flood under 1 s |
+| A stat slide: a big centred number with a small label | Numbers signal credibility | A number only inside an action that causes it, or show the thing instead |
+| A feature tour: card plus caption, repeated at the same coordinates | The completeness reflex | One proof, one object per frame, beats of unequal length |
+| An element pinned at the same place through several shots | A "recurring element" taken literally | A carried element moves, scales or changes role at every seam |
+| A different effect in every beat | Showing range instead of an idea | One idea and only the effects it needs |
+| Near-black ground with a warm glow, vignette and lens flare | "Premium dark mode" averaged | Light with a source, a ground that belongs to the brand; a light ground is as premium as a dark one |
+| One italic serif word inside a sans line | A recent SaaS-reel habit | One family; scale carries emphasis |
+| A tracked-caps tagline | Looks editorial | No tagline |
+| An end card with logo, tagline, button and URL | A landing page's call to action | The name, or one action, held 0.6–1.4 s, still alive |
+| Ghost decoration: huge words at 3–9% opacity, hairline rules, dot grids, grain as depth | A renderer's house style | None; texture only from a real surface |
+| A giant single word on a flat ground | Scale used as a slide | Spend scale once, and give the word a surface or a cause |
+| Gradient-filled text, or a glow or blur wider than about 24 px around type | Decoration standing in for hierarchy; it also blurs the letters | Solid ink; emphasis by scale; light only from a source in the world |
+
+
+## Words on screen
+
+| Tell | Why it reads as AI | Do instead |
+|---|---|---|
+| "Meet X", "Introducing", "Unlock", "the future of", "supercharge", "seamless", "in seconds", "AI-powered" | Stock launch copy; the cheapest tell there is | The brand's own phrasing, quoted exactly, or a plain sentence a person would say |
+| "Not just X. It's Y." and three one-word sentences in a row ("Fast. Simple. Yours.") | A copywriting template | One sentence with one claim |
+| A number with no source ("10x faster", "95% of teams") | Confident and unverifiable | A number only from `VIDEO.md` with its source, shown inside the action that causes it |
+| A URL or handle on screen | A web page's footer | Put it in the post copy or the description |
+| A headline typed letter by letter with a caret | Typing belongs to an input | Typing only inside the product's own field; headlines arrive as whole words |
 
 ## Structure
 
@@ -67,9 +101,13 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 
 `scripts/detect.py` finds some tells in an exported video without any judgment involved:
 
+- **The gates** (`SKILL.md`, "Looking honestly"): a blank or still render, a length that does not match the plan, missing sound, more than 3 flat frames in a row, a final hold longer than 1.4 s, a final shot longer than a quarter of the piece.
+- **Motion against human-made films**: the average change between frames, compared with the band measured on human work (median 6.8, middle half 4.4–9.8 on its scale). It is a question, not a gate: calm brands sit below it on purpose.
+
 - **Fades and dips to black**: stretches where the frame goes almost completely dark.
 - **Frozen stretches**: long holds where nothing changes anywhere in the frame, which are sometimes intended and sometimes a render that stalled.
 - **Cut rhythm**: hard cuts and the average shot length. Many hard cuts in a piece meant to flow are a sign that transitions were not designed.
+- **Words and furniture in the plan**, with `--storyboard`: counters, URLs, slogan words and unsourced numbers in the on-screen text, and page furniture named in the visual column. In a rendered video they cannot be found in pixels yet; check them on the contact sheet (`--sheet`).
 - **The planned rhythm**, with `--storyboard STORYBOARD.md`: scene lengths that are all alike, and the same transition type back to back.
 - **The cue sheet**, from the same file. The detector checks the budgets in `effects.md`:
   - cues without a reason or tier;

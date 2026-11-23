@@ -9,7 +9,7 @@ A prompt for a coding agent, structured in these sections:
 1. **Deliverable**: output path, codec (H.264 MP4 by default), resolution, frame rate, duration, and audio or none. Ask for a `stills/` folder with one key frame per scene.
 2. **Stack**: Remotion; `@remotion/three` when there is 3D or more than a few thousand particles; fonts through `@remotion/google-fonts`. Ask the agent to install Remotion's official agent skills first: `npx skills add remotion-dev/skills`.
 3. **Concept and storyboard**: from the project files, with exact text and the instruction to add no facts.
-4. **Visual system and motion fundamentals**: from `STYLE.md`, as numbers.
+4. **Visual system and motion fundamentals**: from `STYLE.md`, as numbers. Ask the agent to copy `assets/remotion/unrushed-motion.ts` (in the repository: `https://raw.githubusercontent.com/amladinon94-source/unrushed/main/assets/remotion/unrushed-motion.ts`) into `src/` and build every move with its functions (`land`, `leave`, `arrive`, `stagger`, `press`, `revealSnap`, `count`) and curves (`ease.softLand`…), as named in the storyboard. Hand-written easing is the most common way measured motion gets lost (`motion-kit.md` §4).
 5. **Technique notes** for anything non-trivial, such as morphing (below).
 6. **Cues**: the cue sheet from `STORYBOARD.md`, translated with the table below.
 7. **Technical rules** (below).
@@ -23,7 +23,7 @@ The cue sheet names effects as an editor's library does. Use the Remotion column
 | Cue kind | In Remotion |
 |---|---|
 | Effect on a clip or range | `@remotion/effects` through the `effects` prop of `<Video>`, `<Img>`, `<Solid>` or `<HtmlInCanvas>`, inside a `<Sequence>` for the range. Animate parameters with `interpolate()` on the frame. Custom looks use `createEffect()`. |
-| Zoom | Scale a wrapper with `transform-origin` at the focal point; interpolate the scale over the cue's frames with the brand's curve (for example `Easing.bezier(0.16, 1, 0.3, 1)`). `punch` ramps in and out; `hold` ramps in and stays; `slow-push` ramps across the whole range; `instant` jumps. |
+| Zoom | Scale a wrapper with `transform-origin` at the focal point; interpolate the scale over the cue's frames with `ease.glide` from the kit, or the brand's curve, and the multiplier from `pushFor(frames)`; a reveal uses `revealSnap`. `punch` ramps in and out; `hold` ramps in and stays; `slow-push` ramps across the whole range; `instant` jumps. |
 | Library transition | `<TransitionSeries>` with the presentation from the table (`fade`, `wipe`, `slide`, `iris`, `pushCut`, `zoomBlur`, `pageTurn`…), `linearTiming` with an `Easing`, or `springTiming`. Shader transitions are custom HTML-in-canvas presentations. |
 | Sound accent | `<Audio>` inside a `<Sequence>` that starts so the sound peaks on the cue's frame. |
 | Detection effects (person, face, hands, hair) | Only with precomputed masks or landmarks supplied with the project. Otherwise, report that the cue cannot be built. |
@@ -52,10 +52,13 @@ The sequence that worked in practice for one particle set changing into a series
 
 ## Phases with checkpoints
 
-1. **Plan**: project setup, theme file, `STORYBOARD.md`, one still per scene with `npx remotion still`. Stop and show the stills.
-2. **System and first scenes**: build the core system plus the first two or three scenes. Render stills at the start, the middle of each transition, and at rest. Check them against the checklist and fix before continuing.
-3. **Remaining scenes and closing**, with the same check.
-4. **Final render.** Report the real duration and anything that could not be done.
+The phases follow "Building in passes" in `SKILL.md`.
+
+1. **Setup**: project, theme file, the motion kit copied into `src/`, `STORYBOARD.md`.
+2. **Pass 0, the hardest beat**: build only the hero moment and its hardest handoff. Render it and three stills (`npx remotion still`), run `scripts/detect.py --strip` on its key move. Stop and show it.
+3. **Pass 1, blocking**: every scene with real durations, positions and cuts. Render at half resolution (`--scale=0.5`), run `detect.py <render> --expect <seconds> --sheet`, describe the sheet.
+4. **Pass 2, type and information**, then **pass 3, motion** with the kit's functions, each followed by a render, the sheet and strips of the key moves.
+5. **Pass 4, finish and final render**: material, cues, sound. Run `detect.py <render> --expect <seconds> --expect-audio --storyboard STORYBOARD.md` and quote the gates. Report the real duration and anything that could not be done.
 
 ## Licence note
 

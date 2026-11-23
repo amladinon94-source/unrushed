@@ -125,7 +125,7 @@ The library shows six presets: Slow Push, Slow Pull Out, Instant, Quick Zoom In,
 | Slow Push | "This matters more and more": tension, a confession, the key claim | 1.08–1.2 over the whole line | B is a detail of A, slowly |
 | Slow Pull Out | "Here is the bigger picture": reveal context, end a section | From 1.2 back to 1.0 | A is part of B |
 | Instant | A second camera angle: emphasis without visible motion | 1.15–1.3, no ramp | Hard cut on the beat |
-| Quick Zoom In | Stress one word | 1.25–1.5, ease-in 4–6 frames | — |
+| Quick Zoom In | Stress one word | 1.25 for a 6–8 frame punch, up to 1.4 for 12–18 frames; ease-in 4–6 frames | — |
 | Quick Zoom Out | Release after a punch, a joke landing | Back to 1.0 in 6–10 frames | — |
 | Zoom In + Out | Stress a single phrase, then return | 1.2–1.35, hold for the phrase | — |
 
@@ -143,8 +143,8 @@ Choose by the relation between the two beats, as in `transitions.md`. This table
 
 | Library transition | Relation it can say | Tier | Notes | Remotion | After Effects |
 |---|---|---|---|---|---|
-| Cross Dissolve | Time passes; A becomes B, softly | A | 8–16 frames. More than 24 frames feels like a slideshow. | `fade()` | Opacity cross-fade |
-| Dip to Black | End of a chapter; a large time skip; a tonal reset | A | Use it once or twice per piece, never between bullet points | `fade()` through a black solid | Dip to Black |
+| Cross Dissolve | Time passes; A becomes B, softly | B | Only when time passes. 8–16 frames; more than 24 feels like a slideshow. A dissolve between every scene is a tell. | `fade()` | Opacity cross-fade |
+| Dip to Black | End of a chapter; a large time skip; a tonal reset | B | At most once per piece, and never mid-piece between ideas | `fade()` through a black solid | Dip to Black |
 | Soft Wipe | B continues A in space, sideways | B | Match the wipe direction to motion in the shot | `wipe()` with a feathered edge (custom) | Linear Wipe, feathered |
 | Clean Line Wipe | B opens a new chapter; list items in an editorial style | B | The line must belong to the design language (rule, cursor, divider) | `wipe()` + a 2 px line layer | Linear Wipe + stroke |
 | Luma Blend | A becomes B through light: bright areas lead | B | Works when both shots share bright regions | Custom HTML-in-canvas shader | Gradient Wipe using a luma layer |
@@ -165,7 +165,8 @@ The cheapest way to connect ideas and mark emphasis is often a sound placed at t
 - Pair sounds with motion that has a direction or an impact: whoosh with Whip Pan, a soft riser with Slow Push, a click or tick with a UI cursor, a low hit with Impact Shake.
 - Place the sound at the motion's peak, not its start. A whoosh peaks at the midpoint of the pan.
 - Keep accents out of music ducking, and set the volume per item.
-- At most one accent per beat. Silence before a key line is also a sound decision.
+- One to three hand-placed accents in the whole piece: the click, the name, the turn. A hit on every cut is a tell.
+- Silence before a key line is also a sound decision. Pull the music down before the biggest move.
 
 ## 7. Budgets and stacking
 
