@@ -2,7 +2,7 @@
 
 Motion direction for AI agents. Unrushed helps an agent brief, style, storyboard, export and critique motion graphics and videos so they do not look AI-generated: every movement gets a purpose, a duration, a curve, a distance and a place in the order of things, and every piece gets a story, a rhythm and transitions chosen for what they say.
 
-Current version: **0.5** (see [CHANGELOG](CHANGELOG.md)).
+Current version: **0.6** (see [CHANGELOG](CHANGELOG.md)).
 
 Unrushed directs motion inside the tool you already edit in, with your footage and your real product. It does not generate films on its own; it decides what each beat says, how it moves in measured numbers, and checks the export by script.
 
@@ -205,6 +205,7 @@ unrushed/
 ├── examples/material-kit/    A resin scene as a ChatCut motion graphic, with a before and after
 ├── scripts/detect.py         Gates and checks on an exported video, contact sheets, and checks on a storyboard
 ├── scripts/blind_review.py   Side-by-side blind comparison of versions
+├── scripts/test_physics.ts   Numeric tests of the physics kit (run with bun)
 ├── scripts/build_single.py   Builds dist/unrushed-single-file.md
 └── dist/                     The single-file edition
 ```
