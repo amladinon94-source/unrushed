@@ -35,11 +35,22 @@ When the person reacts to a piece, append an entry to the project's `TASTE.md`: 
 - Reacting to: measured curves and techniques that lived in prose and never reached the built motion.
 - Lesson: motion values must arrive as numbers the tool executes (the motion kit and its Remotion file), and a render must be checked by script (the gates), not by the agent's own description.
 
+**2026-11-23 · Unrushed 0.5, pass 0 of the climax of a vertical video, built in ChatCut.**
+- Quote: "no veo diferencia entre hacerlo sin plugin y con plugin, mira la física de las gotas, brillos genéricos, todo genérico, nada que se vea bien" (I see no difference between doing it with and without the plugin; look at the physics of the drops, generic highlights, everything generic, nothing that looks good).
+- Reacting to: rounded cards with a name on empty paper, a pink drop that is an oval with a highlight stuck on it, and a template diagonal sheen. The "5 fixes" from the critique only removed grey lines and rounded corners; before and after looked the same.
+- What the code showed: the drop was three SVG circles, the liquid a rounded rectangle interpolating its width, the sheen a rotated gradient rectangle used three times. The corona, meniscus, caustic shadow and translucency written in `STYLE.md` were never drawn. The only styleframe approved was of another scene and already looked like candy.
+- Lesson (narrow): the skill controls the plan and the motion values but not how the picture is drawn. Pass 0 accepts simple drawing, material waits until pass 4, the gates measure motion only, and `submit_shader` is a last resort, so a flat picture passes every check. No rule written yet: first rebuild this climax with real material and an approved hero frame, and write rules only if the author sees the difference.
+
 ## Preferred
 
 **2026-11-23 · How to learn from another project.**
 - Quote: "hay que tomar las cosas buenas que sí hace motionmaxxing… para conservar nuestro objetivo pero con los aprendizajes de motionmaxxing" (we should take the good things motionmaxxing does, to keep our goal but with its lessons).
 - Lesson: keep Unrushed's job (directing motion inside the person's own editor, with their footage and their real product) and adopt measured values, gates and honest review; do not become a second film generator.
+
+**2026-11-23 · The same climax, rebuilt as a hero frame with a computed resin surface, in ChatCut.**
+- Reply: "Sí, escríbela" (yes, write it), to the question of whether the difference was visible enough to write the material recipe into the skill. Given after seeing `examples/material-kit/before-after.jpg`.
+- Reacting to: the drop and the slab rendered from a thickness field, absorption and the reflection of a window, beside the original flat shapes. The comparison was presented with its remaining faults named: close to candy, the text over the reflection, still seen from above.
+- Lesson (narrow): for this author a computed surface is a visible difference where a physics-only version of the same drawing was not offered as one. It is an acceptance of the direction, not of that frame as finished.
 
 **Standing preference · Working style.**
 - The author wants a plan for long tasks, executed in parts, with a critical voice rather than agreement, and questions when something is unclear. Pieces built with Unrushed should follow the same rhythm: pass 0 first, shown before the rest is built.

@@ -1,0 +1,240 @@
+<!doctype html>
+<html>
+  <body>
+    <style>
+      .stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; pointer-events: none; font-family: "Schibsted Grotesk", sans-serif; }
+      /* misma cámara que el shader: 1.3x sobre la fila de Mia, hoja girada -1.5 grados */
+      .cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 540px 990px; transform: translate(0px, -30px) scale(1.3); }
+      .sheet { position: absolute; left: 110px; top: 340px; width: 860px; height: 1240px; transform-origin: 430px 620px; transform: rotate(-1.5deg); }
+      .owner { position: absolute; left: 120px; top: 139px; font-weight: 600; font-size: 56px; line-height: 70px; color: #22303A; opacity: 0.9; white-space: nowrap; }
+      .mia { position: absolute; left: 80px; top: 500px; width: 700px; height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #FFF1F5; text-align: center; }
+      .name { font-weight: 800; font-size: 78px; line-height: 92px; white-space: nowrap; }
+      .role { font-weight: 600; font-size: 60px; line-height: 66px; opacity: 0.94; white-space: nowrap; }
+    </style>
+    <div class="stage"><div class="cam"><div class="sheet">
+      <div class="owner"></div>
+      <div class="mia"><div class="name"></div><div class="role r1"></div><div class="role r2"></div></div>
+    </div></div></div>
+    <script type="module">
+      // PRUEBA DE MATERIAL (Unrushed): la misma escena del clímax, pero la resina se calcula como material:
+      // un campo de altura (grosor) -> normales -> refracción de lo que hay debajo, absorción por grosor
+      // (bordes finos translúcidos, centro profundo), reflejo de una fuente de luz con forma (una ventana arriba a la
+      // izquierda) y sombra teñida sobre el papel. Nada es una forma con un brillo pegado.
+      import * as THREE from "three";
+
+      const FRAG = /* glsl */ `
+        precision highp float;
+        uniform vec2 uRes; uniform float uTime, uRadius, uCure, uWobble, uSwirl; uniform sampler2D uText;
+        uniform vec3 uAbsorb;
+
+        float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+        float vnoise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*f*(f*(f*6.0-15.0)+10.0);
+          return mix(mix(hash(i), hash(i+vec2(1,0)), f.x), mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y); }
+        float fbm(vec2 p){ float a = 0.5, s = 0.0; for(int i=0;i<5;i++){ s += a*vnoise(p); p = p*2.03 + 17.1; a *= 0.5; } return s; }
+        float sdBox(vec2 p, vec2 c, vec2 h, float r){ vec2 d = abs(p-c) - h + r; return length(max(d,0.0)) + min(max(d.x,d.y),0.0) - r; }
+
+        float smin(float a, float b, float k){ float h = clamp(0.5 + 0.5*(b-a)/k, 0.0, 1.0); return mix(b, a, h) - k*h*(1.0-h); }
+        // profundidad dentro de una caja, sin la arista diagonal de las esquinas (la tensión superficial las redondea)
+        float boxDepth(vec2 p, vec2 c, vec2 h){ vec2 q = h - abs(p - c); return smin(q.x, q.y, 70.0); }
+
+        // --- la escena, en coordenadas de la hoja (860 x 1240) ---
+        const vec2 SHEET = vec2(860.0, 1240.0);
+        const vec2 JOE_C = vec2(430.0, 175.0), JOE_H = vec2(350.0, 65.0);
+        const vec2 MIA_C = vec2(430.0, 650.0), MIA_H = vec2(350.0, 150.0);
+
+        // contorno del líquido de Mia: el molde, cortado por un frente irregular que avanza desde el impacto
+        float sdMia(vec2 p){
+          float box = sdBox(p, MIA_C, MIA_H, 14.0);
+          vec2 q = p - MIA_C; float a = atan(q.y, q.x);
+          float lobes = 0.13*(vnoise(vec2(cos(a), sin(a))*1.4 + 9.0)*2.0-1.0) + 0.05*(vnoise(vec2(cos(a), sin(a))*3.1 + uTime*0.6)*2.0-1.0);
+          float front = length(q) - uRadius*(1.0 + lobes*(1.0-0.7*uCure));
+          return -smin(-box, -front, 26.0);   // el líquido moja la pared con un filete, no con una esquina viva
+        }
+        float frontMia(vec2 p){ vec2 q = p - MIA_C; float a = atan(q.y, q.x);
+          float lobes = 0.13*(vnoise(vec2(cos(a), sin(a))*1.4 + 9.0)*2.0-1.0) + 0.05*(vnoise(vec2(cos(a), sin(a))*3.1 + uTime*0.6)*2.0-1.0);
+          return length(q) - uRadius*(1.0 + lobes*(1.0-0.7*uCure)); }
+        // grosor: sube en el borde como un menisco y es casi plano en el centro; la superficie ondula y se calma
+        float height(float depth, vec2 p, float wob){
+          float m = 1.0 - exp(-max(depth,0.0) / 30.0);
+          vec2 rp = p*0.0065 + vec2(uTime*0.30, -uTime*0.18);
+          float ripple = wob * ((vnoise(rp) - 0.5) + 0.35*(vnoise(rp*2.1 + 4.0) - 0.5)) * 0.9;
+          return max(0.0, m * (1.0 + ripple));
+        }
+        float hMia(vec2 p){ return height(smin(boxDepth(p, MIA_C, MIA_H), -frontMia(p), 34.0), p, uWobble); }
+        float hJoe(vec2 p){ return height(boxDepth(p, JOE_C, JOE_H), p, 0.03); }
+
+        // papel: fibra fina y una luz suave de arriba a la izquierda. El molde vacío es un rebaje leve.
+        vec3 paper(vec2 p){
+          float fibre = (vnoise(p*vec2(0.9, 0.22)) - 0.5)*0.022 + (vnoise(p*2.3) - 0.5)*0.012;
+          vec3 c = vec3(0.984, 0.980, 0.965) + fibre;
+          c *= 1.0 - 0.045 * smoothstep(0.0, 1500.0, p.x + p.y);
+          float mould = sdBox(p, MIA_C, MIA_H, 14.0);
+          c *= 1.0 - 0.035 * smoothstep(1.5, -1.5, mould);
+          c *= 1.0 - 0.10 * exp(-abs(mould)/2.0);
+          c *= 1.0 - 0.06 * smoothstep(-14.0, 0.0, sdBox(p - vec2(-4.0,-6.0), MIA_C, MIA_H, 14.0)) * smoothstep(1.5,-1.5,mould);
+          return c;
+        }
+        // cuarzo: vetas por ruido deformado, muy suaves
+        vec3 quartz(vec2 w){
+          vec2 q = w*0.0016; q += 0.9*vec2(fbm(q*1.7+3.1), fbm(q*1.7-5.2));
+          float vein = pow(1.0 - abs(fbm(q*2.2)*2.0 - 1.0), 14.0);
+          vec3 c = vec3(0.949, 0.941, 0.922) * (0.985 + 0.03*fbm(w*0.004));
+          return mix(c, vec3(0.557, 0.541, 0.510), vein*0.30);
+        }
+        // la fuente de luz: una ventana arriba a la izquierda, vista en el reflejo
+        float window(vec3 r){
+          vec2 s = r.xy - vec2(-0.185, -0.060);
+          float c = cos(-0.30), sn = sin(-0.30); s = vec2(c*s.x - sn*s.y, sn*s.x + c*s.y);
+          vec2 d = abs(s) - vec2(0.150, 0.062);
+          float box = smoothstep(0.030, -0.012, max(d.x, d.y));
+          float bars = 1.0 - 0.5*smoothstep(0.010, 0.003, abs(s.x)) * 1.0 - 0.35*smoothstep(0.008, 0.002, abs(s.y));   // el travesaño de la ventana
+          return box * bars;
+        }
+        // la cámara está a distancia finita: el reflejo de la ventana cae en un lugar de la superficie, no en toda
+        vec3 viewAt(vec2 p){ return normalize(vec3((vec2(430.0, 560.0) - p) / 1500.0, 1.0)); }
+        // resina sobre lo que haya debajo
+        vec3 resin(vec2 p, float h, vec2 grad, vec3 absorb, vec3 under, float density, float scatter){
+          vec3 n = normalize(vec3(-grad * 30.0, 1.0));
+          float thick = 1.0 - pow(1.0 - min(h, 1.0), 6.0);   // el color llega a su fondo a pocos px del borde
+          vec3 trans = exp(-absorb * thick * density);
+          vec3 col = under * trans;
+          vec3 pigment = exp(-absorb * 0.9);
+          float lambert = clamp(dot(n, normalize(vec3(-0.45, -0.55, 0.70))), 0.0, 1.0);
+          col = mix(col, pigment * (0.86 + 0.20*lambert), scatter * smoothstep(0.0, 0.5, thick));
+          col *= 1.0 + 0.10 * exp(-pow((h - 0.22)/0.10, 2.0));   // línea clara justo dentro del borde: la luz se concentra ahí
+          vec3 r = reflect(-viewAt(p), n);
+          float fres = 0.04 + 0.96 * pow(1.0 - clamp(n.z, 0.0, 1.0), 5.0);
+          float sky = 0.35 + 0.65*smoothstep(0.6, -0.6, r.x + r.y);
+          // borde con luz dirigida: una línea especular fina en el lado de la luz y el lado opuesto apenas más oscuro
+          vec3 L = normalize(vec3(-0.45, -0.55, 0.70));
+          float spec = pow(max(dot(n, normalize(L + viewAt(p))), 0.0), 110.0);
+          col *= 1.0 - 0.16 * clamp(dot(n.xy, normalize(vec2(0.45, 0.55))) * 3.0, 0.0, 1.0);
+          col += vec3(1.0, 0.99, 0.97) * (window(r) * 0.30 + spec * 0.85 + sky * fres * 0.18) * smoothstep(0.0, 0.08, h);
+          return col;
+        }
+
+        void main(){
+          vec2 px = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y) * (1080.0 / uRes.x);
+          // cámara: el encuadre cercano del clímax (1.3x sobre la fila de Mia)
+          vec2 w = (px - vec2(540.0, 960.0)) / 1.3 + vec2(540.0, 990.0);
+          // hoja girada -1.5 grados
+          vec2 c = w - vec2(540.0, 960.0); float ang = radians(1.5);
+          vec2 p = vec2(cos(ang)*c.x - sin(ang)*c.y, sin(ang)*c.x + cos(ang)*c.y) + SHEET*0.5;
+
+          float sheet = sdBox(p, SHEET*0.5, SHEET*0.5, 10.0);
+          vec3 col = quartz(w);
+          col *= 1.0 - 0.20 * smoothstep(34.0, -6.0, sdBox(p - vec2(14.0, 20.0), SHEET*0.5, SHEET*0.5, 10.0));   // sombra de la hoja
+          if (sheet < 1.5) {
+            vec3 base = paper(p);
+            vec4 tx = texture2D(uText, p / SHEET);
+
+            // sombras de la resina sobre el papel: teñidas por lo que la luz atraviesa, con un borde cáustico claro
+            vec2 off = vec2(9.0, 13.0);
+            float dM = sdMia(p - off), dJ = sdBox(p - off, JOE_C, JOE_H, 14.0);
+            float shM = smoothstep(9.0, -7.0, dM) * smoothstep(0.0, 60.0, uRadius);
+            float shJ = smoothstep(9.0, -7.0, dJ);
+            base *= mix(vec3(1.0), vec3(0.86, 0.66, 0.72), shM*0.80);
+            base *= mix(vec3(1.0), vec3(0.80, 0.87, 0.89), shJ*0.75);
+            base += vec3(1.0, 0.55, 0.68) * 0.03 * exp(-pow((dM + 2.0)/5.0, 2.0)) * smoothstep(0.0, 60.0, uRadius);
+            // contacto: línea oscura donde la resina toca el papel
+            base *= 1.0 - 0.22 * exp(-max(sdMia(p), 0.0)/2.5) * step(0.0, sdMia(p)) * smoothstep(0.0, 60.0, uRadius);
+            base *= 1.0 - 0.22 * exp(-max(sdBox(p, JOE_C, JOE_H, 14.0), 0.0)/2.5) * step(0.0, sdBox(p, JOE_C, JOE_H, 14.0));
+
+            vec3 s = base;
+            vec2 e = vec2(1.5, 0.0);
+            // fila de Joe: resina clara; su nombre está debajo y se ve refractado
+            float hj = hJoe(p);
+            if (hj > 0.0) {
+              vec2 g = vec2(hJoe(p+e.xy) - hJoe(p-e.xy), hJoe(p+e.yx) - hJoe(p-e.yx)) / (2.0*e.x);
+              vec2 rp = p - g * hj * 420.0;
+              vec3 under = paper(rp);
+              s = resin(p, hj, g, vec3(0.34, 0.15, 0.11), under, 1.0, 0.10);
+            }
+            // fila de Mia: pigmento fucsia; el nombre queda dentro de la resina al curar
+            float hm = hMia(p);
+            if (hm > 0.0) {
+              vec2 g = vec2(hMia(p+e.xy) - hMia(p-e.xy), hMia(p+e.yx) - hMia(p-e.yx)) / (2.0*e.x);
+              vec2 rp = p - g * hm * 420.0;
+              vec3 under = paper(rp);
+              vec2 sw = p*0.0042 + 1.6*vec2(fbm(p*0.0030 + uSwirl), fbm(p*0.0030 - uSwirl + 7.0));
+              float swirl = 1.0 + 0.22*(fbm(sw*1.8) - 0.5);
+              vec3 m = resin(p, hm, g, uAbsorb * swirl, under, mix(0.82, 1.0, uCure), mix(0.30, 0.42, uCure));
+              // el texto está a media profundidad: la resina de encima lo tiñe y el reflejo pasa por delante
+              float ta = texture2D(uText, (p - g * hm * 160.0) / SHEET).r * uCure;
+              vec3 ink = vec3(1.0, 0.975, 0.98) * exp(-uAbsorb * 0.10);
+              vec3 n = normalize(vec3(-g * 30.0, 1.0)); vec3 r = reflect(-viewAt(p), n);
+              float gl = window(r) * 0.30;
+              s = mix(s, m, smoothstep(0.0, 0.05, hm));
+            }
+            col = mix(col, s, smoothstep(1.5, -1.5, sheet));
+            // canto iluminado de la hoja
+            col += 0.05 * exp(-abs(sheet + 1.5)/1.2) * smoothstep(900.0, 0.0, p.x + p.y);
+          }
+          gl_FragColor = vec4(pow(col, vec3(1.0)), 1.0);
+        }
+      `;
+
+      // resorte sobreamortiguado exacto (núcleo de physics-kit): el líquido corre al principio y luego se arrastra
+      const spring = (t, { from, to, period, damping, v0 }) => {
+        const a = from - to, w = (2 * Math.PI) / period, z = damping;
+        const r = w * Math.sqrt(z * z - 1), r1 = -z * w + r, r2 = -z * w - r, c2 = (v0 - r1 * a) / (r2 - r1);
+        return to + (a - c2) * Math.exp(r1 * t) + c2 * Math.exp(r2 * t);
+      };
+      const clamp01 = (x) => Math.max(0, Math.min(1, x));
+      const smooth = (x) => { x = clamp01(x); return x * x * (3 - 2 * x); };
+      const hexAbsorb = (hex) => {
+        const n = parseInt(hex.replace("#", ""), 16);
+        return [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => -Math.log(Math.max(0.02, v / 255) / 0.98));
+      };
+
+      export default async function mount({ root, props, viewport }) {
+        let values = props;
+        const canvas = document.createElement("canvas"); canvas.width = 860; canvas.height = 1240;
+        const stage = root.querySelector(".stage"); const miaEl = root.querySelector(".mia");
+        const drawText = () => {
+          root.querySelector(".owner").textContent = values.owner ?? "Joe Thomas";
+          root.querySelector(".name").textContent = values.name ?? "Baby Mia";
+          const words = String(values.role ?? "AI assistant to Joe Thomas").trim().split(/\s+/);
+          let best = 1, diff = Infinity;
+          for (let k = 1; k < words.length; k++) { const d = Math.abs(words.slice(0, k).join(" ").length - words.slice(k).join(" ").length); if (d < diff) { diff = d; best = k; } }
+          const lines = words.length < 3 ? [words.join(" "), ""] : [words.slice(0, best).join(" "), words.slice(best).join(" ")];
+          root.querySelector(".r1").textContent = lines[0]; root.querySelector(".r2").textContent = lines[1];
+        };
+        drawText();
+        const texture = new THREE.CanvasTexture(canvas); texture.flipY = false; texture.minFilter = THREE.LinearFilter; texture.generateMipmaps = false;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: false });
+        renderer.setSize(viewport.width, viewport.height, false);
+        renderer.domElement.style.width = "100%"; renderer.domElement.style.height = "100%"; renderer.domElement.style.display = "block";
+        root.insertBefore(renderer.domElement, root.firstChild);
+        stage.style.transform = `scale(${viewport.width / 1080})`;
+        const scene = new THREE.Scene(); const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10); camera.position.z = 1;
+        const geometry = new THREE.PlaneGeometry(2, 2);
+        const size = new THREE.Vector2(); renderer.getDrawingBufferSize(size);
+        const material = new THREE.ShaderMaterial({
+          fragmentShader: FRAG,
+          vertexShader: "void main(){ gl_Position = vec4(position.xy, 0.0, 1.0); }",
+          uniforms: { uRes: { value: size }, uTime: { value: 0 }, uRadius: { value: 0 }, uCure: { value: 0 }, uWobble: { value: 0 }, uSwirl: { value: 0 }, uText: { value: texture }, uAbsorb: { value: new THREE.Vector3(...hexAbsorb(values.accentColor ?? "#D8285E")) } },
+        });
+        scene.add(new THREE.Mesh(geometry, material));
+        return {
+          update({ props }) { values = props; drawText(); material.uniforms.uAbsorb.value.set(...hexAbsorb(values.accentColor ?? "#D8285E")); },
+          render({ timeSeconds }) {
+            const t = Math.max(0, timeSeconds - 0.2);   // impacto a 0.2 s
+            const u = material.uniforms;
+            u.uTime.value = timeSeconds;
+            u.uRadius.value = timeSeconds < 0.2 ? 0 : spring(t, { from: 36, to: 640, period: 64 / 30, damping: 1.3, v0: 1500 });
+            u.uCure.value = smooth((t - 0.9) / 0.5);
+            u.uSwirl.value = 0.25 * Math.min(t, 1.15);   // el pigmento deriva mientras está líquido y se congela al curar
+            miaEl.style.opacity = String(u.uCure.value);
+            miaEl.style.transform = `translateY(${(1 - u.uCure.value) * 18}px)`;
+            u.uWobble.value = 0.03 + 0.5 * Math.exp(-t * 3.0) * (1 - 0.8 * u.uCure.value);
+            renderer.getDrawingBufferSize(size);
+            renderer.render(scene, camera);
+          },
+          dispose() { geometry.dispose(); material.dispose(); texture.dispose(); renderer.dispose(); renderer.domElement.remove(); },
+        };
+      }
+    </script>
+  </body>
+</html>

@@ -82,6 +82,7 @@ Every command that judges a piece (`critique`, the verify step of `improve`, and
    | G3 short ending | the final frame holds at most 1.4 s; the final shot is at most 25% of the piece | script |
    | G4 one hero per frame | one thing the eye goes to first in every frame | by eye, on the contact sheet |
    | G5 no page furniture | nothing from Never ship item 1 or 2 | the plan with `--storyboard`, the render by eye |
+   | G6 the protagonist is rendered | when it is a substance, its surface is computed from a thickness and a light, not drawn as a shape with a highlight; the primitives test of `references/material-kit.md` §3 is written out | by eye, on the hero frame |
 
    A failed gate is fixed, never argued. It also prints notes that are questions, not gates: overall motion against human-made films, loudness, and sound that stops before the picture.
 2. **Describe before you judge.** `--sheet` writes a contact sheet of evenly spaced frames and a second image with the frames around every cut, where broken transitions hide. Write one sentence per frame: what is on screen, what the eye goes to first, and whether it would pass for a slide.
@@ -96,18 +97,19 @@ Whenever you build or rebuild a piece yourself (`export` inside the tool, `impro
 
 | Pass | Job | Look at | Done when |
 |---|---|---|---|
-| 0. Hardest beat | Build only the hero moment (usually the payoff) and its hardest handoff, with real motion | 3 stills and a strip of the key move | It reads at full speed. If not, fix the idea or the staging now, before anything else exists |
+| 0. Hero frame, then hardest beat | First one still of the hero moment with its finished material, rendered in the target tool (`references/material-kit.md`). Only after the person approves that picture: the hero moment and its hardest handoff, with real motion | The still, with the primitives test and the defects still present named; then 3 stills and a strip of the key move | The person has approved the picture, judging the image and not the plan; then it reads at full speed. If either fails, fix the idea, the material or the staging now, before anything else exists |
 | 1. Blocking | Every scene in place: real durations, positions, sizes, cuts and the carried object. Simple motion is fine | Contact sheet (`--sheet`) and `detect.py --expect <seconds>` | Length and rhythm match the plan; one hero per frame (G4); no frame reads as a slide; G0 passes |
 | 2. Type and information | The exact words, sizes by role, reading time, real content and numbers | Contact sheet, and `--storyboard` | Every line readable in its time (G1); one claim per frame; no Never ship words |
-| 3. Motion | The recipes from `references/motion-kit.md`: landings, exits, stagger, camera, press, cuts on motion | Strips and profiles of the 2–3 key moves (`--strip`, `--profile`), the cuts image | Landings decelerate, exits accelerate, no dead frames (G2), the ending holds 0.6–1.4 s (G3) |
-| 4. Finish | Material, light and texture that belong to the world; cues; sound with 1–3 hand-placed hits | All gates and notes | Every gate passes or is reported as failed; the report follows "Looking honestly" |
+| 3. Motion | The recipes from `references/motion-kit.md`: landings, exits, stagger, camera, press, cuts on motion. Forces from `references/physics-kit.md` for whatever falls, sinks, hangs, swings, drifts or steers | Strips and profiles of the 2–3 key moves (`--strip`, `--profile`), the cuts image | Landings decelerate, exits accelerate, no dead frames (G2), the ending holds 0.6–1.4 s (G3); each forced move shows its signature (`physics-kit.md` §5) |
+| 4. Finish | The protagonist's material is already there since pass 0; here, the secondary surfaces, light and texture that belong to the world; cues; sound with 1–3 hand-placed hits | All gates and notes | Every gate passes or is reported as failed; the report follows "Looking honestly" |
 
 Rules for every pass:
 
 - **Describe the contact sheet** in one sentence per frame before changing anything.
 - **Revise by frame range.** Name the scene and the frames ("frames 120–168: the card stops dead; give it `softLand` 12 f"), never "make it smoother".
 - **Fix in the order of "Looking honestly"**, and do not polish a pass whose job is not done: grain does not rescue blocking, and timing does not rescue a beat that buys nothing.
-- **Show the person after pass 0**, and again at the end. Credits and render time are spent on the passes in between only once the hardest beat works.
+- **Show the person twice in pass 0**: the hero frame before any motion, and the moving beat after. Then again at the end. Credits and render time are spent on the passes in between only once both are accepted.
+- **A fix that does not change how a pixel is drawn cannot answer "it looks generic".** Radii, curves, a slower zoom and one more sweep of light are timing and geometry. When the complaint is about the picture, change the material or the staging, and show the same frame before and after.
 - **Two or three honest rounds per pass**, at most. If a pass still fails, say so and ask, rather than starting a new idea on your own.
 
 ## Learning the person's taste
@@ -208,14 +210,14 @@ Read `references/principles.md`, `references/ai-tells.md` and the index of `refe
 - a name and one sentence on how it feels;
 - material, ground, palette, type, and light and finish;
 - the signature move and the library techniques it draws on;
-- a styleframe, one key frame rendered as a still, whenever you can render one, because people choose looks by seeing them.
+- a styleframe, one key frame rendered as a still, whenever you can render one, because people choose looks by seeing them. Make it the moment the piece exists for, not an easier scene. When the protagonist is a substance, a styleframe drawn with flat shapes shows the palette and hides the problem: say that it does not show the material.
 
 Recommend one and say why it serves the through-line. Once the person chooses, complete it:
 
-1. **Material.** Choose it before colour. It sets the motion personality: ink settles, glass is precise, fluid overlaps, cloth lags behind its driver.
+1. **Material.** Choose it before colour. It sets the motion personality: ink settles, glass is precise, fluid overlaps, cloth lags behind its driver. When things in the piece fall, hang or flow, write the material's numbers and the piece's one gravity in the motion tokens (`references/physics-kit.md` §2 and §4).
 2. **Palette.** A ground, an ink and at most one accent with a stated job ("the accent marks the present day"). Give hex values and roles.
 3. **Type.** Two families at most, each with a role and sizes for the target resolution. Avoid the defaults listed in `ai-tells.md` unless the person asks for them.
-4. **Light and finish.** What makes it physical: grain that moves (renewed every two frames, never a static overlay), motion blur on fast moves, shadow and depth, refraction or bloom only when the material has them.
+4. **Light and finish.** Name the light source as a thing with a shape and a place ("a window up and to the left"), because every reflection and shadow is derived from it. When the protagonist is a substance, plan its surface with the five decisions of `references/material-kit.md` §4, and ask whether the real material or product can be photographed first. What makes it physical: grain that moves (renewed every two frames, never a static overlay), motion blur on fast moves, shadow and depth, refraction or bloom only when the material has them.
 5. **Dials.** Set `energy`, `density` and `variance`, and say why.
 6. **Signature move.** One motion that identifies the piece, such as particles that reassemble or a mask that opens from the bottom. Name the entry in `references/techniques.md` it starts from. It appears at the moments that matter, not in every scene, and it changes role each time; repeated identically, it becomes a template.
 7. **Forbidden list.** The generic choices this piece in particular is tempted by.
@@ -237,6 +239,7 @@ Build the storyboard from the spine and beat map in `VIDEO.md`; if they are miss
   - A camera move over a still screen connects steps; it is never a step.
   - Mark any screen not built from the real product as approximate.
 - Write "What moves" with the recipes and curve names from `references/motion-kit.md` ("words land, softLand 12 f, from 5% H; card arrives from 1.6× on snapSettle 18 f"), so the build uses measured values instead of improvising.
+- When the visual has a thing that falls, pours, sinks, hangs, swings, drifts, flocks or goes somewhere on purpose, write the force instead of a curve, from `references/physics-kit.md` §1 ("the drop falls under G, is braked by the liquid, settles on a spring: period 30 f, damping 1.5"). Two curves in a row are not a force: they meet at different speeds. Interface elements stay on curves.
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
 - **Library effects, zooms and sound.** When the target tool has an effects library (ChatCut does), read `references/effects.md`.
   - The default is no effect.
@@ -328,9 +331,9 @@ Score each criterion from 1 to 5 with one line of evidence:
 | Legibility | Can every line be read in the time it is on screen? |
 | Choreography | One protagonist at a time, overlap instead of dead frames? |
 | Timing | Do entrances decelerate, exits run faster, holds feel intended? |
-| Physics | Do things move with mass, inertia, follow-through, overlap and arcs, or do they glide at one speed and stop dead? Scored from strips, a profile or playback, never from single stills. |
+| Physics | Do things move with mass, inertia, follow-through, overlap and arcs, or do they glide at one speed and stop dead? Does speed carry across each join, or does a thing change speed for no reason where two curves meet? Scored from strips, a profile or playback against `physics-kit.md` §5, never from single stills. |
 | Product demo | Only when a product is shown. Is it the real product, found in its code, design files or running app, with the sources listed? Does each key step show an action and the product's visible response, or is it camera moves over still screens? |
-| Material and light | Does the piece have texture, depth and light that belong to its material? Does each style have its own world? |
+| Material and light | Does the piece have texture, depth and light that belong to its material? Does each style have its own world? When the protagonist is a substance, apply the primitives test (`material-kit.md` §3) and name any defect from §6: a drawn surface scores 2 at most, whatever the motion does. |
 | Distinctiveness | How many AI tells are present? |
 | Consistency | Does it follow `STYLE.md`, and `BRAND.md` when there is one: logo use, colour roles, type, voice? |
 
@@ -399,6 +402,8 @@ If you cannot reach them either, work from the embedded essentials in the single
 | `references/effects.md` | Library effects, zooms, transitions and sound accents (ChatCut's library and their Remotion and After Effects equivalents): choosing by intent, tiers, budgets, and how to apply them through ChatCut's tools or a prompt. `storyboard`, `export`, `critique` |
 | `references/transitions.md` | Transitions chosen by the relation between beats, a catalogue with durations and related techniques, eye trace and other ways to hide the seam. `storyboard`, `export`, `critique` |
 | `references/motion-kit.md` | The measured curves as cubic-beziers, recipes in numbers (land, leave, arrive from oversize, stagger, press, camera push and snap, whip, counters, the one spring) and how to apply them in ChatCut, Remotion (`assets/remotion/unrushed-motion.ts`) and After Effects. `storyboard`, `export`, `improve` |
+| `references/physics-kit.md` | Forces, springs, noise, particles, joined bodies and steering as code (`assets/remotion/unrushed-physics.ts`): when to use a curve and when a force, one gravity per piece, materials in numbers, what a strip should show, and a paste-ready core for ChatCut. `style`, `storyboard`, `export`, `critique`, `improve` |
+| `references/material-kit.md` | How the protagonist's surface is drawn when it is a substance: the hero frame before any motion, the primitives test, a five-step recipe (thickness, normals, absorption, one light with a shape, the ground), a tested shader, and the defects by name. `style`, `export`, `critique`, `improve` |
 | `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour, physics and how to check it in a video. `style`, `storyboard`, `recipe`, `export`, `critique`, `improve` |
 | `references/ai-tells.md` | What makes motion and video read as AI-generated, and what to do instead. `style`, `export`, `critique` |
 | `references/techniques.md` | 38 techniques from real reference pieces, indexed by meaning and by family, with key parameters and build routes. `style`, `storyboard`, `recipe`, `export`, `critique` |

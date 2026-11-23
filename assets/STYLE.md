@@ -46,6 +46,8 @@ Two or three, differing in material and ground. Record why the chosen one won.
 | exit-text | | | | |
 | transform | | | | |
 | stagger | | | | |
+| gravity (only if things fall, hang or flow) | — | `gravityFor(distance, frames)` | one value for the whole piece | everything that falls |
+| settle (only if things arrive with weight) | period in frames | spring, damping from the material | — | what the material does on arrival |
 
 ## Choreography rules
 - One protagonist at a time.

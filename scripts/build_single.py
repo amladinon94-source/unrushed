@@ -52,7 +52,7 @@ BANNER = (
     "> **Single-file edition.** The reference files are embedded at the end of this file, each under a heading "
     "\"Embedded: <path>\". Whenever an instruction says to read a file in `references/`, read that section instead "
     "of looking for the file on disk. Files not embedded (`targets/remotion.md`, `targets/generic.md`, the templates, the example, "
-    "`scripts/detect.py`, `assets/remotion/unrushed-motion.ts`) can be read from https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>."
+    "`scripts/detect.py`, `assets/remotion/unrushed-motion.ts`, `assets/remotion/unrushed-physics.ts`) can be read from https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>."
 )
 
 
@@ -67,10 +67,12 @@ def main():
         "This edition embeds the essentials so the skill works where only one file is installed. "
         "The full files, with every source link, are in the repository: "
         "https://github.com/amladinon94-source/unrushed. "
-        "`targets/remotion.md`, `targets/generic.md`, the templates, `scripts/detect.py` and `assets/remotion/unrushed-motion.ts` are only there.",
+        "`targets/remotion.md`, `targets/generic.md`, the templates, `scripts/detect.py`, `assets/remotion/unrushed-motion.ts` and `assets/remotion/unrushed-physics.ts` are only there.",
         "## Embedded: references/narrative.md\n\n" + demote(read("references/narrative.md")),
         "## Embedded: references/principles.md\n\n" + demote(read("references/principles.md")),
         "## Embedded: references/motion-kit.md\n\n" + demote(read("references/motion-kit.md")),
+        "## Embedded: references/physics-kit.md\n\n" + demote(read("references/physics-kit.md")),
+        "## Embedded: references/material-kit.md\n\n" + demote(read("references/material-kit.md")),
         "## Embedded: references/visual-explanation.md\n\n" + demote(read("references/visual-explanation.md")),
         "## Embedded: references/transitions.md\n\n" + demote(read("references/transitions.md")),
         "## Embedded: references/effects.md\n\n" + demote(read("references/effects.md")),

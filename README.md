@@ -168,6 +168,14 @@ python scripts/blind_review.py old.mp4 new.mp4                       # compare v
 
 `references/motion-kit.md` gives ten curves fitted to measured professional moves as cubic-beziers, with their usual durations, and recipes in numbers: land, leave, arrive from oversize, stagger, press, camera push and snap, whip, counters and the one spring per piece. It says how to apply them in ChatCut, in After Effects (an expression) and in Remotion, where `assets/remotion/unrushed-motion.ts` provides them as functions.
 
+### Physics, as code
+
+`references/physics-kit.md` and `assets/remotion/unrushed-physics.ts` are for things that move because something acts on them: gravity, drag and friction, exact damped springs, smooth noise, particles that are born and die, cords, cloth and soft bodies, and steering (arrive, follow a path, flow fields, flocking). Everything is deterministic, so a frame looks the same in any render order. The reference says when to use a force and when a curve, gives numbers per material, and carries a 50-line core to paste where only one file can travel. `examples/physics-kit/` has three scripts that draw the comparisons.
+
+### Material, as code
+
+`references/material-kit.md` is for pieces whose protagonist is a substance. It moves the look forward: one still of the hero moment, with its finished material, is approved before any motion is built. It gives a test for telling a computed surface from a drawn one, a five-step recipe, a tested shader for resin and liquid, and the defects to look for, each by name. `examples/material-kit/` has the scene as a ChatCut motion graphic and a before and after.
+
 ### Your taste
 
 Each project keeps a `TASTE.md`: what you said about pieces made for you, before-and-after pairs and your picks from blind reviews. Unrushed reads it before every command and adds your reactions as you give them. `taste/` holds the author's own verdicts as the shared example.
@@ -181,6 +189,8 @@ unrushed/
 │   ├── narrative.md          Hook, promise, proof, payoff, ask; structures; rhythm and the beat map
 │   ├── principles.md         Timing, curves, distance, choreography, type, materials, physics and how to check it
 │   ├── motion-kit.md         Measured curves as cubic-beziers and recipes in numbers, per tool
+│   ├── physics-kit.md        Forces, springs, noise, particles, joined bodies and steering: when, numbers, checks
+│   ├── material-kit.md       The hero frame first, the primitives test, a shader recipe, defects by name
 │   ├── visual-explanation.md Devices, the slide test, real interfaces, cursors, finding the product, demo scripts
 │   ├── transitions.md        Transitions by relation, catalogue, hiding the seam
 │   ├── effects.md            Library effects, zooms, transitions and sound: intent, tiers, budgets, ChatCut, Remotion, AE
@@ -188,9 +198,11 @@ unrushed/
 │   ├── techniques.md         38 techniques from real reference pieces, indexed by meaning
 │   └── targets/              chatcut.md, remotion.md, generic.md
 ├── assets/                   Templates for BRAND.md, VIDEO.md, STYLE.md, STORYBOARD.md, REVISION.md, TASTE.md
-│   └── remotion/             unrushed-motion.ts: the motion kit as Remotion functions
+│   └── remotion/             unrushed-motion.ts and unrushed-physics.ts: the kits as code
 ├── taste/                    The author's verdicts and before-and-after edits
 ├── examples/unrushed-launch/ A worked example with a brand and a cue sheet
+├── examples/physics-kit/     Curve against force, follow-through, soft body, steering: scripts that draw them
+├── examples/material-kit/    A resin scene as a ChatCut motion graphic, with a before and after
 ├── scripts/detect.py         Gates and checks on an exported video, contact sheets, and checks on a storyboard
 ├── scripts/blind_review.py   Side-by-side blind comparison of versions
 ├── scripts/build_single.py   Builds dist/unrushed-single-file.md
@@ -203,7 +215,7 @@ The principles are written in our own words, drawing on:
 
 - The animation canon: Frank Thomas and Ollie Johnston's twelve principles of animation.
 - Issara Willenskomer, *UX in Motion Manifesto*.
-- Daniel Shiffman, *The Nature of Code* (2024): forces, oscillation, particles. Recommended reading; no text or code is reproduced here.
+- Daniel Shiffman, *The Nature of Code* (2012 edition; text CC BY-NC 3.0, code LGPL): the way the physics kit is organised (vectors, forces, oscillation, particle systems, position-based bodies, steering and flocking) follows its chapters 1 to 6. The mechanics are standard; Unrushed restates them in its own words and implements its own code, adapted to rendered video. No text or code from the book is reproduced.
 - Paul Bakaus's *Impeccable*, whose structure inspired this one: one skill, commands as shared vocabulary, context files, named anti-patterns and deterministic detectors.
 - Measured values from the 36 reference pieces studied while building the skill.
 - [motionmaxxing](https://github.com/Tejashmakwana/motionmaxxing) by Tejas Makwana (Apache-2.0): the measured motion values (about 4,300 moves in 53 professional moments), the human motion band, the gate thresholds, the study of what makes films read as AI-made, and the ideas of a Never ship list, honest review, the hardest beat first, a taste file and blind review. Unrushed restates them in its own words and implements its own code; the cubic-bezier fits are its own.
