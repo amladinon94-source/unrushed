@@ -5,7 +5,7 @@ description: Motion direction for videos and animated pieces that must not look 
 
 # Unrushed
 
-> **Single-file edition.** The reference files are embedded at the end of this file, each under a heading "Embedded: <path>". Whenever an instruction says to read a file in `references/`, read that section instead of looking for the file on disk. Files not embedded (`targets/remotion.md`, `targets/generic.md`, the templates, the example, `scripts/detect.py`, `assets/remotion/unrushed-motion.ts`) can be read from https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>.
+> **Single-file edition.** The reference files are embedded at the end of this file, each under a heading "Embedded: <path>". Whenever an instruction says to read a file in `references/`, read that section instead of looking for the file on disk. Files not embedded (`targets/remotion.md`, `targets/generic.md`, the templates, the example, `scripts/detect.py`, `assets/remotion/unrushed-motion.ts`, `assets/remotion/unrushed-physics.ts`) can be read from https://raw.githubusercontent.com/amladinon94-source/unrushed/main/<path>.
 
 Generic motion comes from defaults: every element fades up the same 30 px in the same half second, scenes dip to black, the palette is neon on navy, and nothing moves for a reason. Unrushed replaces adjectives with decisions. Every movement gets a purpose, a duration, a curve, a distance and a place in the order of things. "Smooth and modern" is not a direction; "enters over 700 ms on an expo-out curve, 16 px, 150 ms after the year" is.
 
@@ -84,6 +84,7 @@ Every command that judges a piece (`critique`, the verify step of `improve`, and
    | G3 short ending | the final frame holds at most 1.4 s; the final shot is at most 25% of the piece | script |
    | G4 one hero per frame | one thing the eye goes to first in every frame | by eye, on the contact sheet |
    | G5 no page furniture | nothing from Never ship item 1 or 2 | the plan with `--storyboard`, the render by eye |
+   | G6 the protagonist is rendered | when it is a substance, its surface is computed from a thickness and a light, not drawn as a shape with a highlight; the primitives test of `references/material-kit.md` §3 is written out | by eye, on the hero frame |
 
    A failed gate is fixed, never argued. It also prints notes that are questions, not gates: overall motion against human-made films, loudness, and sound that stops before the picture.
 2. **Describe before you judge.** `--sheet` writes a contact sheet of evenly spaced frames and a second image with the frames around every cut, where broken transitions hide. Write one sentence per frame: what is on screen, what the eye goes to first, and whether it would pass for a slide.
@@ -98,18 +99,19 @@ Whenever you build or rebuild a piece yourself (`export` inside the tool, `impro
 
 | Pass | Job | Look at | Done when |
 |---|---|---|---|
-| 0. Hardest beat | Build only the hero moment (usually the payoff) and its hardest handoff, with real motion | 3 stills and a strip of the key move | It reads at full speed. If not, fix the idea or the staging now, before anything else exists |
+| 0. Hero frame, then hardest beat | First one still of the hero moment with its finished material, rendered in the target tool (`references/material-kit.md`). Only after the person approves that picture: the hero moment and its hardest handoff, with real motion | The still, with the primitives test and the defects still present named; then 3 stills and a strip of the key move | The person has approved the picture, judging the image and not the plan; then it reads at full speed. If either fails, fix the idea, the material or the staging now, before anything else exists |
 | 1. Blocking | Every scene in place: real durations, positions, sizes, cuts and the carried object. Simple motion is fine | Contact sheet (`--sheet`) and `detect.py --expect <seconds>` | Length and rhythm match the plan; one hero per frame (G4); no frame reads as a slide; G0 passes |
 | 2. Type and information | The exact words, sizes by role, reading time, real content and numbers | Contact sheet, and `--storyboard` | Every line readable in its time (G1); one claim per frame; no Never ship words |
-| 3. Motion | The recipes from `references/motion-kit.md`: landings, exits, stagger, camera, press, cuts on motion | Strips and profiles of the 2–3 key moves (`--strip`, `--profile`), the cuts image | Landings decelerate, exits accelerate, no dead frames (G2), the ending holds 0.6–1.4 s (G3) |
-| 4. Finish | Material, light and texture that belong to the world; cues; sound with 1–3 hand-placed hits | All gates and notes | Every gate passes or is reported as failed; the report follows "Looking honestly" |
+| 3. Motion | The recipes from `references/motion-kit.md`: landings, exits, stagger, camera, press, cuts on motion. Forces from `references/physics-kit.md` for whatever falls, sinks, hangs, swings, drifts or steers | Strips and profiles of the 2–3 key moves (`--strip`, `--profile`), the cuts image | Landings decelerate, exits accelerate, no dead frames (G2), the ending holds 0.6–1.4 s (G3); each forced move shows its signature (`physics-kit.md` §5) |
+| 4. Finish | The protagonist's material is already there since pass 0; here, the secondary surfaces, light and texture that belong to the world; cues; sound with 1–3 hand-placed hits | All gates and notes | Every gate passes or is reported as failed; the report follows "Looking honestly" |
 
 Rules for every pass:
 
 - **Describe the contact sheet** in one sentence per frame before changing anything.
 - **Revise by frame range.** Name the scene and the frames ("frames 120–168: the card stops dead; give it `softLand` 12 f"), never "make it smoother".
 - **Fix in the order of "Looking honestly"**, and do not polish a pass whose job is not done: grain does not rescue blocking, and timing does not rescue a beat that buys nothing.
-- **Show the person after pass 0**, and again at the end. Credits and render time are spent on the passes in between only once the hardest beat works.
+- **Show the person twice in pass 0**: the hero frame before any motion, and the moving beat after. Then again at the end. Credits and render time are spent on the passes in between only once both are accepted.
+- **A fix that does not change how a pixel is drawn cannot answer "it looks generic".** Radii, curves, a slower zoom and one more sweep of light are timing and geometry. When the complaint is about the picture, change the material or the staging, and show the same frame before and after.
 - **Two or three honest rounds per pass**, at most. If a pass still fails, say so and ask, rather than starting a new idea on your own.
 
 ## Learning the person's taste
@@ -210,14 +212,14 @@ Read `references/principles.md`, `references/ai-tells.md` and the index of `refe
 - a name and one sentence on how it feels;
 - material, ground, palette, type, and light and finish;
 - the signature move and the library techniques it draws on;
-- a styleframe, one key frame rendered as a still, whenever you can render one, because people choose looks by seeing them.
+- a styleframe, one key frame rendered as a still, whenever you can render one, because people choose looks by seeing them. Make it the moment the piece exists for, not an easier scene. When the protagonist is a substance, a styleframe drawn with flat shapes shows the palette and hides the problem: say that it does not show the material.
 
 Recommend one and say why it serves the through-line. Once the person chooses, complete it:
 
-1. **Material.** Choose it before colour. It sets the motion personality: ink settles, glass is precise, fluid overlaps, cloth lags behind its driver.
+1. **Material.** Choose it before colour. It sets the motion personality: ink settles, glass is precise, fluid overlaps, cloth lags behind its driver. When things in the piece fall, hang or flow, write the material's numbers and the piece's one gravity in the motion tokens (`references/physics-kit.md` §2 and §4).
 2. **Palette.** A ground, an ink and at most one accent with a stated job ("the accent marks the present day"). Give hex values and roles.
 3. **Type.** Two families at most, each with a role and sizes for the target resolution. Avoid the defaults listed in `ai-tells.md` unless the person asks for them.
-4. **Light and finish.** What makes it physical: grain that moves (renewed every two frames, never a static overlay), motion blur on fast moves, shadow and depth, refraction or bloom only when the material has them.
+4. **Light and finish.** Name the light source as a thing with a shape and a place ("a window up and to the left"), because every reflection and shadow is derived from it. When the protagonist is a substance, plan its surface with the five decisions of `references/material-kit.md` §4, and ask whether the real material or product can be photographed first. What makes it physical: grain that moves (renewed every two frames, never a static overlay), motion blur on fast moves, shadow and depth, refraction or bloom only when the material has them.
 5. **Dials.** Set `energy`, `density` and `variance`, and say why.
 6. **Signature move.** One motion that identifies the piece, such as particles that reassemble or a mask that opens from the bottom. Name the entry in `references/techniques.md` it starts from. It appears at the moments that matter, not in every scene, and it changes role each time; repeated identically, it becomes a template.
 7. **Forbidden list.** The generic choices this piece in particular is tempted by.
@@ -239,6 +241,7 @@ Build the storyboard from the spine and beat map in `VIDEO.md`; if they are miss
   - A camera move over a still screen connects steps; it is never a step.
   - Mark any screen not built from the real product as approximate.
 - Write "What moves" with the recipes and curve names from `references/motion-kit.md` ("words land, softLand 12 f, from 5% H; card arrives from 1.6× on snapSettle 18 f"), so the build uses measured values instead of improvising.
+- When the visual has a thing that falls, pours, sinks, hangs, swings, drifts, flocks or goes somewhere on purpose, write the force instead of a curve, from `references/physics-kit.md` §1 ("the drop falls under G, is braked by the liquid, settles on a spring: period 30 f, damping 1.5"). Two curves in a row are not a force: they meet at different speeds. Interface elements stay on curves.
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
 - **Library effects, zooms and sound.** When the target tool has an effects library (ChatCut does), read `references/effects.md`.
   - The default is no effect.
@@ -330,9 +333,9 @@ Score each criterion from 1 to 5 with one line of evidence:
 | Legibility | Can every line be read in the time it is on screen? |
 | Choreography | One protagonist at a time, overlap instead of dead frames? |
 | Timing | Do entrances decelerate, exits run faster, holds feel intended? |
-| Physics | Do things move with mass, inertia, follow-through, overlap and arcs, or do they glide at one speed and stop dead? Scored from strips, a profile or playback, never from single stills. |
+| Physics | Do things move with mass, inertia, follow-through, overlap and arcs, or do they glide at one speed and stop dead? Does speed carry across each join, or does a thing change speed for no reason where two curves meet? Scored from strips, a profile or playback against `physics-kit.md` §5, never from single stills. |
 | Product demo | Only when a product is shown. Is it the real product, found in its code, design files or running app, with the sources listed? Does each key step show an action and the product's visible response, or is it camera moves over still screens? |
-| Material and light | Does the piece have texture, depth and light that belong to its material? Does each style have its own world? |
+| Material and light | Does the piece have texture, depth and light that belong to its material? Does each style have its own world? When the protagonist is a substance, apply the primitives test (`material-kit.md` §3) and name any defect from §6: a drawn surface scores 2 at most, whatever the motion does. |
 | Distinctiveness | How many AI tells are present? |
 | Consistency | Does it follow `STYLE.md`, and `BRAND.md` when there is one: logo use, colour roles, type, voice? |
 
@@ -401,6 +404,8 @@ If you cannot reach them either, work from the embedded essentials in the single
 | `references/effects.md` | Library effects, zooms, transitions and sound accents (ChatCut's library and their Remotion and After Effects equivalents): choosing by intent, tiers, budgets, and how to apply them through ChatCut's tools or a prompt. `storyboard`, `export`, `critique` |
 | `references/transitions.md` | Transitions chosen by the relation between beats, a catalogue with durations and related techniques, eye trace and other ways to hide the seam. `storyboard`, `export`, `critique` |
 | `references/motion-kit.md` | The measured curves as cubic-beziers, recipes in numbers (land, leave, arrive from oversize, stagger, press, camera push and snap, whip, counters, the one spring) and how to apply them in ChatCut, Remotion (`assets/remotion/unrushed-motion.ts`) and After Effects. `storyboard`, `export`, `improve` |
+| `references/physics-kit.md` | Forces, springs, noise, particles, joined bodies and steering as code (`assets/remotion/unrushed-physics.ts`): when to use a curve and when a force, one gravity per piece, materials in numbers, what a strip should show, and a paste-ready core for ChatCut. `style`, `storyboard`, `export`, `critique`, `improve` |
+| `references/material-kit.md` | How the protagonist's surface is drawn when it is a substance: the hero frame before any motion, the primitives test, a five-step recipe (thickness, normals, absorption, one light with a shape, the ground), a tested shader, and the defects by name. `style`, `export`, `critique`, `improve` |
 | `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour, physics and how to check it in a video. `style`, `storyboard`, `recipe`, `export`, `critique`, `improve` |
 | `references/ai-tells.md` | What makes motion and video read as AI-generated, and what to do instead. `style`, `export`, `critique` |
 | `references/techniques.md` | 38 techniques from real reference pieces, indexed by meaning and by family, with key parameters and build routes. `style`, `storyboard`, `recipe`, `export`, `critique` |
@@ -416,7 +421,7 @@ If you cannot reach them either, work from the embedded essentials in the single
 
 # Embedded references (single-file edition)
 
-This edition embeds the essentials so the skill works where only one file is installed. The full files, with every source link, are in the repository: https://github.com/amladinon94-source/unrushed. `targets/remotion.md`, `targets/generic.md`, the templates, `scripts/detect.py` and `assets/remotion/unrushed-motion.ts` are only there.
+This edition embeds the essentials so the skill works where only one file is installed. The full files, with every source link, are in the repository: https://github.com/amladinon94-source/unrushed. `targets/remotion.md`, `targets/generic.md`, the templates, `scripts/detect.py`, `assets/remotion/unrushed-motion.ts` and `assets/remotion/unrushed-physics.ts` are only there.
 
 ## Embedded: references/narrative.md
 
@@ -766,7 +771,7 @@ What to look for:
 
 A fix for physics changes how things move. Grain, glow or blur are finish, not physics.
 
-Recommended reading for this section: Daniel Shiffman, *The Nature of Code* (2024, p5.js), chapters 1–6.
+These controls exist as code, with numbers per material and the signatures to look for, in `physics-kit.md` and `assets/remotion/unrushed-physics.ts`. Use them; do not re-derive a spring or a fall by hand.
 
 #### 10. Classic principles, condensed
 
@@ -903,6 +908,345 @@ Plugins that take a cubic-bezier (such as Flow) accept the same four numbers.
 - Durations of 20–30 frames for every move. The professional median is 10 frames; slow is a choice for one move, not a default.
 - Identical stagger gaps. Uneven gaps read as separate bodies; a fixed delay reads as a loading list.
 - Animating the camera by moving the interface's pieces one by one. One group, one transform.
+
+## Embedded: references/physics-kit.md
+
+### Physics kit: forces, springs and noise, ready to paste
+
+`motion-kit.md` gives the measured curves for moves that go from A to B. This file is for things that move because something acts on them: they fall, sink, hang, swing, are pushed or drift. The code is in `assets/remotion/unrushed-physics.ts`; it has no dependencies and runs in Remotion and inside a ChatCut motion graphic.
+
+Source: standard mechanics, organised the way Daniel Shiffman teaches them in *The Nature of Code* (2012; text CC BY-NC 3.0). This file and the code restate the ideas in Unrushed's own words and code (MIT); nothing is copied from the book.
+
+Lengths are in px, durations in frames at 30 fps (f), speeds in px per second unless a line says px per frame.
+
+#### Contents
+
+1. Curve or force
+2. One world, one gravity
+3. The pieces
+4. Materials in numbers
+5. What a strip should show
+6. In ChatCut and Remotion
+7. Limits
+
+#### 1. Curve or force
+
+Read the verb in the storyboard's "Visual" column.
+
+| The thing… | Use | Why |
+|---|---|---|
+| enters, exits, slides, scales, is pressed; any interface element | a curve from `motion-kit.md` | It was measured on professional work; a simulated panel looks loose |
+| falls, drops, pours, sinks, floats, is thrown | forces (`simulate`, `gravity`, `drag`) | Speed must carry across the whole move, and weight must show |
+| settles after arriving, wobbles, hangs, swings, is plucked | `spring` | One exact function, with the arrival speed handed in |
+| sways, breathes, drifts, flickers while it waits | `noise1`, `noise2`, `wind` | Random values jump; noise wanders |
+| is one of many similar things | `rng` and `gaussian` for size, delay and start | Identical siblings read as a template |
+| goes somewhere on purpose: a cursor, a hand, a vehicle, a creature | `arrive`, `followPath` | It turns with a limit, so it travels on arcs and brakes before it stops |
+| is carried by wind or a current, or moves as a group | `flowAt` + `follow`; `separate`, `align`, `cohere` | Neighbours move alike without moving identically |
+
+If a scene has no such verb, it needs no physics. Do not simulate what a curve does better.
+
+**A chain of curves is not a force.** Two curves in a row meet at different speeds, and the eye reads the joint. In `examples/physics-kit/drop-into-liquid.ts`, a 12 f gravity curve followed by `softLand` makes a ball speed up from 53 to 78 px per frame at the moment it enters the liquid, and three balls of different weight move identically. With forces, the same ball drops from 53 to 5, 15 or 31 px per frame on entry depending on its weight, and sinks at 3, 6 or 12.
+
+#### 2. One world, one gravity
+
+Set gravity once per piece and write it in `STYLE.md` beside the motion tokens. Derive it from the fall the storyboard already specifies: `gravityFor(distance, frames)` returns the g that makes a thing dropped from rest cover that distance in that time ("falls 330 px in 12 f" gives 4,125 px/s²). Every object then shares it. An object with its own private gravity is the physical version of a mismatched font.
+
+Weight shows only when something resists. In a vacuum heavy and light fall together; under `drag` or `viscous` the heavy one keeps more of its speed. So give things a mass when they meet air, liquid, a spring or each other, and let size and mass agree: a big thing that starts and stops as fast as a small one reads as weightless.
+
+#### 3. The pieces
+
+| Piece | What it gives | Numbers to start from |
+|---|---|---|
+| `rng(seed)`, `gaussian(rand, mean, sd)` | Repeatable variation. Never `Math.random()`: frames render in any order | sd of 10–20% of the mean for sizes and delays |
+| `noise1(frame / pace, seed)`, `noise2(x, y, seed)` | A value that wanders between about −1 and 1 | pace 20–40 f alive, 90+ breathing; amplitude 1–3 px or 0.5–1° on a hold; a different seed per object |
+| `gravityFor`, `fall` | Exact free fall and the speed at any frame | — |
+| `spring(frame, start, {from, to, period, damping, v0})` | An exact settle. `v0` is the arrival speed from the move before | see the table below |
+| `simulate({init, step})` with `step(body, forces, dt)` | Any mix of forces, replayed from frame 0 and cached | 4 substeps; 8 with stiff springs |
+| `gravity`, `springTo`, `attract`, `wind` | Pushes | `attract` clamps distance to 20–400 px |
+| `friction(mu, normal)`, `drag(c)`, `viscous(c)` | Brakes. Applied exactly, so a strong brake never reverses the motion | below |
+| `emitter({rate, life, spawn, forces})`, `lifeCurve(age)` | Many short-lived things from one source; each is born, ages 0 to 1 and dies | steady: rate × life particles alive; a burst is 2–3 f of high rate, then 0 |
+| `agents({init, steer, maxSpeed})` with `seek`, `arrive`, `flee`, `wander`, `follow`, `followPath`, `separate`, `align`, `cohere`; `flowAt`; `heading` | Bodies that steer: a wanted velocity, and a limit on how hard they can turn | `maxForce` from 0.1× `maxSpeed` (a ship) to 5× (an insect); `arrive` slow radius ≈ `maxSpeed` × 0.2 s |
+| `joined({...rope(…) \| cloth(…) \| blob(…), g, pins})`, `pathThrough(points)` | Things held together: a cord, a sheet, a soft body. `pins` tie points to a driver that moves | `damping` 0.02–0.6; `blob` pressure 0.3–0.9 |
+
+Spring, with `period` 18 f (verified by `spring` itself):
+
+| `damping` | Feels like | Overshoot | Settles within 1% in |
+|---|---|---|---|
+| 0.3 | rubber, jelly | 37% | 42 f |
+| 0.6 | a firm settle | 9% | 18 f |
+| 1 | the fastest arrival with no overshoot | none | 20 f |
+| 1.5 | honey, resin | none | 36 f |
+
+Change `period` to make the whole thing faster or slower; the overshoot stays the same.
+
+**Follow-through comes from joining, not from a delay.** Hang the secondary thing from its driver with `joined` and `pins`: it leaves late, swings past where the driver stops and returns, with a cord that bends on the way (`examples/physics-kit/joined-and-particles.ts`, rows A and B). A copy of the driver's move delayed by 3 f does none of that. How far it swings depends on how hard the driver moves against gravity: a 300 px slide in 14 f throws a 210 px cord almost level with its anchor. For a calmer trail, slow the driver, shorten the cord or raise g for that mesh.
+
+`damping` in `joined` is the share of speed kept each second. A swing keeps roughly the square root of that, so 0.02 is quiet within a second and 0.5 is still swinging after six. Start low.
+
+**A soft body needs its area kept.** `blob` holds the length of its outline and the area inside it, so it flattens, bulges sideways, rises and settles as a dome (row C: 120 px across in the air, 177 × 52 two frames after contact, 146 × 82 at rest). It rebounds, so it is jelly or a water balloon. It is not a liquid: it never spreads, wets or splits.
+
+**Particles are born and die.** Size and opacity come from `lifeCurve(age)`, never from a pop. Directions and speeds come from `gaussian`, so the burst is dense in the middle and thin at the edges; an even fan reads as a diagram. Emit for 2–3 frames, not one, or the burst looks like a ring.
+
+**Intent is a limit on turning.** A steered body wants a velocity and can only change the one it has so fast. That one limit gives arcs, banking into corners and braking before a stop, with nothing keyframed (`examples/physics-kit/steering.ts`). Use it where a curve on a straight line would look pushed rather than driven.
+
+- `arrive` is the arrival of anything that knows where it is going. It needs room to brake: at least `maxSpeed`² / (2 × `maxForce`). Its last pixels are slow by nature, about 1 px per frame; if the landing must end on a beat, finish with `spring` or a kit curve.
+- `followPath` cuts each corner on the inside by roughly its look-ahead distance and stops at the last point. A cursor wants 3–4 f of look-ahead, a vehicle 6–10.
+- Draw the body turned to `heading(vel)`. A shape that slides sideways along an arc undoes the effect.
+- A flock with only `separate`, `align` and `cohere` settles into an even lattice after a few seconds, which looks mechanical. Add a little `wander` per body, or cut before it settles.
+- A flow field gathers its followers into a few streams. Release them over time with `emitter`-style births, or the frame empties except for those streams.
+
+#### 4. Materials in numbers
+
+`STYLE.md` names one material. These are its starting values; tune by eye on a strip, then write the final ones in the motion tokens.
+
+| Material | Settle (`damping`, `period`) | In flight | On contact |
+|---|---|---|---|
+| Metal, glass, stone | 1, 10–12 f | no visible drag | stops; a heavy one shakes its neighbours 2–3 px |
+| Paper, card, leaf | 0.7, 16 f | strong `drag`, plus `wind` so it never falls straight | lands late and flat, slides 1–2 f |
+| Cloth, ribbon, hair | 0.4–0.5, 20–24 f | lags its driver by 3–5 f | swings past and returns once |
+| Rubber, jelly | 0.3, 14–18 f | none | squashes on contact, 2–3 visible swings |
+| Water | 0.5, 14 f | `drag` on anything entering it | entering things lose most of their speed in 2–3 f |
+| Honey, resin, syrup | 1.5 or more, 24–36 f | `viscous`; never bounces | spreads fast at first, creeps for a long time, no overshoot |
+| Smoke, dust, pollen | none | `wind` and a weak upward push; `gaussian` lifetimes | fades, never lands |
+
+#### 5. What a strip should show
+
+Check the move with `scripts/detect.py --strip` and `--profile`, never from one still (`principles.md` §9).
+
+| Move | The per-frame steps should… | It is wrong when… |
+|---|---|---|
+| Free fall | grow by the same amount every frame (2, 7, 12, 16, 21…) | they are equal, or they shrink before the impact |
+| Entering a liquid | collapse within 2–3 frames, then hold a steady small value | the thing speeds up, or stops dead at the surface |
+| Spring settle | shrink, cross zero and return as many times as the damping allows | it stops on one frame, or swings with a constant size |
+| Honey or resin | shrink smoothly and never change sign | there is any bounce |
+| Two things of different weight | differ in timing under the same force | they move in step |
+| A hold with noise | change every frame by a small, uneven amount | they repeat with a visible period, or all objects sway together |
+
+#### 6. In ChatCut and Remotion
+
+**Remotion.** Copy `assets/remotion/unrushed-physics.ts` into `src/` beside `unrushed-motion.ts`. Build every simulation once, outside the component, and read it with the frame.
+
+**ChatCut, and any host where only this file is installed.** The agent writes the motion graphic's code, so the code has to travel in the prompt. Paste this core into the "Motion fundamentals" block, or into the motion graphic itself; it gives the same numbers as the full file. For particles, cords, soft bodies and steering, fetch the full file from `https://raw.githubusercontent.com/amladinon94-source/unrushed/main/assets/remotion/unrushed-physics.ts`.
+
+```ts
+// Unrushed physics core (MIT). Frames render in any order: no Math.random(), no state kept between frames.
+type V = {x: number; y: number};
+type B = {pos: V; vel: V; mass: number};
+type Brake = {constant?: number; linear?: number; quad?: number}; // friction, thick liquid, air or water
+
+export const rng = (seed: number) => { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
+
+// Smooth wander, about -1..1. noise1(frame / 30, seed): one seed per object.
+const hash = (i: number, seed: number) => { let h = Math.imul(i | 0, 374761393) ^ Math.imul(seed | 0, 2147483647); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
+export const noise1 = (x: number, seed = 0) => { const i = Math.floor(x), t = x - i, f = t * t * t * (t * (t * 6 - 15) + 10); const a = (hash(i, seed) * 2 - 1) * t, b = (hash(i + 1, seed) * 2 - 1) * (t - 1); return (a + (b - a) * f) * 2; };
+
+// g that makes a thing dropped from rest cover `distance` px in `frames`. One g for the whole piece.
+export const gravityFor = (distance: number, frames: number, fps = 30) => (2 * distance) / (frames / fps) ** 2;
+
+// Exact damped spring. period in frames; damping 0.3 rubber, 0.6 firm, 1 no overshoot, 1.5 honey. v0 = arrival speed, px/s.
+export const spring = (frame: number, start: number, o: {from?: number; to?: number; period?: number; damping?: number; v0?: number; fps?: number} = {}) => {
+	const fps = o.fps ?? 30, to = o.to ?? 1, a = (o.from ?? 0) - to, v0 = o.v0 ?? 0, z = o.damping ?? 0.6;
+	const t = Math.max(0, frame - start) / fps, w = (2 * Math.PI) / ((o.period ?? 18) / fps);
+	if (z < 0.999) { const wd = w * Math.sqrt(1 - z * z); return to + Math.exp(-z * w * t) * (a * Math.cos(wd * t) + ((v0 + z * w * a) / wd) * Math.sin(wd * t)); }
+	if (z < 1.001) return to + Math.exp(-w * t) * (a + (v0 + w * a) * t);
+	const r = w * Math.sqrt(z * z - 1), r1 = -z * w + r, r2 = -z * w - r, c2 = (v0 - r1 * a) / (r2 - r1);
+	return to + (a - c2) * Math.exp(r1 * t) + c2 * Math.exp(r2 * t);
+};
+
+// One step: pushes are summed and divided by mass; brakes only ever slow, so they cannot flip the motion.
+export const step = (b: B, pushes: V[], brakes: Brake[], dt: number): B => {
+	let vx = b.vel.x, vy = b.vel.y;
+	for (const p of pushes) { vx += (p.x / b.mass) * dt; vy += (p.y / b.mass) * dt; }
+	const speed = Math.hypot(vx, vy);
+	if (speed > 1e-9) {
+		let s = speed;
+		for (const k of brakes) { s *= Math.exp((-(k.linear ?? 0) / b.mass) * dt); s /= 1 + ((k.quad ?? 0) / b.mass) * s * dt; s = Math.max(0, s - ((k.constant ?? 0) / b.mass) * dt); }
+		vx *= s / speed; vy *= s / speed;
+	}
+	return {pos: {x: b.pos.x + vx * dt, y: b.pos.y + vy * dt}, vel: {x: vx, y: vy}, mass: b.mass};
+};
+
+// Build once outside the component; read any frame. `next` returns a NEW state.
+export const simulate = <S,>(init: S, next: (s: S, dt: number, frame: number) => S, fps = 30, substeps = 4) => {
+	const cache: S[] = [init];
+	return (frame: number): S => {
+		const target = Math.max(0, Math.floor(frame));
+		while (cache.length <= target) { let s = cache[cache.length - 1]; for (let k = 0; k < substeps; k++) s = next(s, 1 / (fps * substeps), cache.length - 1 + k / substeps); cache.push(s); }
+		return cache[target];
+	};
+};
+
+// Example: a weight falls 330 px to a liquid in 12 f, is braked by it, and its label settles like honey.
+// const G = gravityFor(330, 12);
+// const drop = simulate({pos: {x: 540, y: 90}, vel: {x: 0, y: 0}, mass: 4}, (b, dt) =>
+//   step(b, [{x: 0, y: G * b.mass}], b.pos.y > 420 ? [{quad: 0.5}] : [], dt));
+// const y = drop(frame).pos.y;
+// const labelY = spring(frame, 12, {from: 40, to: 0, period: 30, damping: 1.5});
+```
+
+Then name the forces per scene in one line, as with curves: "the weight falls under G, is braked by the liquid (quad 0.5) below y 420; its label settles on a spring, period 30 f, damping 1.5".
+
+#### 7. Limits
+
+- **This is motion, not picture.** A drop that falls correctly and is drawn as a circle with a highlight still looks drawn. Material and light are a separate job.
+- **No fluids.** There is no liquid surface, splash, spreading or merging here. `drag` and `viscous` describe how a solid thing moves through a liquid, `blob` is a soft solid, and particles can stand in for spray. A liquid that looks like liquid needs a shader or footage.
+- **Not for many thousands of bodies.** `simulate` replays from frame 0 in each render process. Beyond a few thousand bodies, precompute positions to a file. Groups that look at each other (`separate`, `align`, `cohere`) cost the square of their count: keep them under about 300.
+- **Stepped results are approximate.** At 4 substeps, a fall lands about 2% long and a terminal speed about 4% low. Where a number must be exact (a landing on a beat), use the closed forms `fall` and `spring`.
+
+## Embedded: references/material-kit.md
+
+### Material kit: a surface that is computed, not drawn
+
+`motion-kit.md` and `physics-kit.md` decide how things move. This file decides how the protagonist's surface is drawn, because a thing that moves correctly and is drawn as a flat shape with a highlight still looks generated.
+
+Source: Unrushed's own. Built and corrected over four rendered passes on a real piece in ChatCut (`examples/material-kit/`, with a before and after). The shading model is standard: a height field, its normals, absorption by thickness, a reflected light source.
+
+#### Contents
+
+1. When a material is needed
+2. The hero frame comes first
+3. The primitives test
+4. The recipe
+5. The code
+6. Defects, by name
+7. In ChatCut and Remotion
+8. Limits
+
+#### 1. When a material is needed
+
+Ask what the piece's protagonist is made of. If the answer is a substance (liquid, resin, glass, metal, wax, paper with weight, cloth), the substance must be rendered. If the answer is an interface, a diagram or type, it must not: flat is correct there, and a glossy button is the older cliché.
+
+Start from the real thing when there is one. Ask in `brief` for photos or footage of the actual material or product, and prefer them as the ground or as the subject itself over anything computed. A computed material is for when the real thing cannot be shot or must transform on screen.
+
+#### 2. The hero frame comes first
+
+Before any motion is built, render one still of the hardest moment with the finished material, in the tool that will make the piece, and show it. The person approves the picture or rejects it. Motion built on a rejected picture is wasted, and a pass 0 that shows "simple drawing for now" gets the wrong thing approved.
+
+- It is the moment the piece exists for, not an easier scene.
+- It is rendered by the target tool, not mocked up elsewhere.
+- Show the transforming state as well as the settled one. A liquid mid-spread shows its material far better than the finished block.
+- Say what is still wrong with it (§6). Never present it as finished.
+
+#### 3. The primitives test
+
+Before showing any frame, write one line per protagonist object: what is it made of in the code?
+
+| The line reads | Verdict |
+|---|---|
+| "a circle, a darker circle and a white ellipse" · "a rounded rectangle with a gradient and a blurred copy below" · "a rotated white gradient that slides across" | Drawn. It will read as generated. Rebuild it with §4 |
+| "a thickness field; normals from its slope; colour absorbed through the thickness; the reflection of a window; a shadow tinted by what the light passed through" | Computed |
+
+The test is about cause. In a computed material every light and dark area follows from a shape, a thickness and a light. In a drawn one each was placed by hand, and three of them are all there is.
+
+#### 4. The recipe
+
+Five decisions, in this order. Each has one number to tune.
+
+1. **Thickness.** A height field over the object's outline: rises at the edge like a meniscus, nearly flat inside. Round the field at corners (a smooth minimum of the wall distances), or the corners show diagonal creases and the object becomes a bevelled button. *Tune:* the meniscus width, 20–40 px at 1080 wide.
+2. **Normals** from the slope of the thickness. Add a slow, smooth swell while the thing is liquid and let it die as it sets. Two octaves of smooth noise at most: fine noise shatters every reflection into glitter. *Tune:* swell amplitude, 0.5 falling to 0.03.
+3. **Colour by absorption.** What is underneath, multiplied by `exp(-absorb × thickness)`, with `absorb` derived from the target colour. Thin edges come out lighter and translucent, the body deep, with no gradient authored. Let colour reach full depth within 5–10 px of the edge, or the edge blurs into a cushion. *Tune:* a slow variation of density (pigment that drifts while liquid and freezes when set) at ±10%.
+4. **One light with a shape.** A window, a softbox, a strip: something with edges, reflected through the normals from a camera at a finite distance, so the reflection lands in one place and bends where the surface curves. Plus a thin specular line on the edge that faces the light, and the opposite edge a little darker. *Tune:* the size of the reflection: under about a fifth of the object it reads as a sticker.
+5. **What it does to the ground.** A shadow offset away from the light, tinted by the colour the light passed through, tight (under 10 px of softness), with a dark contact line where the material touches. The ground itself needs a surface: fibre in paper, veins in stone.
+
+Refraction (sampling the ground at a position pushed along the normal) belongs to step 3 for clear materials, and is what shows there is something underneath.
+
+#### 5. The code
+
+A fragment shader. These functions are the ones that produced `examples/material-kit/before-after.jpg`; `resin-hero.html` in the same folder is the complete scene as a ChatCut motion graphic.
+
+```glsl
+precision highp float;
+uniform float uTime;
+const vec2 CAMERA_XY = vec2(430.0, 560.0); const float CAMERA_DIST = 1500.0;   // in the scene's px
+
+float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float vnoise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*f*(f*(f*6.0-15.0)+10.0);
+  return mix(mix(hash(i), hash(i+vec2(1,0)), f.x), mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y); }
+float fbm(vec2 p){ float a = 0.5, s = 0.0; for(int i=0;i<5;i++){ s += a*vnoise(p); p = p*2.03 + 17.1; a *= 0.5; } return s; }
+float sdBox(vec2 p, vec2 c, vec2 h, float r){ vec2 d = abs(p-c) - h + r; return length(max(d,0.0)) + min(max(d.x,d.y),0.0) - r; }
+
+float smin(float a, float b, float k){ float h = clamp(0.5 + 0.5*(b-a)/k, 0.0, 1.0); return mix(b, a, h) - k*h*(1.0-h); }
+// depth inside a box with no diagonal crease at the corners (surface tension rounds them)
+float boxDepth(vec2 p, vec2 c, vec2 h){ vec2 q = h - abs(p - c); return smin(q.x, q.y, 70.0); }
+
+float height(float depth, vec2 p, float wob){
+  float m = 1.0 - exp(-max(depth,0.0) / 30.0);
+  vec2 rp = p*0.0065 + vec2(uTime*0.30, -uTime*0.18);
+  float ripple = wob * ((vnoise(rp) - 0.5) + 0.35*(vnoise(rp*2.1 + 4.0) - 0.5)) * 0.9;
+  return max(0.0, m * (1.0 + ripple));
+}
+
+// the light source: a window up and to the left, seen in the reflection
+float window(vec3 r){
+  vec2 s = r.xy - vec2(-0.185, -0.060);
+  float c = cos(-0.30), sn = sin(-0.30); s = vec2(c*s.x - sn*s.y, sn*s.x + c*s.y);
+  vec2 d = abs(s) - vec2(0.150, 0.062);
+  float box = smoothstep(0.030, -0.012, max(d.x, d.y));
+  float bars = 1.0 - 0.5*smoothstep(0.010, 0.003, abs(s.x)) * 1.0 - 0.35*smoothstep(0.008, 0.002, abs(s.y));   // the window's crossbars
+  return box * bars;
+}
+// the camera is at a finite distance, so the window's reflection lands in one place, not everywhere
+vec3 viewAt(vec2 p){ return normalize(vec3((CAMERA_XY - p) / CAMERA_DIST, 1.0)); }   // e.g. vec2(430.,560.) and 1500.
+// resin over whatever lies beneath it
+vec3 resin(vec2 p, float h, vec2 grad, vec3 absorb, vec3 under, float density, float scatter){
+  vec3 n = normalize(vec3(-grad * 30.0, 1.0));
+  float thick = 1.0 - pow(1.0 - min(h, 1.0), 6.0);   // colour reaches full depth a few px in from the edge
+  vec3 trans = exp(-absorb * thick * density);
+  vec3 col = under * trans;
+  vec3 pigment = exp(-absorb * 0.9);
+  float lambert = clamp(dot(n, normalize(vec3(-0.45, -0.55, 0.70))), 0.0, 1.0);
+  col = mix(col, pigment * (0.86 + 0.20*lambert), scatter * smoothstep(0.0, 0.5, thick));
+  col *= 1.0 + 0.10 * exp(-pow((h - 0.22)/0.10, 2.0));   // a light line just inside the edge, where light gathers
+  vec3 r = reflect(-viewAt(p), n);
+  float fres = 0.04 + 0.96 * pow(1.0 - clamp(n.z, 0.0, 1.0), 5.0);
+  float sky = 0.35 + 0.65*smoothstep(0.6, -0.6, r.x + r.y);
+  // a lit edge: a thin specular line on the light's side, the far side slightly darker
+  vec3 L = normalize(vec3(-0.45, -0.55, 0.70));
+  float spec = pow(max(dot(n, normalize(L + viewAt(p))), 0.0), 110.0);
+  col *= 1.0 - 0.16 * clamp(dot(n.xy, normalize(vec2(0.45, 0.55))) * 3.0, 0.0, 1.0);
+  col += vec3(1.0, 0.99, 0.97) * (window(r) * 0.30 + spec * 0.85 + sky * fres * 0.18) * smoothstep(0.0, 0.08, h);
+  return col;
+}
+```
+
+The ground's side of it, in `main` before the object is drawn, with `d` the object's signed distance sampled at `p - vec2(9.0, 13.0)` (away from the light) and `d0` at `p`:
+
+```glsl
+ground *= mix(vec3(1.0), tint, smoothstep(9.0, -7.0, d) * 0.8);        // tint: the object's colour, lightened
+ground *= 1.0 - 0.22 * exp(-max(d0, 0.0) / 2.5) * step(0.0, d0);       // the contact line
+```
+
+The function block (not these two ground lines), with a 20-line `main` and a different colour, was pasted from the single-file edition into a new ChatCut motion graphic and rendered on the first try.
+
+Per object, in `main`: compute its depth (for a box, `boxDepth`; for a free shape, the negative of its signed distance; combine with `smin` where a liquid front meets a wall), take `h = height(depth, p, swell)`, the gradient of `h` by central differences 1.5 px apart, the ground sampled at `p - grad * h * 420.0` for refraction, then `resin(...)`. `absorb` for a target colour `c` over a ground of brightness 0.98 is `-log(c / 0.98)` per channel.
+
+#### 6. Defects, by name
+
+Each of these appeared on the way to the example. Look for them in every hero frame and name the ones present.
+
+| Defect | Looks like | Cause | Fix |
+|---|---|---|---|
+| Bevelled button | Diagonal creases from each corner, one side light and one dark | Height taken from a box distance; strong diffuse shading | Smooth minimum of the wall distances; keep diffuse contrast under 20% |
+| Glitter | The reflection breaks into specks | Fine or discontinuous noise in the normals | Two smooth octaves; quintic interpolation |
+| Sticker | A tiny crisp shape of light | The light source is too small, or the camera is at infinity | Enlarge the source; give the camera a distance |
+| Cushion | A wide pale blur around the edge, a glow outside it | Colour follows the full meniscus; a wide symmetric shadow | Colour to full depth in 5–10 px; a tight, offset shadow |
+| Candy | Thick, glossy, saturated: a sweet or nail polish | Too much height and reflection for the substance | Lower the slope and the reflection until it reads as a pour, not a dome |
+| Label on top | Text sits over the reflection | The text is a separate layer above the surface | Put the text in the scene under the surface, or keep the reflection clear of it |
+
+A shader removes none of these by itself. Each was removed by rendering, looking and naming it.
+
+#### 7. In ChatCut and Remotion
+
+**ChatCut.** Use the HTML runtime with `three`: one full-screen plane with a `ShaderMaterial`, uniforms set in `render({timeSeconds})`. Verified in `resin-hero.html`. Two things found the hard way: a font named in the stylesheet does not load inside a 2D canvas, so text drawn to a canvas texture falls back to a serif (use page elements positioned with the same camera transform); and the linked source reloads when the file changes, so a hero frame can be revised and re-inspected without importing again. This is drawing a motion graphic's own picture. It is not the paid custom effect of `effects.md` §"Custom shader", which stays a last resort.
+
+**Remotion.** The same shader in a canvas with a WebGL context, rendered with `--gl=angle`. Not yet run there.
+
+#### 8. Limits
+
+- **Tested on one material, from one angle.** Pigmented and clear resin, seen from above. Glass, metal, cloth and wax follow the same five decisions with other numbers, and none has been rendered.
+- **It is still not a fluid.** The outline comes from the motion (`physics-kit.md`); the surface is shaded as if it were liquid. There are no waves, splashes or merging.
+- **Angle matters more than shading.** Seen straight from above, thickness shows only through light. A raking view shows it through shape. Choose the angle in `storyboard`.
+- **The example is close to candy.** It is thicker and glossier than a real pour. It shows the method, not a finished look.
 
 ## Embedded: references/visual-explanation.md
 
@@ -1380,7 +1724,7 @@ Per shot:
 
    Send only the properties you change.
 4. **Verify.** Confirm with `preview_timeline` that the effect sits on the right clip and range, then look at composed frames (`views:["viewer"]`). Never report success from the `edit_item` response alone.
-5. **Custom shader only as a last resort.** Use `submit_shader` only when nothing in the library fits the intent. Write the brief like a director:
+5. **Custom shader only as a last resort.** Use `submit_shader` only when nothing in the library fits the intent. This is about effects and transitions laid over footage. Shader code that draws a motion graphic's own protagonist (`material-kit.md`) is not an effect and is not a last resort. Write the brief like a director:
    - eased progress, never linear;
    - both clips take part in a transition;
    - the first and last frames match the clips exactly;
@@ -1460,6 +1804,7 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Centred title and subtitle in every scene | Same layout, no composition | A stable text zone plus a composition that changes with the figure |
 | Icons in rounded squares, emojis | Template components | Drawn marks consistent with the material |
 | Perfectly clean digital rendering | Nothing physical to hold onto | Grain, motion blur, self-shadowing, refraction: light and material carry quality |
+| A substance drawn as a shape with a highlight: an oval with a white ellipse for a drop, a rounded card for a slab of resin, a diagonal white sweep for "shine" | Three primitives placed by hand; nothing in the frame follows from a thickness or a light | Compute the surface (`material-kit.md`): thickness, normals, absorption, the reflection of one light with a shape |
 | A static grain overlay, or grain added as "depth" | Reads as a filter laid on top, not as film or paper | Texture only when it belongs to the material or the captured surface, and then renewed every two frames |
 | Grain, glow or blur offered as the fix for flat motion or a weak demo | A finish standing in for the missing work | Fix the motion itself, or the demo itself; finish comes last |
 | A showcase where every style shares the same ground and palette | The viewer sees one style with different shapes | Give each style its own world: ground, palette and light |
@@ -1654,7 +1999,7 @@ Paste this into the AI composer, with the Design Style selected. Structure it li
 1. **Deliverable**: duration, resolution, frame rate, sound or none.
 2. **Concept**: the through-line in two sentences.
 3. **Storyboard**: the table from `STORYBOARD.md`, with exact text, the beat each scene serves, its device and its transition written as relation and type ("B is a detail of A → zoom-through, 900 ms, expo"). Durations come from the beat map; do not even them out.
-4. **Motion fundamentals**: repeat the key numbers even if they are in the Design Style. The agent follows what is in front of it. Use the paste-ready block in `motion-kit.md` §3 and the curve names from the storyboard, each with its cubic-bezier and frames.
+4. **Motion fundamentals**: repeat the key numbers even if they are in the Design Style. The agent follows what is in front of it. Use the paste-ready block in `motion-kit.md` §3 and the curve names from the storyboard, each with its cubic-bezier and frames. When the protagonist is a substance, paste the shader from `material-kit.md` §5 and ask for a still of the hero moment before any motion (HTML runtime with `three`). When a scene uses forces, paste the core from `physics-kit.md` §6 as well: the agent cannot open a file it was not given, and without the code it will chain two curves instead.
 5. **Interfaces**: when a scene simulates a product or a tool, name the design system and components ("shadcn/ui Slider and Card, dark theme, Lucide icons", or the product's own), with radius, colours and font, and the cursor behaviour from `visual-explanation.md`.
 6. **Continuity**: if one element carries through the piece, such as particles or a line, say that every transformation starts from the exact end state of the previous scene, with no cuts between clips, and that it may build the whole sequence as a single motion graphic if needed.
 7. **Cues**: the cue sheet from `STORYBOARD.md`, one sentence per cue (see "Library effects, zooms and sound" below). State that these are the only effects, zooms and library transitions wanted, so the agent adds nothing else.
@@ -1759,11 +2104,22 @@ When the person reacts to a piece, append an entry to the project's `TASTE.md`: 
 - Reacting to: measured curves and techniques that lived in prose and never reached the built motion.
 - Lesson: motion values must arrive as numbers the tool executes (the motion kit and its Remotion file), and a render must be checked by script (the gates), not by the agent's own description.
 
+**2026-11-23 · Unrushed 0.5, pass 0 of the climax of a vertical video, built in ChatCut.**
+- Quote: "no veo diferencia entre hacerlo sin plugin y con plugin, mira la física de las gotas, brillos genéricos, todo genérico, nada que se vea bien" (I see no difference between doing it with and without the plugin; look at the physics of the drops, generic highlights, everything generic, nothing that looks good).
+- Reacting to: rounded cards with a name on empty paper, a pink drop that is an oval with a highlight stuck on it, and a template diagonal sheen. The "5 fixes" from the critique only removed grey lines and rounded corners; before and after looked the same.
+- What the code showed: the drop was three SVG circles, the liquid a rounded rectangle interpolating its width, the sheen a rotated gradient rectangle used three times. The corona, meniscus, caustic shadow and translucency written in `STYLE.md` were never drawn. The only styleframe approved was of another scene and already looked like candy.
+- Lesson (narrow): the skill controls the plan and the motion values but not how the picture is drawn. Pass 0 accepts simple drawing, material waits until pass 4, the gates measure motion only, and `submit_shader` is a last resort, so a flat picture passes every check. No rule written yet: first rebuild this climax with real material and an approved hero frame, and write rules only if the author sees the difference.
+
 #### Preferred
 
 **2026-11-23 · How to learn from another project.**
 - Quote: "hay que tomar las cosas buenas que sí hace motionmaxxing… para conservar nuestro objetivo pero con los aprendizajes de motionmaxxing" (we should take the good things motionmaxxing does, to keep our goal but with its lessons).
 - Lesson: keep Unrushed's job (directing motion inside the person's own editor, with their footage and their real product) and adopt measured values, gates and honest review; do not become a second film generator.
+
+**2026-11-23 · The same climax, rebuilt as a hero frame with a computed resin surface, in ChatCut.**
+- Reply: "Sí, escríbela" (yes, write it), to the question of whether the difference was visible enough to write the material recipe into the skill. Given after seeing `examples/material-kit/before-after.jpg`.
+- Reacting to: the drop and the slab rendered from a thickness field, absorption and the reflection of a window, beside the original flat shapes. The comparison was presented with its remaining faults named: close to candy, the text over the reflection, still seen from above.
+- Lesson (narrow): for this author a computed surface is a visible difference where a physics-only version of the same drawing was not offered as one. It is an acceptance of the direction, not of that frame as finished.
 
 **Standing preference · Working style.**
 - The author wants a plan for long tasks, executed in parts, with a critical voice rather than agreement, and questions when something is unclear. Pieces built with Unrushed should follow the same rhythm: pass 0 first, shown before the rest is built.

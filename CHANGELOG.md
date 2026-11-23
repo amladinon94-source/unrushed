@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased
+
+After 0.5, a pass 0 built in ChatCut still looked the same with and without the skill (see `taste/verdicts.md`). One half of that verdict was motion: the fall, the spread and the highlights were shapes interpolated on curves. The skill recommended reading about physics and gave none of it as code.
+
+### Added
+- **Physics kit** (`references/physics-kit.md`, `assets/remotion/unrushed-physics.ts`): seeded randomness and smooth noise; exact free fall and damped springs; gravity, friction, drag, viscosity, attraction and wind in a stepped simulation that gives the same frame in any render order; particles with a lifetime; cords, cloth and soft bodies; steering (seek, arrive, flee, wander, follow a path, flow fields, separation, alignment, cohesion). Brakes are applied exactly, so a thick liquid cannot flip a body's direction.
+- **Curve or force**: a rule for which one a move needs, one gravity per piece, starting numbers per material, and the signature each forced move should show on a strip.
+- **A paste-ready core** (50 lines) for hosts where only one file travels, such as ChatCut.
+- `examples/physics-kit/`: three scripts that draw a curve against a force, follow-through, a soft body and steering, and the climax of the piece from the verdict before and after, rendered by ChatCut.
+- **Material kit** (`references/material-kit.md`): when a material is needed, the primitives test for telling a computed surface from a drawn one, a five-step recipe (thickness, normals, absorption, one light with a shape, the ground), the shader that produced the example, and six defects by name. `examples/material-kit/` has the scene and a before and after.
+- **Gate G6**, by eye: when the protagonist is a substance, its surface is computed.
+
+### Changed
+- **Pass 0 starts with a hero frame.** One still of the hero moment with its finished material, rendered in the target tool, is approved before any motion. Material is no longer left to pass 4, where it arrived after the person had approved the flat version.
+- The "custom shader only as a last resort" rule now says what it covers: effects over footage, not the code that draws a motion graphic's protagonist.
+- `storyboard` writes a force instead of a curve when the visual has a thing that falls, sinks, hangs, swings, drifts or steers. Pass 3 and the Physics row of `critique` check the signatures.
+
+### Not done
+- Both kits were applied by their author. Neither has been tested by a fresh agent that has only the skill, which is the test that matters.
+- The material recipe was rendered for one material (resin, pigmented and clear) from one angle. The example is close to candy.
+- The physics kit's table of materials holds starting values, not measurements.
+
 ## 0.5 — 2026-11-23
 
 After 0.4, pieces still looked noisy, careless with information and "very AI", with the motion as decoration instead of the protagonist, and the researched physics never reached the build. Part of the cause was Unrushed itself: its rules and its example prescribed page furniture, a quota of transition kinds and a long end card. This version removes what prescribed slop, turns the research into numbers and checks, and adopts lessons from motionmaxxing (Apache-2.0) while keeping Unrushed's job: directing motion inside your own editor, with your footage and your real product.

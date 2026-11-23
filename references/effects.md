@@ -205,7 +205,7 @@ Per shot:
 
    Send only the properties you change.
 4. **Verify.** Confirm with `preview_timeline` that the effect sits on the right clip and range, then look at composed frames (`views:["viewer"]`). Never report success from the `edit_item` response alone.
-5. **Custom shader only as a last resort.** Use `submit_shader` only when nothing in the library fits the intent. Write the brief like a director:
+5. **Custom shader only as a last resort.** Use `submit_shader` only when nothing in the library fits the intent. This is about effects and transitions laid over footage. Shader code that draws a motion graphic's own protagonist (`material-kit.md`) is not an effect and is not a last resort. Write the brief like a director:
    - eased progress, never linear;
    - both clips take part in a transition;
    - the first and last frames match the clips exactly;

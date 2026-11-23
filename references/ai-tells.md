@@ -40,6 +40,7 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Centred title and subtitle in every scene | Same layout, no composition | A stable text zone plus a composition that changes with the figure |
 | Icons in rounded squares, emojis | Template components | Drawn marks consistent with the material |
 | Perfectly clean digital rendering | Nothing physical to hold onto | Grain, motion blur, self-shadowing, refraction: light and material carry quality |
+| A substance drawn as a shape with a highlight: an oval with a white ellipse for a drop, a rounded card for a slab of resin, a diagonal white sweep for "shine" | Three primitives placed by hand; nothing in the frame follows from a thickness or a light | Compute the surface (`material-kit.md`): thickness, normals, absorption, the reflection of one light with a shape |
 | A static grain overlay, or grain added as "depth" | Reads as a filter laid on top, not as film or paper | Texture only when it belongs to the material or the captured surface, and then renewed every two frames |
 | Grain, glow or blur offered as the fix for flat motion or a weak demo | A finish standing in for the missing work | Fix the motion itself, or the demo itself; finish comes last |
 | A showcase where every style shares the same ground and palette | The viewer sees one style with different shapes | Give each style its own world: ground, palette and light |

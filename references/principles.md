@@ -162,7 +162,7 @@ What to look for:
 
 A fix for physics changes how things move. Grain, glow or blur are finish, not physics.
 
-Recommended reading for this section: Daniel Shiffman, *The Nature of Code* (2024, p5.js), chapters 1–6.
+These controls exist as code, with numbers per material and the signatures to look for, in `physics-kit.md` and `assets/remotion/unrushed-physics.ts`. Use them; do not re-derive a spring or a fall by hand.
 
 ## 10. Classic principles, condensed
 
