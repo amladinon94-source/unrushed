@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.6 — 2026-11-23
 
 After 0.5, a pass 0 built in ChatCut still looked the same with and without the skill (see `taste/verdicts.md`). One half of that verdict was motion: the fall, the spread and the highlights were shapes interpolated on curves. The skill recommended reading about physics and gave none of it as code.
 
@@ -11,6 +11,7 @@ After 0.5, a pass 0 built in ChatCut still looked the same with and without the 
 - `examples/physics-kit/`: three scripts that draw a curve against a force, follow-through, a soft body and steering, and the climax of the piece from the verdict before and after, rendered by ChatCut.
 - **Material kit** (`references/material-kit.md`): when a material is needed, the primitives test for telling a computed surface from a drawn one, a five-step recipe (thickness, normals, absorption, one light with a shape, the ground), the shader that produced the example, and six defects by name. `examples/material-kit/` has the scene and a before and after.
 - **Gate G6**, by eye: when the protagonist is a substance, its surface is computed.
+- `scripts/test_physics.ts`: 61 numeric tests of the physics kit, including that the paste-ready core published in the reference matches the full file. Run with `bun scripts/test_physics.ts`.
 
 ### Changed
 - **Pass 0 starts with a hero frame.** One still of the hero moment with its finished material, rendered in the target tool, is approved before any motion. Material is no longer left to pass 4, where it arrived after the person had approved the flat version.
