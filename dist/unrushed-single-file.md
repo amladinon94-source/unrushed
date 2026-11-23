@@ -29,7 +29,6 @@ Commands share up to four files in the project folder. Read whichever exist befo
 | `VIDEO.md` | `brief` | What the piece is: topic, message, audience, format, sound, through-line, facts to verify |
 | `STYLE.md` | `style` | How it looks and moves: material, palette, type, dials, signature move, forbidden list |
 | `STORYBOARD.md` | `storyboard` | Scene by scene: exact text, figure, motion, timing, transition, and the cue sheet of library effects, zooms and sound |
-
 | `REVISION.md` | `improve` | Baseline scores, the fixes with their acceptance tests, and their status after the rebuild |
 
 Templates are in `assets/`. If a command needs a file that does not exist, say so and offer to run the command that creates it, rather than inventing its contents.
