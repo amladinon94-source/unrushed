@@ -13,7 +13,7 @@ The name is the stance: calm, deliberate motion that gives the viewer time to re
 
 ## How to work with it
 
-Unrushed is a set of commands around one loop: **context → create → review → steer**. The person directs; you execute and advise. Run the command they ask for. If they ask for something without naming a command, pick the one that fits and say which one you used. Suggest the next step at the end of each command, but do not run a chain of commands on your own: the human judgment between steps is the point.
+Unrushed is a set of commands around one loop: **context → create → review → steer**. The person directs; you execute and advise. Run the command they ask for. If they ask for something without naming a command, pick the one that fits and say which one you used. A request to improve, fix or polish a video that already exists ("make this video better", "mejora todo el video") is `improve`, not `critique`: `critique` reports, `improve` changes the piece and answers for every fix. Suggest the next step at the end of each command, but do not run a chain of commands on your own: the human judgment between steps is the point.
 
 Reply in the person's language. Command names stay in English.
 
@@ -30,7 +30,27 @@ Commands share up to four files in the project folder. Read whichever exist befo
 | `STYLE.md` | `style` | How it looks and moves: material, palette, type, dials, signature move, forbidden list |
 | `STORYBOARD.md` | `storyboard` | Scene by scene: exact text, figure, motion, timing, transition, and the cue sheet of library effects, zooms and sound |
 
+| `REVISION.md` | `improve` | Baseline scores, the fixes with their acceptance tests, and their status after the rebuild |
+
 Templates are in `assets/`. If a command needs a file that does not exist, say so and offer to run the command that creates it, rather than inventing its contents.
+
+### Context before creation
+
+No command that creates or changes visuals (`style`, `storyboard`, `export`, `improve`) runs on assumptions. If `VIDEO.md` is missing, or `BRAND.md` is missing for a branded piece, run the intake first. The intake has four steps:
+
+1. **Extract what you can.** Read the conversation and the files. When a video or project already exists, also read:
+   - its script, voice-over or transcript;
+   - the fonts, colours and logo it uses;
+   - the screens it shows.
+2. **Find the product**, when the piece shows one: its code, its design files and the running product (`references/visual-explanation.md` §8). Do this before designing any interface.
+3. **Ask one round of questions**, at most five, for what is still missing:
+   - the brand: brandbook, logo, imagery and things to avoid;
+   - the script or voice;
+   - the product demo: the flow, the "aha" moment, the sources, the sample data, and what must not be shown;
+   - format and constraints.
+4. **Write it down.** Put the answers in `VIDEO.md` and `BRAND.md`.
+
+Do not start building in the same turn as the questions. If the person says to skip the questions, go ahead, but write an **Assumptions** list at the top of the plan and of the report, one line per assumption, so each can be corrected.
 
 ## Dials
 
@@ -65,7 +85,8 @@ How `energy` maps to numbers, as a starting point:
 | Create | `storyboard` | Breaks the piece into timed scenes and cues | `VIDEO.md`, `STYLE.md`, `BRAND.md` | `STORYBOARD.md` |
 | Create | `recipe <reference>` | Turns a site, clip or screenshot into reusable motion values | — | a recipe in the reply |
 | Deliver | `export <target>` | Compiles everything into a prompt or spec for one tool | all project files | the deliverable |
-| Review | `critique` | Scores frames or a video and lists what to fix | `STYLE.md` if it exists | a report in the reply |
+| Review | `critique [focus]` | Scores frames or a video and lists what to fix, with a test for each fix | `STYLE.md`, `BRAND.md` if they exist | a report in the reply |
+| Review | `improve` | Rebuilds an existing piece: intake, critique, a revision plan with tests, approval, rebuild, re-score | everything it can find | `VIDEO.md`, `BRAND.md`, `REVISION.md`, the new version |
 
 ### `brief`
 
@@ -74,7 +95,13 @@ Read `references/narrative.md` first. Ask only what you cannot infer from the co
 1. Topic, the goal (explain, sell, launch, teach, celebrate) and the one sentence the viewer should leave with.
 2. Audience: who they are, what they already know or believe, and what they should feel or do afterwards.
 3. Platform, aspect ratio, duration and sound. A silent piece carries its whole narrative in on-screen text and motion beats, which changes the timing rules.
-4. Facts the piece states (dates, names, figures, product claims). List them; each needs a source or is marked `[verify]`. For a product, ask whether you can see the product itself, its code or its interface.
+4. Facts the piece states (dates, names, figures, product claims). List them; each needs a source or is marked `[verify]`.
+
+   **For a product**, do not just ask whether you can see it: look for it (`references/visual-explanation.md` §8) in the project, a repository, the design files or the running product, and list what you found. Then ask for what is still missing:
+   - the flow the video should show, and the "aha" moment;
+   - realistic sample data;
+   - what must not be shown;
+   - the repository or link, if you found nothing.
 5. **The brand.** Ask for the brandbook or style sheet: a PDF, a link, a Figma file, design tokens, a guidelines `.md`, or even screenshots. Also ask for references and things to avoid.
 
 **Brand first.** A piece for a real brand has to look like that brand, so ask about it before proposing anything visual.
@@ -97,6 +124,8 @@ Then propose, and let the person choose or correct:
 - **The spine.** Hook, promise, proof, payoff and ask, one line each, and the structure that fits the type of piece. The hook must work visually in the first second.
 - **The through-line.** The single visual idea that carries the whole piece, and the most important decision in the brief. Propose two or three options and recommend one. A piece about the history of AI made of nine unrelated effects reads as a demo reel; the same piece where one set of particles travels from a neuron to a human profile reads as a story. A good through-line is a transformation that means something.
 - **The beat map.** Sections with their tempo and beat lengths, and where the payoff lands on the tension curve.
+
+For a product piece, also write the **product demo script** (`visual-explanation.md` §9): every step of the real flow with its action, the product's response, the screen and components it uses, and their source.
 
 Write `VIDEO.md` from the template, and `BRAND.md` when there is a brand.
 
@@ -135,7 +164,10 @@ Build the storyboard from the spine and beat map in `VIDEO.md`; if they are miss
 - Choose each scene's technique from the line's meaning. Read the index by meaning in `references/techniques.md`, pick the entry whose image enacts the line, and adapt its key parameters to `STYLE.md`. Name the entry in the table so `export` can carry its build notes. Keep the signature move as the thread; techniques serve it, not the other way round.
 - Give each beat a device from `references/visual-explanation.md`: the way the idea becomes visible (interface simulation, ghosts, same space with two behaviours, a camera push, one canvas…). Neighbouring beats use different devices or compositions. Run the slide test on every scene: if a paused frame reads as a slide, rework it.
 - Choose each transition from `references/transitions.md` by the relation between the two beats, and write the relation next to it. Never the same type twice in a row; at least four kinds in a piece over 60 s; the biggest one leads into the payoff.
-- When the piece shows a product or a tool, simulate its interface with real components: the product's own when you can see it, otherwise the design system it is built on. Never invent controls.
+- When the piece shows a product or a tool, simulate its interface with real components: the product's own, found as described in `visual-explanation.md` §8, otherwise the design system it is built on. Never invent controls.
+  - Build demo scenes from the product demo script in `VIDEO.md`. Every key step shows an action and the product's visible response.
+  - A camera move over a still screen connects steps; it is never a step.
+  - Mark any screen not built from the real product as approximate.
 - One protagonist at a time. Text enters when the main movement is about 60% complete, never during it.
 - **Library effects, zooms and sound.** When the target tool has an effects library (ChatCut does), read `references/effects.md`.
   - The default is no effect.
@@ -191,9 +223,11 @@ Every export:
 - asks the tool to pilot the first scene and the closing before building the rest, and to report what it could not do;
 - ends with the review checklist from `critique`, so the tool checks its own frames.
 
-### `critique`
+### `critique [focus]`
 
-Read `references/ai-tells.md`, `references/narrative.md`, `references/transitions.md`, and `STYLE.md` and `BRAND.md` if they exist. When the piece uses an editor's library effects, zooms or sound accents, also read `references/effects.md`. `critique` works on a finished video, on frames, or on a plan (`STORYBOARD.md`) before anything is built; critiquing the plan is the cheapest moment to fix rhythm and transitions.
+With a focus, such as `critique physics`, `critique demo`, `critique rhythm`, `critique transitions`, `critique effects`, `critique legibility` or `critique brand`, score that criterion in depth and the rest briefly. Without one, score everything.
+
+Read `references/ai-tells.md`, `references/narrative.md`, `references/transitions.md`, and `STYLE.md` and `BRAND.md` if they exist. When the piece uses an editor's library effects, zooms or sound accents, also read `references/effects.md`. Read `references/principles.md` §9 for Physics, and `references/visual-explanation.md` when a product is shown. `critique` works on a finished video, on frames, or on a plan (`STORYBOARD.md`) before anything is built; critiquing the plan is the cheapest moment to fix rhythm and transitions.
 
 If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --storyboard STORYBOARD.md` first: it reports:
 
@@ -203,7 +237,7 @@ If you have a video file and `ffmpeg`, run `python scripts/detect.py <video> --s
 - the planned rhythm and repeated transitions;
 - the cue sheet's budgets: cues without a reason, tier C and stylize looks over budget, zooms per minute, the same library transition three times in a row, zooms colliding with transitions, and stacked distortions.
 
-Then look at frames, sampled densely around every transition.
+Then look at frames, sampled densely around every transition. Stills cannot show physics. For the two or three movements that matter most, read consecutive frames (`detect.py --strip <seconds>`) or the per-frame change (`--profile <start> <end>`), as described in `principles.md` §9, or watch the video at full speed. If none of these is possible, say that Physics was not scored rather than guessing.
 
 Score each criterion from 1 to 5 with one line of evidence:
 
@@ -219,11 +253,59 @@ Score each criterion from 1 to 5 with one line of evidence:
 | Legibility | Can every line be read in the time it is on screen? |
 | Choreography | One protagonist at a time, overlap instead of dead frames? |
 | Timing | Do entrances decelerate, exits run faster, holds feel intended? |
-| Material and light | Does the piece have texture, depth, a physical feel? Does each style have its own world? |
+| Physics | Do things move with mass, inertia, follow-through, overlap and arcs, or do they glide at one speed and stop dead? Scored from strips, a profile or playback, never from single stills. |
+| Product demo | Only when a product is shown. Is it the real product, found in its code, design files or running app, with the sources listed? Does each key step show an action and the product's visible response, or is it camera moves over still screens? |
+| Material and light | Does the piece have texture, depth and light that belong to its material? Does each style have its own world? |
 | Distinctiveness | How many AI tells are present? |
 | Consistency | Does it follow `STYLE.md`, and `BRAND.md` when there is one: logo use, colour roles, type, voice? |
 
-Then list the AI tells you found, and the three fixes with the most impact. Write each fix as an instruction ready to paste into the tool. When a scene looks generic because of its technique, device or transition, suggest an alternative from `references/techniques.md`, `references/visual-explanation.md` or `references/transitions.md` that says the same thing better. Be specific about what stills cannot show: motion, fluidity and rhythm need the video.
+Then list the AI tells you found, and the fixes:
+
+- **Which fixes.** The three with the most impact, plus one for every criterion scored 2 or less. A low score never goes without a fix.
+- **What each fix contains:**
+  - where it applies (scene and time);
+  - what is wrong now, with evidence;
+  - the change, in numbers;
+  - an **acceptance test**: something observable that proves the fix worked, for example "in 'the AI reads the email', the email is seen arriving and the click produces ticket REC-1104 within 300 ms";
+  - its weight: light or heavy.
+- **Write it ready to paste** into the tool.
+- **A fix must treat the problem it names.**
+  - Physics is fixed by changing how things move.
+  - A demo is fixed with actions and responses on the real interface.
+  - Grain, glow, a camera move or a slower duration are not fixes for those.
+
+When a scene looks generic because of its technique, device or transition, suggest an alternative from `references/techniques.md`, `references/visual-explanation.md` or `references/transitions.md` that says the same thing better. Be specific about what stills cannot show: motion, fluidity and rhythm need the video.
+
+### `improve`
+
+Use it for a video or project that already exists, whether or not Unrushed made it. `critique` reports; `improve` rebuilds the piece and answers for every fix. Keep the previous version intact for comparison.
+
+1. **Context.** Run the intake in "Context before creation":
+   - watch or sample the video and read its timeline, script or transcript;
+   - find the product when there is one;
+   - ask one round of questions;
+   - write `VIDEO.md` and `BRAND.md`.
+
+   Change nothing yet.
+2. **Baseline.** Run `critique` on the current version, with the focus the person asked for if any, and save the scores at the top of `REVISION.md`.
+3. **Revision plan.** Write `REVISION.md` from the template: one row per fix, with the criterion, the place, the evidence, the change in numbers, the acceptance test and the weight. It includes:
+   - the three highest-impact fixes;
+   - a fix for every criterion scored 2 or less;
+   - when Product demo scores 3 or less, a demo script rebuilt from the real product (`visual-explanation.md` §8–9);
+   - when Physics scores 3 or less, the movements that change and how (mass, follow-through, overlap, arcs, settle), with the strip or profile that shows the problem.
+
+   Update `STORYBOARD.md` for the scenes that change.
+4. **Approval.** Show the plan with the heavy fixes marked, and wait for approval. If the person already said to apply without asking, continue, with the Assumptions list at the top.
+5. **Rebuild.** Build every approved fix in full, heavy fixes first. This is the **fix contract**:
+   - Never swap a fix for a cheaper one. A rebuilt demo cannot become a camera move, physics cannot become grain, and a new transition cannot become a slower old one.
+   - If a fix cannot be done as planned, stop that fix, say why, and propose the closest real alternative.
+   - Nothing approved becomes "optional" later.
+6. **Verify.** Run each acceptance test on the new version with frames, strips, the profile and the detector, then re-score every criterion. Report:
+   - each criterion's baseline score next to its new one;
+   - each fix as **done**, **partial** or **not done**, with evidence (time, frame, measurement);
+   - what could not be verified.
+
+   A criterion whose score did not rise is not reported as fixed.
 
 ## References
 
@@ -238,16 +320,16 @@ If you cannot reach them either, work from the embedded essentials in the single
 | File | Read for |
 |---|---|
 | `references/narrative.md` | Hook, promise, proof, payoff and ask; structures by type of piece; beats, rhythm and the beat map. `brief`, `storyboard`, `critique` |
-| `references/visual-explanation.md` | Devices that make an idea visible, the slide test, interface simulation with real design systems, cursor choreography. `style`, `storyboard`, `export`, `critique` |
+| `references/visual-explanation.md` | Devices that make an idea visible, the slide test, interface simulation with real design systems, cursor choreography, finding the real product (code, design files, running app) and the product demo script. `brief`, `style`, `storyboard`, `export`, `critique`, `improve` |
 | `references/effects.md` | Library effects, zooms, transitions and sound accents (ChatCut's library and their Remotion and After Effects equivalents): choosing by intent, tiers, budgets, and how to apply them through ChatCut's tools or a prompt. `storyboard`, `export`, `critique` |
 | `references/transitions.md` | Transitions chosen by the relation between beats, a catalogue with durations and related techniques, eye trace and other ways to hide the seam. `storyboard`, `export`, `critique` |
-| `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour. `style`, `storyboard`, `recipe`, `export`, `critique` |
+| `references/principles.md` | Timing, curves, distances, choreography, type timing, material behaviour, physics and how to check it in a video. `style`, `storyboard`, `recipe`, `export`, `critique`, `improve` |
 | `references/ai-tells.md` | What makes motion and video read as AI-generated, and what to do instead. `style`, `export`, `critique` |
 | `references/techniques.md` | 38 techniques from real reference pieces, indexed by meaning and by family, with key parameters and build routes. `style`, `storyboard`, `recipe`, `export`, `critique` |
 | `references/targets/chatcut.md` | Exporting to ChatCut |
 | `references/targets/remotion.md` | Exporting to Remotion, through Claude Code or any coding agent |
 | `references/targets/generic.md` | Any other tool, or a spec for a human animator |
-| `scripts/detect.py` | Automatic checks on an exported video, and on the rhythm and transitions of a `STORYBOARD.md` |
+| `scripts/detect.py` | Automatic checks on an exported video (dips, freezes, cuts), frame strips and motion profiles for judging physics, and checks on the rhythm, transitions and cue sheet of a `STORYBOARD.md` |
 
 
 ---
@@ -517,6 +599,24 @@ When motion should feel physical, these are the controls and what they feel like
 
 In rendered video every value must come from the frame number, not from the previous frame, so the same frame always looks the same (see `targets/remotion.md`).
 
+**Checking physics in a video.** Single stills cannot show physics. Use one of these instead:
+
+- **Watch the video at full speed.**
+- **Read consecutive frames.** For the two or three movements that matter most (the protagonist's entrance, a transformation, a cursor action), take 8–12 frames in a row at the video's own frame rate and read them as a strip. `scripts/detect.py --strip <seconds>` makes the strip, and `--profile <start> <end>` prints how much the frame changes from one frame to the next.
+
+What to look for:
+
+| Look for | Physical | Not physical |
+|---|---|---|
+| Arrival | Big steps first, then smaller and smaller ones (deceleration), perhaps a small overshoot that settles | Equal steps (linear), or full speed until a dead stop |
+| Mass | Bigger or heavier things take longer to start and to stop | Everything moves with the same timing whatever its size |
+| Follow-through | Attached parts (labels, shadows, children) arrive a few frames after their driver | Everything stops on the same frame |
+| Overlap | The next movement starts before the last one fully settles | Moves wait for each other in a queue |
+| Arcs | Paths curve | Straight lines between points at constant speed |
+| Secondary motion | Small reactions: a shadow tightens, a counter ticks, a card settles | Only the main object moves |
+
+A fix for physics changes how things move. Grain, glow or blur are finish, not physics.
+
 Recommended reading for this section: Daniel Shiffman, *The Nature of Code* (2024, p5.js), chapters 1–6.
 
 #### 10. Classic principles, condensed
@@ -551,6 +651,8 @@ How to make a viewer understand something by watching it happen, instead of read
 5. Design systems: real components, not invented ones
 6. Cursor choreography
 7. Building notes
+8. Finding the real product
+9. The product demo script
 
 #### 1. The slide test
 
@@ -616,6 +718,7 @@ The interface is a stage, not a screenshot. Treat it as a set built for camera:
 - **Use real content.** Real labels, real values, real data that the brief supports. Never lorem ipsum or "Button".
 - **Show cause and effect.** Every interaction produces a visible result within 100–300 ms, as real software would.
 - **Hold the result.** After the change, give the viewer time to see what happened before the cursor moves on.
+- **A camera move over a still screen is not a demo.** Pushing into, sliding across or pulling out of a screenshot shows where things are, not what the product does. Use camera travel to connect beats. Each key beat of a demo still needs an action and its result on screen (§9).
 
 #### 5. Design systems: real components, not invented ones
 
@@ -655,6 +758,58 @@ A cursor that teleports or moves in straight lines at constant speed is an AI te
 - **ChatCut** builds motion graphics with code. Name the system and the components in the prompt ("a shadcn/ui Slider and Card in dark theme, Lucide icons"), and give the token values (radius, colours, font) so it does not approximate.
 - **After Effects and similar tools:** import the real components from Figma community kits of the chosen system, or vector exports of the product, rather than drawing controls by hand.
 - **Ghosts and onion skin:** render the object at earlier times (frame − k × step) with decreasing opacity; in code it is the same component drawn several times.
+
+#### 8. Finding the real product
+
+When a piece shows a product, the interface must come from the product. Look for it **before** designing any screen, and never invent one quietly because nobody offered the source.
+
+**Where to look, in order:**
+
+1. **The project itself.**
+   - Files in the working folder, uploaded media and the editor's asset library: screen recordings, screenshots, exported frames.
+   - An existing video's frames, which show the real screens and copy.
+2. **The code.**
+   - A repository in the working folder.
+   - A repository reachable through the tools you have: git, the GitHub CLI, a GitHub or GitLab connector.
+   - Any link the person has shared. If you know the product's name but not its repository, ask for it.
+3. **The design files.** Figma, or a Storybook or component library, through a connector or a link.
+4. **The running product.** A URL, staging or a local build, opened in a browser to read real screens, copy and states.
+
+If none of these is reachable, ask once, in the same round as the other intake questions, for the repository, the design file or a link. Only then fall back to a design system (§5), and mark every screen built that way as **approximate** in the plan and the report.
+
+**What to read in a repository.** Read with a purpose; you are not auditing the code.
+
+| Look for | Usually in | Use it for |
+|---|---|---|
+| Design tokens: colours, radii, spacing, fonts | `tailwind.config.*`, `globals.css`, `theme.*`, `tokens.*`, CSS variables | exact values instead of approximations |
+| The components in the flow you will show | `components/`, `ui/`, `app/` or `pages/` routes | real anatomy and states (table rows, cards, badges, buttons, toasts) |
+| Routes and screens | the router (`app/`, `pages/`, `routes.*`) | which screens exist, and their order in the flow |
+| Real interface copy | the components, `i18n`/`locales` files | labels, statuses, empty states, error texts |
+| States | conditional rendering, status enums, badge variants | before and after for each step (loading, empty, error, success, validated) |
+| Icons and fonts | `package.json` (`lucide-react`, `@radix-ui`, font packages) | the right icon set and type |
+
+**Rules:**
+
+- **Write down what you looked at.** List the sources in `VIDEO.md` under "Product sources": the repository and the paths read, the files, the URLs. Note what each screen in the plan is built from. `critique` treats a demo without this list as unverified.
+- **Use realistic sample data**, never real customer data, emails, names or numbers from production. Respect what the person says must not be shown.
+- **Do not reproduce source code** in the video. Use it to rebuild the interface faithfully.
+
+#### 9. The product demo script
+
+A product demo is a short story in which a person does something and the product responds. Write it before the storyboard, from the real flow. One row per step:
+
+| Step | Who acts | Action (cursor, typing, an event) | Product response (state change) | Screen and components (source) | Hold |
+|---|---|---|---|---|---|
+| 1 | a customer email arrives | the email lands in the inbox | the unread counter goes 41 → 42 | Inbox, `MailRow` (repo `src/components/inbox`) | 0.6 s |
+| 2 | the AI | reads the email | the email becomes ticket REC-1104, priority and type filled in | Ticket card, `TicketCard` | 1.2 s |
+
+The example is illustrative. The rules:
+
+- **Find the "aha" moment**, the step where the product does what nothing else does. Give it the longest hold and the biggest transition into it.
+- **Every key step has an action and a visible response** within 100–300 ms (§4). If a step has no action, it is narration: cut it or show the cause.
+- **The cursor follows §6.** A system event, such as an email arriving or a job finishing, needs a visible cause too: a notification, a counter, a row appearing.
+- **States come from the product.** Use the real statuses, badges and copy found in §8.
+- **Camera moves connect steps.** They never replace a step.
 
 ## Embedded: references/transitions.md
 
@@ -1035,6 +1190,7 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Icons in rounded squares, emojis | Template components | Drawn marks consistent with the material |
 | Perfectly clean digital rendering | Nothing physical to hold onto | Grain, motion blur, self-shadowing, refraction: light and material carry quality |
 | A static grain overlay | Reads as a filter laid on top, not as film or paper | Grain renewed every two frames, with its intensity tied to the ground |
+| Grain, glow or blur offered as the fix for flat motion or a weak demo | A finish standing in for the missing work | Fix the motion itself, or the demo itself; finish comes last |
 | A showcase where every style shares the same ground and palette | The viewer sees one style with different shapes | Give each style its own world: ground, palette and light |
 
 #### Structure
@@ -1052,6 +1208,9 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Every beat the same length | No rhythm; a template ticking along | A beat map with at least three beat lengths (`narrative.md`) |
 | Invented interface: made-up controls, "Button", lorem ipsum | Reads as fake immediately | Real components from the product or a recognised design system (`visual-explanation.md`) |
 | A cursor that teleports or glides in straight lines at constant speed | No hand behind it | Arcs, deceleration onto the target, a pause before clicking |
+| A product demo made of camera moves over still screens (push in, slide, pull out) | It shows where things are, not what the product does | A demo script from the real flow: each step an action and the product's visible response (`visual-explanation.md` §9) |
+| A made-up or approximate interface when the product's code or design files were reachable | Nobody looked; the viewer senses it is not the real product | Find the product first (`visual-explanation.md` §8) and build from its tokens, components and copy |
+| Everything glides at one speed and stops on the same frame | No mass, no follow-through, no settle | Heavier things start and stop slower; attached parts arrive a few frames late; check with frame strips (`principles.md` §9) |
 
 #### What can be detected automatically
 
@@ -1219,6 +1378,16 @@ For example:
 > At 00:42–00:45 on the talking-head clip, add Quick Zoom In to 1.3× on the word "never", manual focus on the laptop screen, ease-in 5 frames; keep captions and the lower third unchanged.
 
 After the agent applies them, ask it to read back the real parameters, because the mapping of zoom presets to the zoom's internal `shape` values is not documented.
+
+#### Improving an existing ChatCut project
+
+`improve` inside ChatCut, or through its tools, follows the same steps as anywhere else. ChatCut adds sources for the intake:
+
+- **Read the project before asking.** `read_project` and `preview_timeline` show the structure, clips, captions and motion graphics. `browse_assets` shows uploaded media: screen recordings, screenshots, logos, brand images. The transcript gives the script.
+- **Look for the product outside ChatCut too.** ChatCut's agent runs on Claude Code, so it can use the host's tools: git and the GitHub CLI, connectors, and a browser for the running product. Read the repository as described in `visual-explanation.md` §8 before rebuilding any demo screen. If nothing is reachable, ask for the repository or link in the intake round.
+- **Rebuild demos as motion graphics from the real components.** Pass the tokens (colours, radii, fonts), the component anatomy, the real copy and the states from the repository, plus the demo script with the cursor's actions. Do not animate a screenshot when the real interface can be rebuilt.
+- **Keep the previous timeline** and build the new version on a copy, so the before and after can be compared.
+- **Verify with the viewer.** Use `preview_timeline` with `views:["viewer"]` on consecutive frames around each movement, as a strip, to check physics, and around each demo step to check the action and its response.
 
 #### Working with the agent
 

@@ -1,5 +1,54 @@
 # Changelog
 
+## 0.4 — 2026-11-23
+
+Lessons from a real test in ChatCut. Asked to "improve the whole video" of a product launch made without Unrushed, the agent:
+
+- ran `critique` without asking anything about the brand, the script or the product;
+- never looked at the product's repository;
+- judged motion from single stills;
+- turned "material" into grain and the demo into camera moves over still screens;
+- applied the easy fixes and left the hard ones.
+
+This version closes each of those gaps.
+
+### Added
+- **`improve`**, for videos and projects that already exist:
+  1. intake;
+  2. baseline critique;
+  3. `REVISION.md` with an acceptance test per fix;
+  4. approval;
+  5. rebuild, heavy fixes first;
+  6. re-score, with each fix reported as done, partial or not done, with evidence.
+
+  The **fix contract** forbids swapping a fix for a cheaper one or turning an approved fix into an option.
+- **Context before creation**: `style`, `storyboard`, `export` and `improve` never run on assumptions. The intake extracts what it can, finds the product, and asks one round of questions about brand, script, product demo and constraints. Skipped questions become a visible Assumptions list.
+- **Finding the real product** (`visual-explanation.md` §8):
+  - where to look: project, repository, design files, running app;
+  - what to read in a repository: tokens, components, routes, copy, states;
+  - a list of the sources used, and approximate screens marked as such.
+- **The product demo script** (`visual-explanation.md` §9): each step has an action and the product's visible response, with the "aha" moment held longest. Camera moves connect steps but never replace them.
+- **`critique` gains Physics and Product demo** criteria:
+  - Physics is scored from consecutive frames, a motion profile or playback, never from single stills.
+  - Every criterion scored 2 or less gets a fix.
+  - Every fix carries an acceptance test and a weight.
+  - A focus argument narrows the review: `critique physics`, `critique demo`, and others.
+- **`detect.py --strip`** writes consecutive frames as one image. **`--profile`** prints the per-frame change of a movement as a rough speed curve, with a reading (decelerates, linear, dead stop, settle).
+- Physics checks in `principles.md` §9.
+- A Product section in `VIDEO.md` (sources, flow, "aha" moment, sample data, the demo script).
+- `REVISION.md` template.
+- New AI tells:
+  - a demo made of camera moves over still screens;
+  - an approximate interface when the real one was reachable;
+  - motion that glides at one speed and stops dead;
+  - finish (grain, glow, blur) offered as the fix for motion or a demo.
+
+### Changed
+- Requests to improve an existing video route to `improve`, not `critique`.
+- `brief` looks for the product instead of only asking about it, and writes the demo script for product pieces.
+- `storyboard` builds demo scenes from the demo script and marks approximate screens.
+- The ChatCut target explains how to improve an existing project: read the project and assets, look for the product with the host's tools, rebuild demos from real components, keep the previous timeline, and verify with frame strips in the viewer.
+
 ## 0.3 — 2026-11-21
 
 Editors such as ChatCut now ship libraries of effects, zooms, transitions and sound. An agent with no criteria uses them everywhere, which is exactly the "AI edit" look. This version teaches Unrushed to direct the library, and to start from the brand.

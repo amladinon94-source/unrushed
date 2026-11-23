@@ -1,5 +1,10 @@
 # VIDEO
 
+## Assumptions
+Only when the person asked to skip questions. One line each, so each can be corrected.
+
+- 
+
 ## The piece
 - **Topic**:
 - **The one sentence the viewer leaves with**:
@@ -35,6 +40,30 @@ The single visual idea that carries the whole piece. It is usually a transformat
 - **Chosen**:
 - **Why**:
 - **Alternatives considered**:
+
+## Product
+Only when the piece shows a product. See `references/visual-explanation.md` §8–9.
+
+**Product sources** (what was actually looked at):
+
+| Source | Where | What was taken from it |
+|---|---|---|
+| Repository | (URL, paths read) | (tokens, components, routes, copy, states) |
+| Design files | | |
+| Running product | (URL) | |
+| Media in the project | | |
+
+- **Flow to show**:
+- **The "aha" moment**:
+- **Sample data** (realistic, never real customer data):
+- **Must not be shown**:
+- **Screens built approximately** (no real source):
+
+**Product demo script**
+
+| Step | Who acts | Action | Product response (state change) | Screen and components (source) | Hold |
+|---|---|---|---|---|---|
+| 1 | | | | | |
 
 ## Facts
 Every date, name and figure the piece states. Each has a source, or is marked `[verify]`.

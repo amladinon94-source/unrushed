@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Unrushed detector: objective checks on an exported video.
 
-Finds the AI tells that do not need judgment:
+Finds the AI tells that do not need judgment, and gives evidence for the ones that do:
   - dips to black (and, with --white, dips to white)
   - frozen stretches: nothing changes anywhere in the frame for a while
     (a small moving cursor or a single word entering counts as change)
@@ -12,12 +12,17 @@ Finds the AI tells that do not need judgment:
     the same library transition three times, zooms colliding with
     transitions, stacked distortions; see references/effects.md)
 
+  - with --strip and --profile: consecutive frames as one image, and the per-frame change of a
+    movement, to judge physics (deceleration, dead stops, settle) where single stills cannot
+
 Requires ffmpeg and ffprobe on PATH. Prints a readable summary, or JSON with --json.
 
 Usage:
   python detect.py video.mp4
   python detect.py video.mp4 --json
   python detect.py --storyboard STORYBOARD.md        (check the plan before building)
+  python detect.py video.mp4 --strip 12.4             (12 consecutive frames as one image, to judge physics)
+  python detect.py video.mp4 --profile 12.0 13.2      (per-frame change: a rough speed curve with a reading)
   python detect.py video.mp4 --white --cut-threshold 0.35 --freeze-seconds 2 --still-level 1.5
 """
 
@@ -110,6 +115,86 @@ def activity(path, fps=10, level=1.0):
     """Per sample: share of blocks changed since the previous sample."""
     means = [block_means(f) for f in sample_frames(path, fps)]
     return [0.0] + [changed_fraction(means[i - 1], means[i], level) for i in range(1, len(means))]
+
+
+def frame_rate(path):
+    cmd = ["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=r_frame_rate",
+           "-of", "default=noprint_wrappers=1:nokey=1", path]
+    out = subprocess.run(cmd, capture_output=True, text=True).stdout.strip()
+    try:
+        num, den = out.split("/")
+        return float(num) / float(den)
+    except (ValueError, ZeroDivisionError):
+        return 30.0
+
+
+def frame_strip(path, start, count, out):
+    """Write `count` consecutive frames from `start` (seconds) as one image, left to right, top to bottom."""
+    cols = min(count, 6)
+    rows = (count + cols - 1) // cols
+    vf = f"select='lt(n\\,{count})',scale=360:-2,tile={cols}x{rows}:padding=6:color=0x808080"
+    cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-ss", str(start), "-i", path,
+           "-vf", vf, "-frames:v", "1", out]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        sys.exit(f"ffmpeg failed:\n{result.stderr[-2000:]}")
+    return out
+
+
+def motion_profile(path, start, end):
+    """Per-frame change between consecutive frames at the video's own frame rate, and what its shape suggests.
+
+    The change between two frames grows with how far things moved, so the sequence of values is a rough
+    speed curve: big steps then smaller ones is a deceleration; equal steps are linear; a high last step
+    before stillness is a dead stop. It measures the whole frame, so isolate the movement by choosing
+    the time window well. Read it as a hint, and confirm with --strip or by watching.
+    """
+    fps = frame_rate(path)
+    cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-ss", str(start), "-t", str(max(0.04, end - start)),
+           "-i", path, "-vf", f"scale={SAMPLE_W}:{SAMPLE_H},format=gray", "-f", "rawvideo", "-"]
+    data = subprocess.run(cmd, capture_output=True).stdout
+    size = SAMPLE_W * SAMPLE_H
+    frames = [data[i:i + size] for i in range(0, len(data) - size + 1, size)]
+    diffs = []
+    for a, b in zip(frames, frames[1:]):
+        if np is not None:
+            d = float(np.abs(np.frombuffer(a, np.uint8).astype(np.int16) - np.frombuffer(b, np.uint8).astype(np.int16)).mean())
+        else:
+            d = sum(abs(x - y) for x, y in zip(a, b)) / size
+        diffs.append(round(d, 3))
+    out = {"start": start, "end": end, "fps": round(fps, 3), "steps": diffs, "reading": []}
+    if not diffs or max(diffs) < 0.05:
+        out["reading"].append("No visible motion in this window.")
+        return out
+    peak = max(diffs)
+    active = [i for i, d in enumerate(diffs) if d > 0.12 * peak]
+    seg = diffs[active[0]:active[-1] + 1]
+    out["moving_frames"] = len(seg)
+    third = max(1, len(seg) // 3)
+    first, last = sum(seg[:third]) / third, sum(seg[-third:]) / third
+    mean = sum(seg) / len(seg)
+    cv = (sum((d - mean) ** 2 for d in seg) / len(seg)) ** 0.5 / mean if mean else 0
+    if len(seg) < 4:
+        out["reading"].append(f"Only {len(seg)} moving frames: a cut, a jump or a very fast move.")
+    elif last < 0.5 * first:
+        out["reading"].append("Steps shrink toward the end: it decelerates (an ease-out arrival).")
+    elif last > 2 * first:
+        out["reading"].append("Steps grow toward the end: it accelerates (an ease-in exit, or an arrival that never slows).")
+    elif cv < 0.25:
+        out["reading"].append("Steps stay nearly equal: constant speed, which reads as linear and mechanical.")
+    else:
+        out["reading"].append("Steps rise then fall: it eases in and out.")
+    tail_end = active[-1]
+    if tail_end + 1 < len(diffs) and diffs[tail_end] >= 0.5 * peak:
+        out["reading"].append(f"The last moving step is {diffs[tail_end] / peak:.0%} of the peak and then motion stops: "
+                              "a dead stop, with no settle or follow-through.")
+    after = diffs[diffs.index(peak) + 1:]
+    bumps = sum(1 for i in range(1, len(after) - 1) if after[i] > after[i - 1] and after[i] > after[i + 1]
+                and after[i] > 0.15 * peak)
+    if bumps:
+        out["reading"].append(f"{bumps} smaller rise(s) after the peak: a settle, overshoot or secondary motion "
+                              "(or another element starting). Check the strip.")
+    return out
 
 
 def read_tables(path):
@@ -299,7 +384,41 @@ def main():
                    help="brightness change (0-255) a 10x10 block needs to count as motion (default 1.0)")
     p.add_argument("--cut-threshold", type=float, default=0.35,
                    help="scene-change score that counts as a hard cut, 0-1 (default 0.35)")
+    p.add_argument("--strip", type=float, metavar="SECONDS",
+                   help="write consecutive frames from this time as one image, to judge physics")
+    p.add_argument("--strip-frames", type=int, default=12, help="how many frames in the strip (default 12)")
+    p.add_argument("--out", help="where to write the strip (default: next to the video)")
+    p.add_argument("--profile", type=float, nargs=2, metavar=("START", "END"),
+                   help="per-frame change between two times, as a rough speed curve with a reading")
     args = p.parse_args()
+
+    if (args.strip is not None or args.profile) and not args.video:
+        p.error("--strip and --profile need a video")
+    if args.strip is not None or args.profile:
+        for tool in ("ffmpeg", "ffprobe"):
+            if not shutil.which(tool):
+                sys.exit(f"{tool} is not installed or not on PATH.")
+        result = {}
+        if args.strip is not None:
+            out = args.out or re.sub(r"\.[^./]+$", "", args.video) + f"_strip_{args.strip:g}s.png"
+            result["strip"] = frame_strip(args.video, args.strip, args.strip_frames, out)
+        if args.profile:
+            result["profile"] = motion_profile(args.video, *args.profile)
+        if args.json:
+            print(json.dumps(result, indent=2))
+            return
+        if "strip" in result:
+            print(f"Strip: {args.strip_frames} consecutive frames from {args.strip}s, left to right, top to bottom -> {result['strip']}")
+        if "profile" in result:
+            pr = result["profile"]
+            print(f"Profile {pr['start']}–{pr['end']}s at {pr['fps']} fps (change per frame, 0-255):")
+            top = max(pr["steps"] or [1]) or 1
+            for i, d in enumerate(pr["steps"]):
+                print(f"  {i + 1:3d} {d:7.3f} " + "#" * round(30 * d / top))
+            for r in pr["reading"]:
+                print(f"  -> {r}")
+            print("  This is a hint from whole-frame change. Confirm with --strip or by watching.")
+        return
 
     for tool in ("ffmpeg", "ffprobe") if args.video else ():
         if not shutil.which(tool):

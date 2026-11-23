@@ -71,6 +71,16 @@ For example:
 
 After the agent applies them, ask it to read back the real parameters, because the mapping of zoom presets to the zoom's internal `shape` values is not documented.
 
+## Improving an existing ChatCut project
+
+`improve` inside ChatCut, or through its tools, follows the same steps as anywhere else. ChatCut adds sources for the intake:
+
+- **Read the project before asking.** `read_project` and `preview_timeline` show the structure, clips, captions and motion graphics. `browse_assets` shows uploaded media: screen recordings, screenshots, logos, brand images. The transcript gives the script.
+- **Look for the product outside ChatCut too.** ChatCut's agent runs on Claude Code, so it can use the host's tools: git and the GitHub CLI, connectors, and a browser for the running product. Read the repository as described in `visual-explanation.md` §8 before rebuilding any demo screen. If nothing is reachable, ask for the repository or link in the intake round.
+- **Rebuild demos as motion graphics from the real components.** Pass the tokens (colours, radii, fonts), the component anatomy, the real copy and the states from the repository, plus the demo script with the cursor's actions. Do not animate a screenshot when the real interface can be rebuilt.
+- **Keep the previous timeline** and build the new version on a copy, so the before and after can be compared.
+- **Verify with the viewer.** Use `preview_timeline` with `views:["viewer"]` on consecutive frames around each movement, as a strip, to check physics, and around each demo step to check the action and its response.
+
 ## Working with the agent
 
 - **Pilot first.** Generation uses credits, and a full piece costs much more than a pilot. One scene plus the closing shows whether the agent follows the spec.

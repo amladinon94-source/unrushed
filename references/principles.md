@@ -134,6 +134,24 @@ When motion should feel physical, these are the controls and what they feel like
 
 In rendered video every value must come from the frame number, not from the previous frame, so the same frame always looks the same (see `targets/remotion.md`).
 
+**Checking physics in a video.** Single stills cannot show physics. Use one of these instead:
+
+- **Watch the video at full speed.**
+- **Read consecutive frames.** For the two or three movements that matter most (the protagonist's entrance, a transformation, a cursor action), take 8–12 frames in a row at the video's own frame rate and read them as a strip. `scripts/detect.py --strip <seconds>` makes the strip, and `--profile <start> <end>` prints how much the frame changes from one frame to the next.
+
+What to look for:
+
+| Look for | Physical | Not physical |
+|---|---|---|
+| Arrival | Big steps first, then smaller and smaller ones (deceleration), perhaps a small overshoot that settles | Equal steps (linear), or full speed until a dead stop |
+| Mass | Bigger or heavier things take longer to start and to stop | Everything moves with the same timing whatever its size |
+| Follow-through | Attached parts (labels, shadows, children) arrive a few frames after their driver | Everything stops on the same frame |
+| Overlap | The next movement starts before the last one fully settles | Moves wait for each other in a queue |
+| Arcs | Paths curve | Straight lines between points at constant speed |
+| Secondary motion | Small reactions: a shadow tightens, a counter ticks, a card settles | Only the main object moves |
+
+A fix for physics changes how things move. Grain, glow or blur are finish, not physics.
+
 Recommended reading for this section: Daniel Shiffman, *The Nature of Code* (2024, p5.js), chapters 1–6.
 
 ## 10. Classic principles, condensed

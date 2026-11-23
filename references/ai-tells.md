@@ -41,6 +41,7 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Icons in rounded squares, emojis | Template components | Drawn marks consistent with the material |
 | Perfectly clean digital rendering | Nothing physical to hold onto | Grain, motion blur, self-shadowing, refraction: light and material carry quality |
 | A static grain overlay | Reads as a filter laid on top, not as film or paper | Grain renewed every two frames, with its intensity tied to the ground |
+| Grain, glow or blur offered as the fix for flat motion or a weak demo | A finish standing in for the missing work | Fix the motion itself, or the demo itself; finish comes last |
 | A showcase where every style shares the same ground and palette | The viewer sees one style with different shapes | Give each style its own world: ground, palette and light |
 
 ## Structure
@@ -58,6 +59,9 @@ A tell is not wrong in itself. Each became a tell because it is the path of leas
 | Every beat the same length | No rhythm; a template ticking along | A beat map with at least three beat lengths (`narrative.md`) |
 | Invented interface: made-up controls, "Button", lorem ipsum | Reads as fake immediately | Real components from the product or a recognised design system (`visual-explanation.md`) |
 | A cursor that teleports or glides in straight lines at constant speed | No hand behind it | Arcs, deceleration onto the target, a pause before clicking |
+| A product demo made of camera moves over still screens (push in, slide, pull out) | It shows where things are, not what the product does | A demo script from the real flow: each step an action and the product's visible response (`visual-explanation.md` §9) |
+| A made-up or approximate interface when the product's code or design files were reachable | Nobody looked; the viewer senses it is not the real product | Find the product first (`visual-explanation.md` §8) and build from its tokens, components and copy |
+| Everything glides at one speed and stops on the same frame | No mass, no follow-through, no settle | Heavier things start and stop slower; attached parts arrive a few frames late; check with frame strips (`principles.md` §9) |
 
 ## What can be detected automatically
 

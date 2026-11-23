@@ -11,6 +11,8 @@ How to make a viewer understand something by watching it happen, instead of read
 5. Design systems: real components, not invented ones
 6. Cursor choreography
 7. Building notes
+8. Finding the real product
+9. The product demo script
 
 ## 1. The slide test
 
@@ -76,6 +78,7 @@ The interface is a stage, not a screenshot. Treat it as a set built for camera:
 - **Use real content.** Real labels, real values, real data that the brief supports. Never lorem ipsum or "Button".
 - **Show cause and effect.** Every interaction produces a visible result within 100–300 ms, as real software would.
 - **Hold the result.** After the change, give the viewer time to see what happened before the cursor moves on.
+- **A camera move over a still screen is not a demo.** Pushing into, sliding across or pulling out of a screenshot shows where things are, not what the product does. Use camera travel to connect beats. Each key beat of a demo still needs an action and its result on screen (§9).
 
 ## 5. Design systems: real components, not invented ones
 
@@ -115,3 +118,56 @@ A cursor that teleports or moves in straight lines at constant speed is an AI te
 - **ChatCut** builds motion graphics with code. Name the system and the components in the prompt ("a shadcn/ui Slider and Card in dark theme, Lucide icons"), and give the token values (radius, colours, font) so it does not approximate.
 - **After Effects and similar tools:** import the real components from Figma community kits of the chosen system, or vector exports of the product, rather than drawing controls by hand.
 - **Ghosts and onion skin:** render the object at earlier times (frame − k × step) with decreasing opacity; in code it is the same component drawn several times.
+
+## 8. Finding the real product
+
+When a piece shows a product, the interface must come from the product. Look for it **before** designing any screen, and never invent one quietly because nobody offered the source.
+
+**Where to look, in order:**
+
+1. **The project itself.**
+   - Files in the working folder, uploaded media and the editor's asset library: screen recordings, screenshots, exported frames.
+   - An existing video's frames, which show the real screens and copy.
+2. **The code.**
+   - A repository in the working folder.
+   - A repository reachable through the tools you have: git, the GitHub CLI, a GitHub or GitLab connector.
+   - Any link the person has shared. If you know the product's name but not its repository, ask for it.
+3. **The design files.** Figma, or a Storybook or component library, through a connector or a link.
+4. **The running product.** A URL, staging or a local build, opened in a browser to read real screens, copy and states.
+
+If none of these is reachable, ask once, in the same round as the other intake questions, for the repository, the design file or a link. Only then fall back to a design system (§5), and mark every screen built that way as **approximate** in the plan and the report.
+
+**What to read in a repository.** Read with a purpose; you are not auditing the code.
+
+| Look for | Usually in | Use it for |
+|---|---|---|
+| Design tokens: colours, radii, spacing, fonts | `tailwind.config.*`, `globals.css`, `theme.*`, `tokens.*`, CSS variables | exact values instead of approximations |
+| The components in the flow you will show | `components/`, `ui/`, `app/` or `pages/` routes | real anatomy and states (table rows, cards, badges, buttons, toasts) |
+| Routes and screens | the router (`app/`, `pages/`, `routes.*`) | which screens exist, and their order in the flow |
+| Real interface copy | the components, `i18n`/`locales` files | labels, statuses, empty states, error texts |
+| States | conditional rendering, status enums, badge variants | before and after for each step (loading, empty, error, success, validated) |
+| Icons and fonts | `package.json` (`lucide-react`, `@radix-ui`, font packages) | the right icon set and type |
+
+**Rules:**
+
+- **Write down what you looked at.** List the sources in `VIDEO.md` under "Product sources": the repository and the paths read, the files, the URLs. Note what each screen in the plan is built from. `critique` treats a demo without this list as unverified.
+- **Use realistic sample data**, never real customer data, emails, names or numbers from production. Respect what the person says must not be shown.
+- **Do not reproduce source code** in the video. Use it to rebuild the interface faithfully.
+
+## 9. The product demo script
+
+A product demo is a short story in which a person does something and the product responds. Write it before the storyboard, from the real flow. One row per step:
+
+| Step | Who acts | Action (cursor, typing, an event) | Product response (state change) | Screen and components (source) | Hold |
+|---|---|---|---|---|---|
+| 1 | a customer email arrives | the email lands in the inbox | the unread counter goes 41 → 42 | Inbox, `MailRow` (repo `src/components/inbox`) | 0.6 s |
+| 2 | the AI | reads the email | the email becomes ticket REC-1104, priority and type filled in | Ticket card, `TicketCard` | 1.2 s |
+
+The example is illustrative. The rules:
+
+- **Find the "aha" moment**, the step where the product does what nothing else does. Give it the longest hold and the biggest transition into it.
+- **Every key step has an action and a visible response** within 100–300 ms (§4). If a step has no action, it is narration: cut it or show the cause.
+- **The cursor follows §6.** A system event, such as an email arriving or a job finishing, needs a visible cause too: a notification, a counter, a row appearing.
+- **States come from the product.** Use the real statuses, badges and copy found in §8.
+- **Camera moves connect steps.** They never replace a step.
+
